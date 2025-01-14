@@ -133,6 +133,8 @@ color_inicio <- '#A74D4B' # Color "En inicio"
 color_proces <- '#F79646' # Color "En proceso"
 color_satisf <- '#9BBB59' # Color "Satisfactorio"
 
+# Función que calcula los resultados de rendimiento junto con sus errores estandar #
+#----------------------------------------------------------------------------------#
 
 tablares <- function(bd_datos,areacurr,alcance){
   
