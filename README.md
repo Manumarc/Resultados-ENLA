@@ -1,10 +1,8 @@
-## LIBRERÍAS REQUERIDAS ##
-##======================##
+## LIBRERÍAS REQUERIDAS 
 
 Librerías requeridos: tidyverse y survey
 
-## DESCRIPCIÓN ##
-##=============##
+## DESCRIPCIÓN
 
 La función tablares() permite obtener resultados y sus errores estandar a nivel nacional y por estratos de las evaluaciones nacionales de logro de aprendizajes (ENLA) de manera automática.
 
@@ -18,7 +16,6 @@ Ejemplo:
 
 - tablares(bd2s_2023, "Lectura", "CUALQUIER_OTRO_ESTRATO") # Calcula los resultados por el estrato que se defina en medida promedio y niveles de logro de 2.° grado de secundaria para el área evaluada de Lectura 
 
-## ADVERTENCIA ##
-##=============##
+## ADVERTENCIA
 
 La función "tablares()" puede presentar errores si las bases de datos se abren con la librería "rio", debido a que esta librería asigna una clase a las variables que no son compatibles con el paquete survey. Se recomienda utilizar las librerías "fst", "foreign" u "openxlsx" según sea el caso.
