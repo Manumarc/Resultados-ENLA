@@ -1,6 +1,7 @@
 ## LIBRERÍAS REQUERIDAS 
 
-Librerías requeridos: tidyverse y survey
+- tidyverse
+- survey
 
 ## DESCRIPCIÓN
 
