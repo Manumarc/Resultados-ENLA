@@ -3,6 +3,10 @@
 - tidyverse
 - survey
 
+## CARGAR LA FUNCIÓN
+
+devtools::source_url("https://raw.githubusercontent.com/Manumarc/Resultados-ENLA/refs/heads/main/funciones")
+
 ## DESCRIPCIÓN
 
 La función "tablares( )" permite obtener resultados y sus errores estandar a nivel nacional y por estratos de las evaluaciones nacionales de logro de aprendizajes (ENLA) de manera automática.
