@@ -306,7 +306,9 @@ tablares <- function(bd_datos,areacurr,alcance){
           names()
         
       } 
-      
+
+      nom_gradoeval <- str_sub(nom1_areaeval, -10, -9)
+
       nom_estratos <- c("sexo","gestion2","area","caracteristica2","nom_dre")
       
       estratos <- list()
@@ -423,7 +425,9 @@ tablares <- function(bd_datos,areacurr,alcance){
           names()
         
       } 
-      
+
+      nom_gradoeval <- str_sub(nom1_areaeval, -10, -9)
+
       nom_estratos <- c(alcance)
       
       estratos <- list()
