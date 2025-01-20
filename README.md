@@ -34,7 +34,7 @@ La función graf_nac( ) genera un gráfico con los resultados de logros de apren
 
 Se considerar un argumento: graf_nac(base_de_datos)
 
-A continuación se muestra un ejemplo del gráfico a generarse
+A continuación se muestra un ejemplo del gráfico que se genera con la función:
 
 ![image](https://github.com/user-attachments/assets/c3141aed-c6e4-4676-b4db-c1807ae4fa9c)
 
