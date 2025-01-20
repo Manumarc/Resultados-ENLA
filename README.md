@@ -29,3 +29,15 @@ Ejemplo:
 - tablares(bd2s_2023, "Lectura", "CUALQUIER_OTRO_ESTRATO")  Calcula los resultados por el estrato que se defina en medida promedio y niveles de logro de 2.° grado de secundaria para el área evaluada de Lectura 
 
 ### Función "graf_nac"
+
+La función graf_nac( ) genera un gráfico con los resultados de logros de aprendizaje para los resultados de la opción "Nacional" de la función tablares( ).
+
+Se considerar un argumento: tablares(base_de_datos)
+
+A continuación se muestra un ejemplo del gráfico a generarse
+
+![image](https://github.com/user-attachments/assets/c3141aed-c6e4-4676-b4db-c1807ae4fa9c)
+
+
+
+
