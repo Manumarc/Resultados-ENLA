@@ -37,7 +37,7 @@ Se considerar un argumento: graf_nac(base_de_datos)
 
 A continuación se muestra un ejemplo del gráfico que se genera con la función:
 
-![image](https://github.com/user-attachments/assets/c3141aed-c6e4-4676-b4db-c1807ae4fa9c)
+![g1_nac](https://github.com/user-attachments/assets/7ee406f1-82f4-4290-95a7-0968e7692199)
 
 Las características para guardar este tipo de gráficos como ".png" usando la función ggsave son las siguientes: 
 
@@ -46,6 +46,7 @@ ggsave(g1,
          w = 6.5,
          h = 4.5,
          dpi = 600)
+
 
 
 
