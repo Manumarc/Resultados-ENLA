@@ -39,6 +39,14 @@ A continuación se muestra un ejemplo del gráfico que se genera con la función
 
 ![image](https://github.com/user-attachments/assets/c3141aed-c6e4-4676-b4db-c1807ae4fa9c)
 
+Las características para guardar este tipo de gráficos como ".png" usando la función ggsave son las siguientes: 
+
+ggsave(g1,
+         filename = "02 Gráficos/g1_nac.png",
+         w = 6.5,
+         h = 4.5,
+         dpi = 600)
+
 
 
 
