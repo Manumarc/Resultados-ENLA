@@ -2,6 +2,7 @@
 
 - tidyverse
 - survey
+- ggplot2
 
 ## CARGAR LAS FUNCIONES
 
