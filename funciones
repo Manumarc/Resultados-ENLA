@@ -1038,7 +1038,7 @@ graf_nac <- function(bd_datos){
                                TRUE ~ valor))
     
     ggplot(niveles, aes(x = estrato2, y = valor, fill = tipo_esp)) + 
-      geom_col(width =0.20) +
+      geom_col(width = 0.17) +
       geom_segment(aes(x=0.8,
                        xend=1.2,
                        y=0, 
@@ -1146,7 +1146,7 @@ graf_nac <- function(bd_datos){
                                TRUE ~ valor))
     
     ggplot(niveles, aes(x = estrato2, y = valor, fill = tipo_esp)) + 
-      geom_col(width =0.20) +
+      geom_col(width = 0.17) +
       geom_segment(aes(x=0.8,
                        xend=1.2,
                        y=0, 
