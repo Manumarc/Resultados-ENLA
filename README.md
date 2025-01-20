@@ -32,7 +32,7 @@ Ejemplo:
 
 La función graf_nac( ) genera un gráfico con los resultados de logros de aprendizaje para los resultados de la opción "Nacional" de la función tablares( ).
 
-Se considerar un argumento: tablares(base_de_datos)
+Se considerar un argumento: graf_nac(base_de_datos)
 
 A continuación se muestra un ejemplo del gráfico a generarse
 
