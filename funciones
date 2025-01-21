@@ -1218,3 +1218,814 @@ graf_nac <- function(bd_datos){
   }
 }
 
+# Función que genera los gráficos de niveles de logro según estratos calculados #
+#-------------------------------------------------------------------------------#
+
+graf_estr <- function(bd_datos){
+  
+  if (sum(is.na(bd_result$error)) == 0) {
+    
+    # Diferencia estadísticamente significativa en nivel satisfactorio dentro de los estratos #
+    #-----------------------------------------------------------------------------------------#
+    
+    val_dif_mp <- bd_datos %>% 
+      filter(!estrato1_1 %in% "nom_dre") %>% 
+      filter(!tipo %in% "Nivel de logro") %>% 
+      select(estrato1_1,estrato2,tipo_esp,valor,error) %>% 
+      select(-tipo_esp) %>% 
+      pivot_wider(names_from = estrato2,
+                  values_from = c(valor,error)) %>% 
+      pivot_longer(
+        cols = starts_with("valor") | starts_with("error"),
+        names_to = c(".value", "grupo"),
+        names_sep = "_"
+      ) %>% 
+      filter(!is.na(valor)) %>%  # Eliminar filas sin valores
+      group_by(estrato1_1) %>%  # Asegurar estructura
+      mutate(
+        valor1 = valor[1],
+        valor2 = valor[2],
+        error1 = error[1],
+        error2 = error[2]
+      ) %>%
+      select(estrato1_1, valor1, valor2, error1, error2) %>% 
+      distinct() %>% 
+      mutate(diferencia = valor1 - valor2) %>% 
+      mutate(Zm = diferencia/(sqrt(error1^2 + error2^2))) %>% 
+      mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
+      mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+      select(estrato1_1,dif_est_sig) 
+    
+    val_dif <- bd_datos %>% 
+      filter(!estrato1_1 %in% "nom_dre") %>% 
+      filter(tipo %in% "Nivel de logro") %>% 
+      select(estrato1_1,estrato2,tipo_esp,valor,error) %>% 
+      pivot_wider(names_from = estrato2,
+                  values_from = c(valor,error)) %>% 
+      pivot_longer(
+        cols = starts_with("valor") | starts_with("error"),
+        names_to = c(".value", "grupo"),
+        names_sep = "_"
+      ) %>% 
+      filter(!is.na(valor)) %>%  # Eliminar filas sin valores
+      group_by(estrato1_1) %>%  # Asegurar estructura
+      mutate(
+        valor1 = valor[1],
+        valor2 = valor[2],
+        error1 = error[1],
+        error2 = error[2]
+      ) %>%
+      select(estrato1_1,tipo_esp, valor1, valor2, error1, error2) %>% 
+      distinct() %>% 
+      mutate(diferencia = valor1 - valor2) %>% 
+      mutate(Zm = diferencia/(sqrt(error1^2 + error2^2))) %>% 
+      mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
+      mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+      select(estrato1_1,tipo_esp,dif_est_sig)
+    
+    # Datos del grado y el área evaluada #
+    #------------------------------------#
+    
+    nom_grado <- unique(bd_datos$grado_eval)
+    nom_area <- unique(bd_datos$area_eval)
+    
+    # Total de niveles de logro #
+    #---------------------------#
+    
+    totniv <- bd_datos %>% 
+      filter(tipo %in% "Nivel de logro") %>% 
+      select(tipo_esp) %>%
+      arrange(tipo_esp) %>%
+      pull() %>% 
+      unique() %>% 
+      length()
+    
+    # Base de datos para generar gráfico #
+    #------------------------------------#
+    
+    bd1 <- bd_datos %>% 
+      filter(!estrato1_1 %in% "nom_dre") %>% 
+      filter(tipo %in% "Nivel de logro") %>% 
+      select(estrato1_1,estrato2,tipo_esp,valor)
+    
+    if (totniv == 4) {
+      
+      # Cálculo de las posiciones de las etiquetas #
+      #--------------------------------------------#
+      
+      pos <- bd1 %>% 
+        pivot_wider(names_from = tipo_esp,
+                    values_from = valor) %>% 
+        rename(n_pi = `Previo al inicio`,n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
+        mutate(pos_sa = case_when(n_sa >= 12 ~ n_sa/2,
+                                  TRUE ~ n_sa + 11),
+               pos_pr = n_pr/2,
+               pos_in = n_pr + n_in/2,
+               pos_pi = case_when(n_pi >= 12 ~ n_pr + n_in + n_pi/2,
+                                  TRUE ~ n_pr + n_in + n_pi + 11)) %>%
+        mutate(pos_pr = pos_pr*-1,
+               pos_in = pos_in*-1,
+               pos_pi = pos_pi*-1) %>% 
+        pivot_longer(cols = 7:10,
+                     names_to = "nivel",
+                     values_to = "posit") %>% 
+        mutate(tipo_esp = case_when(nivel %in% "pos_pi" ~ "Previo al inicio",
+                                    nivel %in% "pos_in" ~ "En inicio",
+                                    nivel %in% "pos_pr" ~ "En proceso",
+                                    TRUE ~ "Satisfactorio")) %>% 
+        select(estrato1_1,estrato2,tipo_esp,posit)
+      
+      
+      # Cálculo de la medida promedio #
+      #-------------------------------#
+      
+      mp_etiq <- bd_datos %>% 
+        filter(!estrato1_1 %in% "nom_dre") %>% 
+        filter(!tipo %in% "Nivel de logro") %>% 
+        left_join(val_dif_mp, by = "estrato1_1") %>% 
+        select(estrato1_1,estrato2,valor,dif_est_sig) %>% 
+        mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                      estrato1_1 %in% "gestion2" ~ "Gestión",
+                                      estrato1_1 %in% "area" ~ "Área",
+                                      estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                      TRUE ~ NA_character_)) %>% 
+        mutate(estrato1_1 = factor(estrato1_1,
+                                   levels = c("Sexo",
+                                              "Gestión",
+                                              "Área",
+                                              "Característica"))) %>% 
+        mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                    estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                    TRUE ~ estrato2)) %>% 
+        mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Unidocente \nMultigrado") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*"),
+                                TRUE ~ puntocoma2(valor,0)))
+      
+      # Integración de las bases de logros y posición de etiquetas #
+      #------------------------------------------------------------#
+      
+      niveles <- bd1 %>% 
+        left_join(pos, by = c("estrato1_1","estrato2","tipo_esp")) %>% 
+        left_join(val_dif, by = c("estrato1_1","tipo_esp")) %>% 
+        mutate(tipo_esp=factor(tipo_esp,
+                               levels=c("Previo al inicio",
+                                        "En inicio",
+                                        "En proceso",
+                                        "Satisfactorio"),
+                               labels=c("Previo al inicio",
+                                        "En inicio",
+                                        "En proceso",
+                                        "Satisfactorio"))) %>% 
+        mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                      estrato1_1 %in% "gestion2" ~ "Gestión",
+                                      estrato1_1 %in% "area" ~ "Área",
+                                      estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                      TRUE ~ NA_character_)) %>% 
+        mutate(estrato1_1 = factor(estrato1_1,
+                                   levels = c("Sexo",
+                                              "Gestión",
+                                              "Área",
+                                              "Característica"))) %>% 
+        mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                    estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                    TRUE ~ estrato2)) %>% 
+        mutate(estrato_num = as.numeric(as.factor(estrato1_1))) %>% 
+        mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Unidocente \nMultigrado") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,1),"*"),
+                                TRUE ~ puntocoma2(valor,1)),
+               valor = case_when(!tipo_esp %in% "Satisfactorio" ~ valor*-1,
+                                 TRUE ~ valor)
+        )
+      
+      # Gráfico #
+      #---------#
+      
+      ggplot(niveles, aes(x = estrato2, y = valor, fill = tipo_esp)) + 
+        facet_wrap(vars(estrato1_1),
+                   nrow = 1,
+                   scales = "free_x") +
+        geom_col(width = 0.45) +
+        scale_y_continuous(limits = c(-100,100)) + 
+        geom_segment(data = niveles %>% filter(!estrato1_1 %in% levels(estrato1_1)[1]),
+                     aes(y = 0,
+                         yend = 0,
+                         x = 0.4,
+                         xend = 2.6),
+                     linetype = "solid",
+                     color = "#252525",
+                     lwd = 0.3,
+                     alpha = 0.5) +
+        geom_segment(data = niveles %>% filter(estrato1_1 %in% levels(estrato1_1)[1]),
+                     aes(y = 0,
+                         yend = 0,
+                         x = 0.7,
+                         xend = 2.6),
+                     linetype = "solid",
+                     color = "#252525",
+                     lwd = 0.3,
+                     alpha = 0.5) +
+        scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
+        theme_bw() +
+        theme(
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          legend.position = "bottom",
+          legend.title = element_blank(),
+          legend.text = element_text(size = 12,
+                                     color = "#252525"),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 12,
+                                     color = "#252525"),
+          plot.title = element_text(size = 15,
+                                    color = "#252525",
+                                    hjust = 0.5),
+          plot.subtitle = element_text(size = 15,
+                                       color = "#252525",
+                                       hjust = 0.5),
+          plot.caption = element_text(size = 8,
+                                      color = "#252525",
+                                      hjust = 0),
+          panel.spacing = unit(0, "lines"),
+          strip.background = element_rect(fill = "transparent",
+                                          color = NA),
+          strip.text = element_text(size = 15, 
+                                    color = "#252525",
+                                    hjust = 0.5)
+        ) + 
+        geom_text(aes(label = etiq,
+                      y = posit),
+                  size = 4.0,
+                  color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
+                                    TRUE ~ "#252525")) +
+        geom_text(data = mp_etiq, 
+                  aes(label = etiq, 
+                      y = 90, 
+                      x = estrato2), 
+                  size = 4.0, 
+                  inherit.aes = FALSE) +
+        labs(title = nom_grado,
+             subtitle = nom_area,
+             caption = "(*) Diferencia estadísticamente significativa al 0,05 entre categorías del mismo estrato.") +
+        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
+                  aes(x=0.50,
+                      y=0.00,
+                      label="Niveles de logro (%)"),
+                  size=2.8,
+                  alpha=0.2,
+                  angle = 90,
+                  color = "#252525") +
+        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
+                  mapping=aes(x=0.65,
+                              y=90,
+                              label="Medida \npromedio"),
+                  size=2.8,
+                  alpha=0.2,
+                  color = "#252525") +
+        geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Característica"),
+                   aes(xintercept = c(2.6)), 
+                   linetype = "dashed",
+                   color = "#252525",
+                   show.legend = F)
+      
+    } else if (totniv == 3){
+      
+      # Cálculo de las posiciones de las etiquetas #
+      #--------------------------------------------#
+      
+      pos <- bd1 %>% 
+        pivot_wider(names_from = tipo_esp,
+                    values_from = valor) %>% 
+        rename(n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
+        mutate(pos_sa=case_when(n_sa >= 12 ~  n_sa/2,
+                                TRUE ~ n_sa + 11),
+               pos_pr=n_pr/2,
+               pos_in=case_when(n_in >= 12 ~ n_pr+n_in/2,
+                                TRUE ~ n_pr+n_in/2 + 11)) %>% 
+        mutate(pos_pr=pos_pr*(-1),
+               pos_in=pos_in*(-1)) %>% 
+        pivot_longer(cols = 6:8,
+                     names_to = "nivel",
+                     values_to = "posit") %>% 
+        mutate(tipo_esp = case_when(nivel %in% "pos_in" ~ "En inicio",
+                                    nivel %in% "pos_pr" ~ "En proceso",
+                                    TRUE ~ "Satisfactorio")) %>% 
+        select(estrato1_1,estrato2,tipo_esp,posit)
+      
+      
+      # Cálculo de la medida promedio #
+      #-------------------------------#
+      
+      mp_etiq <- bd_datos %>% 
+        filter(!estrato1_1 %in% "nom_dre") %>% 
+        filter(!tipo %in% "Nivel de logro") %>% 
+        left_join(val_dif_mp, by = "estrato1_1") %>% 
+        select(estrato1_1,estrato2,valor,dif_est_sig) %>% 
+        mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                      estrato1_1 %in% "gestion2" ~ "Gestión",
+                                      estrato1_1 %in% "area" ~ "Área",
+                                      estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                      TRUE ~ NA_character_)) %>% 
+        mutate(estrato1_1 = factor(estrato1_1,
+                                   levels = c("Sexo",
+                                              "Gestión",
+                                              "Área",
+                                              "Característica"))) %>% 
+        mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                    estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                    TRUE ~ estrato2)) %>% 
+        mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Unidocente \nMultigrado") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*"),
+                                TRUE ~ puntocoma2(valor,0)))
+      
+      # Integración de las bases de logros y posición de etiquetas #
+      #------------------------------------------------------------#
+      
+      niveles <- bd1 %>% 
+        left_join(pos, by = c("estrato1_1","estrato2","tipo_esp")) %>% 
+        left_join(val_dif, by = c("estrato1_1","tipo_esp")) %>% 
+        mutate(tipo_esp=factor(tipo_esp,
+                               levels=c("En inicio",
+                                        "En proceso",
+                                        "Satisfactorio"),
+                               labels=c("En inicio",
+                                        "En proceso",
+                                        "Satisfactorio"))) %>% 
+        mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                      estrato1_1 %in% "gestion2" ~ "Gestión",
+                                      estrato1_1 %in% "area" ~ "Área",
+                                      estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                      TRUE ~ NA_character_)) %>% 
+        mutate(estrato1_1 = factor(estrato1_1,
+                                   levels = c("Sexo",
+                                              "Gestión",
+                                              "Área",
+                                              "Característica"))) %>% 
+        mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                    estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                    TRUE ~ estrato2)) %>% 
+        mutate(estrato_num = as.numeric(as.factor(estrato1_1))) %>% 
+        mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Unidocente \nMultigrado") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,1),"*"),
+                                TRUE ~ puntocoma2(valor,1)),
+               valor = case_when(!tipo_esp %in% "Satisfactorio" ~ valor*-1,
+                                 TRUE ~ valor)
+        )
+      
+      # Gráfico #
+      #---------#
+      
+      ggplot(niveles, aes(x = estrato2, y = valor, fill = tipo_esp)) + 
+        facet_wrap(vars(estrato1_1),
+                   nrow = 1,
+                   scales = "free_x") +
+        geom_col(width = 0.45) +
+        scale_y_continuous(limits = c(-100,100)) + 
+        geom_segment(data = niveles %>% filter(!estrato1_1 %in% levels(estrato1_1)[1]),
+                     aes(y = 0,
+                         yend = 0,
+                         x = 0.4,
+                         xend = 2.6),
+                     linetype = "solid",
+                     color = "#252525",
+                     lwd = 0.3,
+                     alpha = 0.5) +
+        geom_segment(data = niveles %>% filter(estrato1_1 %in% levels(estrato1_1)[1]),
+                     aes(y = 0,
+                         yend = 0,
+                         x = 0.7,
+                         xend = 2.6),
+                     linetype = "solid",
+                     color = "#252525",
+                     lwd = 0.3,
+                     alpha = 0.5) +
+        scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
+        theme_bw() +
+        theme(
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          legend.position = "bottom",
+          legend.title = element_blank(),
+          legend.text = element_text(size = 12,
+                                     color = "#252525"),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 12,
+                                     color = "#252525"),
+          plot.title = element_text(size = 15,
+                                    color = "#252525",
+                                    hjust = 0.5),
+          plot.subtitle = element_text(size = 15,
+                                       color = "#252525",
+                                       hjust = 0.5),
+          plot.caption = element_text(size = 8,
+                                      color = "#252525",
+                                      hjust = 0),
+          panel.spacing = unit(0, "lines"),
+          strip.background = element_rect(fill = "transparent",
+                                          color = NA),
+          strip.text = element_text(size = 15, 
+                                    color = "#252525",
+                                    hjust = 0.5)
+        ) + 
+        geom_text(aes(label = etiq,
+                      y = posit),
+                  size = 4.0,
+                  color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
+                                    TRUE ~ "#252525")) +
+        geom_text(data = mp_etiq, 
+                  aes(label = etiq, 
+                      y = 90, 
+                      x = estrato2), 
+                  size = 4.0, 
+                  inherit.aes = FALSE) +
+        labs(title = nom_grado,
+             subtitle = nom_area,
+             caption = "(*) Diferencia estadísticamente significativa al 0,05 entre categorías del mismo estrato.") +
+        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
+                  aes(x=0.50,
+                      y=0.00,
+                      label="Niveles de logro (%)"),
+                  size=2.8,
+                  alpha=0.2,
+                  angle = 90,
+                  color = "#252525") +
+        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
+                  mapping=aes(x=0.65,
+                              y=90,
+                              label="Medida \npromedio"),
+                  size=2.8,
+                  alpha=0.2,
+                  color = "#252525") +
+        geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Característica"),
+                   aes(xintercept = c(2.6)), 
+                   linetype = "dashed",
+                   color = "#252525",
+                   show.legend = F)
+      
+    }
+    
+  } else if (sum(is.na(bd_result$error)) > 0) {
+    
+    # Datos del grado y el área evaluada #
+    #------------------------------------#
+    
+    nom_grado <- unique(bd_datos$grado_eval)
+    nom_area <- unique(bd_datos$area_eval)
+    
+    # Total de niveles de logro #
+    #---------------------------#
+    
+    totniv <- bd_datos %>% 
+      filter(tipo %in% "Nivel de logro") %>% 
+      select(tipo_esp) %>%
+      arrange(tipo_esp) %>%
+      pull() %>% 
+      unique() %>% 
+      length()
+    
+    # Base de datos para generar gráfico #
+    #------------------------------------#
+    
+    bd1 <- bd_datos %>% 
+      filter(!estrato1_1 %in% "nom_dre") %>% 
+      filter(tipo %in% "Nivel de logro") %>% 
+      select(estrato1_1,estrato2,tipo_esp,valor)
+    
+    if (totniv == 4) {
+      
+      # Cálculo de las posiciones de las etiquetas #
+      #--------------------------------------------#
+      
+      pos <- bd1 %>% 
+        pivot_wider(names_from = tipo_esp,
+                    values_from = valor) %>% 
+        rename(n_pi = `Previo al inicio`,n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
+        mutate(pos_sa = case_when(n_sa >= 12 ~ n_sa/2,
+                                  TRUE ~ n_sa + 11),
+               pos_pr = n_pr/2,
+               pos_in = n_pr + n_in/2,
+               pos_pi = case_when(n_pi >= 12 ~ n_pr + n_in + n_pi/2,
+                                  TRUE ~ n_pr + n_in + n_pi + 11)) %>%
+        mutate(pos_pr = pos_pr*-1,
+               pos_in = pos_in*-1,
+               pos_pi = pos_pi*-1) %>% 
+        pivot_longer(cols = 7:10,
+                     names_to = "nivel",
+                     values_to = "posit") %>% 
+        mutate(tipo_esp = case_when(nivel %in% "pos_pi" ~ "Previo al inicio",
+                                    nivel %in% "pos_in" ~ "En inicio",
+                                    nivel %in% "pos_pr" ~ "En proceso",
+                                    TRUE ~ "Satisfactorio")) %>% 
+        select(estrato1_1,estrato2,tipo_esp,posit)
+      
+      # Cálculo de la medida promedio #
+      #-------------------------------#
+      
+      mp_etiq <- bd_datos %>% 
+        filter(!estrato1_1 %in% "nom_dre") %>% 
+        filter(!tipo %in% "Nivel de logro") %>% 
+        select(estrato1_1,estrato2,valor) %>% 
+        mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                      estrato1_1 %in% "gestion2" ~ "Gestión",
+                                      estrato1_1 %in% "area" ~ "Área",
+                                      estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                      TRUE ~ NA_character_)) %>% 
+        mutate(estrato1_1 = factor(estrato1_1,
+                                   levels = c("Sexo",
+                                              "Gestión",
+                                              "Área",
+                                              "Característica"))) %>% 
+        mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                    estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                    TRUE ~ estrato2)) %>% 
+        mutate(etiq = puntocoma2(valor,0))
+      
+      # Integración de las bases de logros y posición de etiquetas #
+      #------------------------------------------------------------#
+      
+      niveles <- bd1 %>% 
+        left_join(pos, by = c("estrato1_1","estrato2","tipo_esp")) %>% 
+        left_join(val_dif, by = c("estrato1_1","tipo_esp")) %>% 
+        mutate(tipo_esp=factor(tipo_esp,
+                               levels=c("Previo al inicio",
+                                        "En inicio",
+                                        "En proceso",
+                                        "Satisfactorio"),
+                               labels=c("Previo al inicio",
+                                        "En inicio",
+                                        "En proceso",
+                                        "Satisfactorio"))) %>% 
+        mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                      estrato1_1 %in% "gestion2" ~ "Gestión",
+                                      estrato1_1 %in% "area" ~ "Área",
+                                      estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                      TRUE ~ NA_character_)) %>% 
+        mutate(estrato1_1 = factor(estrato1_1,
+                                   levels = c("Sexo",
+                                              "Gestión",
+                                              "Área",
+                                              "Característica"))) %>% 
+        mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                    estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                    TRUE ~ estrato2)) %>% 
+        mutate(estrato_num = as.numeric(as.factor(estrato1_1))) %>% 
+        mutate(etiq = puntocoma2(valor,1),
+               valor = case_when(!tipo_esp %in% "Satisfactorio" ~ valor*-1,
+                                 TRUE ~ valor)
+        )
+      
+      # Gráfico #
+      #---------#
+      
+      ggplot(niveles, aes(x = estrato2, y = valor, fill = tipo_esp)) + 
+        facet_wrap(vars(estrato1_1),
+                   nrow = 1,
+                   scales = "free_x") +
+        geom_col(width = 0.45) +
+        scale_y_continuous(limits = c(-100,100)) + 
+        geom_segment(data = niveles %>% filter(!estrato1_1 %in% levels(estrato1_1)[1]),
+                     aes(y = 0,
+                         yend = 0,
+                         x = 0.4,
+                         xend = 2.6),
+                     linetype = "solid",
+                     color = "#252525",
+                     lwd = 0.3,
+                     alpha = 0.5) +
+        geom_segment(data = niveles %>% filter(estrato1_1 %in% levels(estrato1_1)[1]),
+                     aes(y = 0,
+                         yend = 0,
+                         x = 0.7,
+                         xend = 2.6),
+                     linetype = "solid",
+                     color = "#252525",
+                     lwd = 0.3,
+                     alpha = 0.5) +
+        scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
+        theme_bw() +
+        theme(
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          legend.position = "bottom",
+          legend.title = element_blank(),
+          legend.text = element_text(size = 12,
+                                     color = "#252525"),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 12,
+                                     color = "#252525"),
+          plot.title = element_text(size = 15,
+                                    color = "#252525",
+                                    hjust = 0.5),
+          plot.subtitle = element_text(size = 15,
+                                       color = "#252525",
+                                       hjust = 0.5),
+          panel.spacing = unit(0, "lines"),
+          strip.background = element_rect(fill = "transparent",
+                                          color = NA),
+          strip.text = element_text(size = 15, 
+                                    color = "#252525",
+                                    hjust = 0.5)
+        ) + 
+        geom_text(aes(label = etiq,
+                      y = posit),
+                  size = 4.0,
+                  color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
+                                    TRUE ~ "#252525")) +
+        geom_text(data = mp_etiq, 
+                  aes(label = etiq, 
+                      y = 90, 
+                      x = estrato2), 
+                  size = 4.0, 
+                  inherit.aes = FALSE) +
+        labs(title = nom_grado,
+             subtitle = nom_area) +
+        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
+                  aes(x=0.50,
+                      y=0.00,
+                      label="Niveles de logro (%)"),
+                  size=2.8,
+                  alpha=0.2,
+                  angle = 90,
+                  color = "#252525") +
+        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
+                  mapping=aes(x=0.65,
+                              y=90,
+                              label="Medida \npromedio"),
+                  size=2.8,
+                  alpha=0.2,
+                  color = "#252525") +
+        geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Característica"),
+                   aes(xintercept = c(2.6)), 
+                   linetype = "dashed",
+                   color = "#252525",
+                   show.legend = F)
+      
+    } else if (totniv == 3){
+      
+      # Cálculo de las posiciones de las etiquetas #
+      #--------------------------------------------#
+      
+      pos <- bd1 %>% 
+        pivot_wider(names_from = tipo_esp,
+                    values_from = valor) %>% 
+        rename(n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
+        mutate(pos_sa=case_when(n_sa >= 12 ~  n_sa/2,
+                                TRUE ~ n_sa + 11),
+               pos_pr=n_pr/2,
+               pos_in=case_when(n_in >= 12 ~ n_pr+n_in/2,
+                                TRUE ~ n_pr+n_in/2 + 11)) %>% 
+        mutate(pos_pr=pos_pr*(-1),
+               pos_in=pos_in*(-1)) %>% 
+        pivot_longer(cols = 6:8,
+                     names_to = "nivel",
+                     values_to = "posit") %>% 
+        mutate(tipo_esp = case_when(nivel %in% "pos_in" ~ "En inicio",
+                                    nivel %in% "pos_pr" ~ "En proceso",
+                                    TRUE ~ "Satisfactorio")) %>% 
+        select(estrato1_1,estrato2,tipo_esp,posit)
+      
+      
+      # Cálculo de la medida promedio #
+      #-------------------------------#
+      
+      mp_etiq <- bd_datos %>% 
+        filter(!estrato1_1 %in% "nom_dre") %>% 
+        filter(!tipo %in% "Nivel de logro") %>% 
+        select(estrato1_1,estrato2,valor) %>% 
+        mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                      estrato1_1 %in% "gestion2" ~ "Gestión",
+                                      estrato1_1 %in% "area" ~ "Área",
+                                      estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                      TRUE ~ NA_character_)) %>% 
+        mutate(estrato1_1 = factor(estrato1_1,
+                                   levels = c("Sexo",
+                                              "Gestión",
+                                              "Área",
+                                              "Característica"))) %>% 
+        mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                    estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                    TRUE ~ estrato2)) %>% 
+        mutate(etiq = puntocoma2(valor,0))
+      
+      # Integración de las bases de logros y posición de etiquetas #
+      #------------------------------------------------------------#
+      
+      niveles <- bd1 %>% 
+        left_join(pos, by = c("estrato1_1","estrato2","tipo_esp")) %>% 
+        mutate(tipo_esp=factor(tipo_esp,
+                               levels=c("En inicio",
+                                        "En proceso",
+                                        "Satisfactorio"),
+                               labels=c("En inicio",
+                                        "En proceso",
+                                        "Satisfactorio"))) %>% 
+        mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                      estrato1_1 %in% "gestion2" ~ "Gestión",
+                                      estrato1_1 %in% "area" ~ "Área",
+                                      estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                      TRUE ~ NA_character_)) %>% 
+        mutate(estrato1_1 = factor(estrato1_1,
+                                   levels = c("Sexo",
+                                              "Gestión",
+                                              "Área",
+                                              "Característica"))) %>% 
+        mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                    estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                    TRUE ~ estrato2)) %>% 
+        mutate(estrato_num = as.numeric(as.factor(estrato1_1))) %>% 
+        mutate(etiq = puntocoma2(valor,1),
+               valor = case_when(!tipo_esp %in% "Satisfactorio" ~ valor*-1,
+                                 TRUE ~ valor)
+        )
+      
+      # Gráfico #
+      #---------#
+      
+      ggplot(niveles, aes(x = estrato2, y = valor, fill = tipo_esp)) + 
+        facet_wrap(vars(estrato1_1),
+                   nrow = 1,
+                   scales = "free_x") +
+        geom_col(width = 0.45) +
+        scale_y_continuous(limits = c(-100,100)) + 
+        geom_segment(data = niveles %>% filter(!estrato1_1 %in% levels(estrato1_1)[1]),
+                     aes(y = 0,
+                         yend = 0,
+                         x = 0.4,
+                         xend = 2.6),
+                     linetype = "solid",
+                     color = "#252525",
+                     lwd = 0.3,
+                     alpha = 0.5) +
+        geom_segment(data = niveles %>% filter(estrato1_1 %in% levels(estrato1_1)[1]),
+                     aes(y = 0,
+                         yend = 0,
+                         x = 0.7,
+                         xend = 2.6),
+                     linetype = "solid",
+                     color = "#252525",
+                     lwd = 0.3,
+                     alpha = 0.5) +
+        scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
+        theme_bw() +
+        theme(
+          panel.border = element_blank(),
+          panel.grid = element_blank(),
+          legend.position = "bottom",
+          legend.title = element_blank(),
+          legend.text = element_text(size = 12,
+                                     color = "#252525"),
+          axis.title = element_blank(),
+          axis.ticks = element_blank(),
+          axis.text.y = element_blank(),
+          axis.text.x = element_text(size = 12,
+                                     color = "#252525"),
+          plot.title = element_text(size = 15,
+                                    color = "#252525",
+                                    hjust = 0.5),
+          plot.subtitle = element_text(size = 15,
+                                       color = "#252525",
+                                       hjust = 0.5),
+          panel.spacing = unit(0, "lines"),
+          strip.background = element_rect(fill = "transparent",
+                                          color = NA),
+          strip.text = element_text(size = 15, 
+                                    color = "#252525",
+                                    hjust = 0.5)
+        ) + 
+        geom_text(aes(label = etiq,
+                      y = posit),
+                  size = 4.0,
+                  color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
+                                    TRUE ~ "#252525")) +
+        geom_text(data = mp_etiq, 
+                  aes(label = etiq, 
+                      y = 90, 
+                      x = estrato2), 
+                  size = 4.0, 
+                  inherit.aes = FALSE) +
+        labs(title = nom_grado,
+             subtitle = nom_area) +
+        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
+                  aes(x=0.50,
+                      y=0.00,
+                      label="Niveles de logro (%)"),
+                  size=2.8,
+                  alpha=0.2,
+                  angle = 90,
+                  color = "#252525") +
+        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
+                  mapping=aes(x=0.65,
+                              y=90,
+                              label="Medida \npromedio"),
+                  size=2.8,
+                  alpha=0.2,
+                  color = "#252525") +
+        geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Característica"),
+                   aes(xintercept = c(2.6)), 
+                   linetype = "dashed",
+                   color = "#252525",
+                   show.legend = F)
+    }
+  }
+}
