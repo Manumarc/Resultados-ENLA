@@ -1471,7 +1471,7 @@ graf_nac <- function(bd_datos){
 
 graf_estr <- function(bd_datos){
   
-  if (sum(is.na(bd_result$error)) == 0) {
+  if (sum(is.na(bd_datos$error)) == 0) {
     
     # Diferencia estadísticamente significativa en nivel satisfactorio dentro de los estratos #
     #-----------------------------------------------------------------------------------------#
@@ -1911,7 +1911,7 @@ graf_estr <- function(bd_datos){
       
     }
     
-  } else if (sum(is.na(bd_result$error)) > 0) {
+  } else if (sum(is.na(bd_datos$error)) > 0) {
     
     # Datos del grado y el área evaluada #
     #------------------------------------#
