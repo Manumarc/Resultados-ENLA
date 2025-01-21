@@ -377,9 +377,9 @@ tablares <- function(bd_datos,areacurr,alcance){
       }
       
       return(bind_rows(estratos) %>% 
-               mutate(estrato2 = case_when(estrato2 %in% c("Estatal") ~ "Público",
-                                           estrato2 %in% c("No estatal" ~ "Privado"),
-                                           TRUE ~ estrato2)))
+             mutate(estrato2 = case_when(estrato2 %in% c("Estatal") ~ "Público",
+                                         estrato2 %in% c("No estatal") ~ "Privado",
+                                         TRUE ~ estrato2)))
       
     } else {
       
@@ -499,9 +499,9 @@ tablares <- function(bd_datos,areacurr,alcance){
       }
       
       return(bind_rows(estratos) %>% 
-               mutate(estrato2 = case_when(estrato2 %in% c("Estatal") ~ "Público",
-                                           estrato2 %in% c("No estatal" ~ "Privado"),
-                                           TRUE ~ estrato2)))
+             mutate(estrato2 = case_when(estrato2 %in% c("Estatal") ~ "Público",
+                                         estrato2 %in% c("No estatal") ~ "Privado",
+                                         TRUE ~ estrato2)))
       
     }
     
@@ -813,7 +813,7 @@ tablares <- function(bd_datos,areacurr,alcance){
     
     return(bind_rows(estratos) %>% 
              mutate(estrato2 = case_when(estrato2 %in% c("Estatal") ~ "Público",
-                                         estrato2 %in% c("No estatal" ~ "Privado"),
+                                         estrato2 %in% c("No estatal") ~ "Privado",
                                          TRUE ~ estrato2)))
     
   } else {
@@ -975,7 +975,7 @@ tablares <- function(bd_datos,areacurr,alcance){
     
     return(bind_rows(estratos) %>% 
              mutate(estrato2 = case_when(estrato2 %in% c("Estatal") ~ "Público",
-                                         estrato2 %in% c("No estatal" ~ "Privado"),
+                                         estrato2 %in% c("No estatal") ~ "Privado",
                                          TRUE ~ estrato2)))
   }
   
