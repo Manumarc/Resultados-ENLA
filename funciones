@@ -1000,10 +1000,10 @@ graf_nac <- function(bd_datos){
                   values_from = valor) %>% 
       rename(n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
       mutate(pos_sa=case_when(n_sa >= 12 ~  n_sa/2,
-                              TRUE ~ n_sa + 8),
+                              TRUE ~ n_sa + 11),
              pos_pr=n_pr/2,
              pos_in=case_when(n_in >= 12 ~ n_pr+n_in/2,
-                              TRUE ~ n_pr+n_in/2 + 8)) %>% 
+                              TRUE ~ n_pr+n_in/2 + 11)) %>% 
       mutate(pos_pr=pos_pr*(-1),
              pos_in=pos_in*(-1)) %>% 
       pivot_longer(cols = 5:7,
@@ -1103,11 +1103,11 @@ graf_nac <- function(bd_datos){
                   values_from = valor) %>% 
       rename(n_pi = `Previo al inicio`, n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
       mutate(pos_sa = case_when(n_sa >= 12 ~ n_sa/2,
-                                TRUE ~ n_sa + 8),
+                                TRUE ~ n_sa + 11),
              pos_pr = n_pr/2,
              pos_in = n_pr + n_in/2,
              pos_pi = case_when(n_pi >= 12 ~ n_pr + n_in + n_pi/2,
-                                TRUE ~ n_pr + n_in + n_pi + 8)) %>%
+                                TRUE ~ n_pr + n_in + n_pi + 11)) %>%
       mutate(pos_pr = pos_pr*-1,
              pos_in = pos_in*-1,
              pos_pi = pos_pi*-1) %>% 
