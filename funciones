@@ -381,7 +381,7 @@ tablares <- function(bd_datos,areacurr,alcance){
                                          estrato2 %in% c("No estatal") ~ "Privado",
                                          TRUE ~ estrato2)) %>%
              filter(
-      !(grado_eval == "2.° grado de secundaria" & estrato1_1 != "caracteristica2")
+      !(grado_eval %in% "2.° grado de secundaria" & estrato1_1 %in% "caracteristica2")
     ))
       
     } else {
@@ -506,7 +506,7 @@ tablares <- function(bd_datos,areacurr,alcance){
                                          estrato2 %in% c("No estatal") ~ "Privado",
                                          TRUE ~ estrato2)) %>%
              filter(
-      !(grado_eval == "2.° grado de secundaria" & estrato1_1 != "caracteristica2")
+      !(grado_eval %in% "2.° grado de secundaria" & estrato1_1 %in% "caracteristica2")
     ))
       
     }
@@ -822,7 +822,7 @@ tablares <- function(bd_datos,areacurr,alcance){
                                          estrato2 %in% c("No estatal") ~ "Privado",
                                          TRUE ~ estrato2)) %>%
              filter(
-      !(grado_eval == "2.° grado de secundaria" & estrato1_1 != "caracteristica2")
+      !(grado_eval %in% "2.° grado de secundaria" & estrato1_1 %in% "caracteristica2")
     ))
     
   } else {
@@ -987,7 +987,7 @@ tablares <- function(bd_datos,areacurr,alcance){
                                          estrato2 %in% c("No estatal") ~ "Privado",
                                          TRUE ~ estrato2)) %>%
              filter(
-      !(grado_eval == "2.° grado de secundaria" & estrato1_1 != "caracteristica2")
+      !(grado_eval %in% "2.° grado de secundaria" & estrato1_1 %in% "caracteristica2")
     ))
   }
   
