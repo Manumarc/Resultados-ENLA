@@ -47,7 +47,20 @@ ggsave(g1,
          h = 4.5,
          dpi = 600)
 
+### Función "graf_estr"
 
+La función graf_estr( ) genera un gráfico con los resultados de logros de aprendizaje para los resultados de la opción "Estratos" de la función tablares( ).
 
+Se considerar un argumento: graf_estr(base_de_datos)
 
+A continuación se muestra un ejemplo del gráfico que se genera con la función:
 
+![g1_prub](https://github.com/user-attachments/assets/25d7d38b-5e53-41aa-a589-f0498cb4bbe5)
+
+Las características para guardar este tipo de gráficos como ".png" usando la función ggsave son las siguientes: 
+
+ggsave(g1,
+       filename = "02 Gráficos/g1_prub.png",
+       w = 12.0,
+       h = 6.0,
+       dpi = 600)
