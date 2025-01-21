@@ -759,7 +759,7 @@ tablares <- function(bd_datos,areacurr,alcance){
                                       nom_gradoeval %in% "2S" ~ "2.° grado de secundaria",
                                       TRUE ~ "Limpiar variable")) %>% 
         select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error) %>% 
-        filter((grado_eval %in% "2.° grado de primaria" & año %in% c("2018","2023") & estrato1_1 %in% "nom_dre"))
+        filter(!(grado_eval %in% "2.° grado de primaria" & año %in% c("2018","2023") & estrato1_1 %in% "nom_dre"))
       
       
       a2 <- svyby(
@@ -804,7 +804,7 @@ tablares <- function(bd_datos,areacurr,alcance){
                                       nom_gradoeval %in% "2S" ~ "2.° grado de secundaria",
                                       TRUE ~ "Limpiar variable")) %>% 
         select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error) %>% 
-        filter((grado_eval %in% "2.° grado de primaria" & año %in% c("2018","2023") & estrato1_1 %in% "nom_dre"))
+        filter(!(grado_eval %in% "2.° grado de primaria" & año %in% c("2018","2023") & estrato1_1 %in% "nom_dre"))
       
       
       estratos[[i]] <- rbind(a1,a2)
@@ -982,6 +982,242 @@ tablares <- function(bd_datos,areacurr,alcance){
 }
 
 }
+
+# Función que genera los gráficos tradicionales para las tablas de resultados nacionales #
+#----------------------------------------------------------------------------------------#
+
+graf_nac <- function(bd_datos){
+  
+  nom_grado <- unique(bd_datos$grado_eval)
+  nom_area <- unique(bd_datos$area_eval)
+  
+  totniv <- bd_datos %>% 
+    filter(tipo %in% "Nivel de logro") %>% 
+    arrange(tipo_esp) %>% 
+    select(tipo_esp) %>% 
+    pull() %>% 
+    length()
+  
+  bd1 <- bd_datos %>% 
+    filter(tipo %in% "Nivel de logro") %>% 
+    select(estrato2 ,tipo_esp,valor)
+  
+  if (totniv == 3) {
+    
+    # Cálculo de las posiciones de las etiquetas #
+    #--------------------------------------------#
+    
+    pos <- bd1 %>% 
+      pivot_wider(names_from = tipo_esp,
+                  values_from = valor) %>% 
+      rename(n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
+      mutate(pos_sa=case_when(n_sa >= 12 ~  n_sa/2,
+                              TRUE ~ n_sa + 11),
+             pos_pr=n_pr/2,
+             pos_in=case_when(n_in >= 12 ~ n_pr+n_in/2,
+                              TRUE ~ n_pr+n_in/2 + 11)) %>% 
+      mutate(pos_pr=pos_pr*(-1),
+             pos_in=pos_in*(-1)) %>% 
+      pivot_longer(cols = 5:7,
+                   names_to = "nivel",
+                   values_to = "posit") %>% 
+      mutate(tipo_esp = case_when(nivel %in% "pos_in" ~ "En inicio",
+                                  nivel %in% "pos_pr" ~ "En proceso",
+                                  TRUE ~ "Satisfactorio")) %>% 
+      select(estrato2,tipo_esp,posit)
+    
+    # Cálculo de la medida promedio #
+    #-------------------------------#
+    
+    mp_etiq <- bd_datos %>% 
+      filter(!tipo %in% "Nivel de logro") %>% 
+      select(estrato2 ,tipo_esp,valor)
+    
+    # Integración de las bases de logros y posición de etiquetas #
+    #------------------------------------------------------------#
+    
+    niveles <- bd1 %>% 
+      left_join(pos, by = c("estrato2","tipo_esp")) %>% 
+      mutate(etiq = puntocoma2(valor,1),
+             tipo_esp=factor(tipo_esp,
+                             levels=c("En inicio",
+                                      "En proceso",
+                                      "Satisfactorio"),
+                             labels=c("En inicio",
+                                      "En proceso",
+                                      "Satisfactorio")),
+             valor = case_when(!tipo_esp %in% "Satisfactorio" ~ valor*-1,
+                               TRUE ~ valor))
+    
+    ggplot(niveles, aes(x = estrato2, y = valor, fill = tipo_esp)) + 
+      geom_col(width = 0.17) +
+      geom_segment(aes(x=0.8,
+                       xend=1.2,
+                       y=0, 
+                       yend=0), 
+                   color="#252525",
+                   lwd = 0.2) +
+      scale_y_continuous(limits = c(-100,100)) + 
+      scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
+      theme_bw() +
+      theme(panel.border = element_blank(),
+            panel.grid = element_blank(),
+            legend.position = "bottom",
+            legend.title = element_blank(),
+            legend.text = element_text(size = 12,
+                                       color = "#252525"),
+            axis.title = element_blank(),
+            axis.ticks = element_blank(),
+            axis.text.y = element_blank(),
+            axis.text.x = element_text(size = 12,
+                                       color = "#252525"),
+            plot.title = element_text(size = 15,
+                                      color = "#252525",
+                                      hjust = 0.5),
+            plot.subtitle = element_text(size = 15,
+                                         color = "#252525",
+                                         hjust = 0.5)
+      ) + 
+      geom_text(aes(label = etiq,
+                    y = posit),
+                size = 4.5,
+                color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
+                                  TRUE ~ "#252525")) +
+      geom_text(data = mp_etiq, 
+                aes(label = valor, 
+                    y = 90, 
+                    x = 1), 
+                size = 4.0, 
+                inherit.aes = FALSE) +
+      labs(title = nom_grado,
+           subtitle = nom_area) +
+      geom_text(aes(x=0.69,
+                    y=0.00,
+                    label="Niveles de logro (%)"),
+                size=3.0,
+                alpha=0.2,
+                angle = 90,
+                color = "#252525") +
+      geom_text(mapping=aes(x=0.70,
+                            y=90,
+                            label="Medida \npromedio"),
+                size=3.0,
+                alpha=0.2,
+                color = "#252525")
+    
+  } else if (totniv == 4) {
+    
+    # Cálculo de las posiciones de las etiquetas #
+    #--------------------------------------------#
+    
+    pos <- bd1 %>% 
+      pivot_wider(names_from = tipo_esp,
+                  values_from = valor) %>% 
+      rename(n_pi = `Previo al inicio`, n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
+      mutate(pos_sa = case_when(n_sa >= 12 ~ n_sa/2,
+                                TRUE ~ n_sa + 11),
+             pos_pr = n_pr/2,
+             pos_in = n_pr + n_in/2,
+             pos_pi = case_when(n_pi >= 12 ~ n_pr + n_in + n_pi/2,
+                                TRUE ~ n_pr + n_in + n_pi + 11)) %>%
+      mutate(pos_pr = pos_pr*-1,
+             pos_in = pos_in*-1,
+             pos_pi = pos_pi*-1) %>% 
+      pivot_longer(cols = 6:9,
+                   names_to = "nivel",
+                   values_to = "posit") %>% 
+      mutate(tipo_esp = case_when(nivel %in% "pos_pi" ~ "Previo al inicio",
+                                  nivel %in% "pos_in" ~ "En inicio",
+                                  nivel %in% "pos_pr" ~ "En proceso",
+                                  TRUE ~ "Satisfactorio")) %>% 
+      select(estrato2,tipo_esp,posit)
+    
+    # Cálculo de la medida promedio #
+    #-------------------------------#
+    
+    mp_etiq <- bd_datos %>% 
+      filter(!tipo %in% "Nivel de logro") %>% 
+      select(estrato2 ,tipo_esp,valor)
+    
+    # Integración de las bases de logros y posición de etiquetas #
+    #------------------------------------------------------------#
+    
+    niveles <- bd1 %>% 
+      left_join(pos, by = c("estrato2","tipo_esp")) %>% 
+      mutate(etiq = puntocoma2(valor,1),
+             tipo_esp=factor(tipo_esp,
+                             levels=c("Previo al inicio",
+                                      "En inicio",
+                                      "En proceso",
+                                      "Satisfactorio"),
+                             labels=c("Previo al inicio",
+                                      "En inicio",
+                                      "En proceso",
+                                      "Satisfactorio")),
+             valor = case_when(!tipo_esp %in% "Satisfactorio" ~ valor*-1,
+                               TRUE ~ valor))
+    
+    ggplot(niveles, aes(x = estrato2, y = valor, fill = tipo_esp)) + 
+      geom_col(width = 0.17) +
+      geom_segment(aes(x=0.8,
+                       xend=1.2,
+                       y=0, 
+                       yend=0), 
+                   color="#252525",
+                   lwd = 0.2) +
+      scale_y_continuous(limits = c(-100,100)) + 
+      scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
+      theme_bw() +
+      theme(panel.border = element_blank(),
+            panel.grid = element_blank(),
+            legend.position = "bottom",
+            legend.title = element_blank(),
+            legend.text = element_text(size = 12,
+                                       color = "#252525"),
+            axis.title = element_blank(),
+            axis.ticks = element_blank(),
+            axis.text.y = element_blank(),
+            axis.text.x = element_text(size = 12,
+                                       color = "#252525"),
+            plot.title = element_text(size = 15,
+                                      color = "#252525",
+                                      hjust = 0.5),
+            plot.subtitle = element_text(size = 15,
+                                         color = "#252525",
+                                         hjust = 0.5)
+      ) + 
+      geom_text(aes(label = etiq,
+                    y = posit),
+                size = 4.5,
+                color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
+                                  TRUE ~ "#252525")) +
+      geom_text(data = mp_etiq, 
+                aes(label = valor, 
+                    y = 90, 
+                    x = 1), 
+                size = 4.0, 
+                inherit.aes = FALSE) +
+      labs(title = nom_grado,
+           subtitle = nom_area) +
+      geom_text(aes(x=0.69,
+                    y=0.00,
+                    label="Niveles de logro (%)"),
+                size=3.0,
+                alpha=0.2,
+                angle = 90,
+                color = "#252525") +
+      geom_text(mapping=aes(x=0.70,
+                            y=90,
+                            label="Medida \npromedio"),
+                size=3.0,
+                alpha=0.2,
+                color = "#252525")
+    
+    
+    
+  }
+}
+
 
 # Función que genera los gráficos tradicionales para las tablas de resultados nacionales #
 #----------------------------------------------------------------------------------------#
