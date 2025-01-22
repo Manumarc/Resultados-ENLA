@@ -71,7 +71,7 @@ La función graf_estr( ) genera un gráfico con los resultados de logros de apre
 
 Se considerar un argumento: graf_estr(base_de_datos)
 
-A continuación se muestra un ejemplo del gráfico que se genera con la función:
+A continuación se muestra un ejemplo del gráfico que se genera con la función para el estrato de "tipología de escuelas privadas":
 
 ![g1_prub](https://github.com/user-attachments/assets/78e99963-611a-446b-8707-c2c0a9be1b83)
 
