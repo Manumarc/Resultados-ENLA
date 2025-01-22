@@ -64,3 +64,24 @@ ggsave(g1,
        w = 12.0,
        h = 6.0,
        dpi = 600)
+
+### Función "graf_spcf"
+
+La función graf_estr( ) genera un gráfico con los resultados de logros de aprendizaje para cualquier estrato que se defina en la base de datos y en la función tablares( ).
+
+Se considerar un argumento: graf_estr(base_de_datos)
+
+A continuación se muestra un ejemplo del gráfico que se genera con la función:
+
+![g1_prub](https://github.com/user-attachments/assets/78e99963-611a-446b-8707-c2c0a9be1b83)
+
+Las características para guardar este tipo de gráficos como ".png" usando la función ggsave son las siguientes: 
+
+ggsave(g1,
+       filename = "02 Gráficos/g1_prub.png",
+       w = 9.0,
+       h = 6.0,
+       dpi = 600)
+
+
+       
