@@ -1991,8 +1991,7 @@ graf_estr <- function(bd_datos){
       #------------------------------------------------------------#
       
       niveles <- bd1 %>% 
-        left_join(pos, by = c("estrato1_1","estrato2","tipo_esp")) %>% 
-        left_join(val_dif, by = c("estrato1_1","tipo_esp")) %>% 
+        left_join(pos, by = c("estrato1_1","estrato2","tipo_esp")) %>%
         mutate(tipo_esp=factor(tipo_esp,
                                levels=c("Previo al inicio",
                                         "En inicio",
