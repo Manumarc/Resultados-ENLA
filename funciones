@@ -3291,8 +3291,3 @@ graf_estr2 <- function(bd_datos){
     
   }
 }
-
-
-
-
-
