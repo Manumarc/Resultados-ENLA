@@ -1469,7 +1469,7 @@ graf_nac <- function(bd_datos){
 # Función que genera los gráficos de niveles de logro según estratos calculados #
 #-------------------------------------------------------------------------------#
 
-graf_estr <- function(bd_datos){
+graf_estr1 <- function(bd_datos){
   
   if (sum(is.na(bd_datos$error)) == 0) {
     
@@ -2559,8 +2559,739 @@ graf_spcf <- function(bd_datos){
   }
 }
 
+# Función que genera un gráfico de puntos para la medida promedio por estratos #
+#------------------------------------------------------------------------------#
 
-
+graf_estr2 <- function(bd_datos){
+  
+  # Diferencia estadísticamente significativa entre estratos #
+  #----------------------------------------------------------#
+  
+  if (sum(is.na(bd_datos$error)) == 0){
+    
+    val_dif_mp <- bd_datos %>% 
+      filter(tipo %in% "Medida promedio") %>% 
+      filter(!estrato1_1 %in% "nom_dre") %>% 
+      select(estrato1_1,estrato2,tipo_esp,valor,error) %>% 
+      select(-tipo_esp) %>% 
+      pivot_wider(names_from = estrato2,
+                  values_from = c(valor,error)) %>% 
+      pivot_longer(
+        cols = starts_with("valor") | starts_with("error"),
+        names_to = c(".value", "grupo"),
+        names_sep = "_"
+      ) %>% 
+      filter(!is.na(valor)) %>%  # Eliminar filas sin valores
+      group_by(estrato1_1) %>%  # Asegurar estructura
+      mutate(
+        valor1 = valor[1],
+        valor2 = valor[2],
+        error1 = error[1],
+        error2 = error[2]
+      ) %>%
+      select(estrato1_1, valor1, valor2, error1, error2) %>% 
+      distinct() %>% 
+      mutate(diferencia = valor1 - valor2) %>% 
+      mutate(Zm = diferencia/(sqrt(error1^2 + error2^2))) %>% 
+      mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
+      mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+      select(estrato1_1,dif_est_sig)
+    
+    temp1 <- bd_datos %>% 
+      filter(tipo %in% "Medida promedio") %>% 
+      filter(!estrato1_1 %in% "nom_dre") %>% 
+      left_join(val_dif_mp, by = "estrato1_1") %>% 
+      mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                    estrato1_1 %in% "gestion2" ~ "Gestión",
+                                    estrato1_1 %in% "area" ~ "Área",
+                                    estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                    TRUE ~ NA_character_)) %>% 
+      mutate(estrato1_1 = factor(estrato1_1,
+                                 levels = c("Sexo",
+                                            "Gestión",
+                                            "Área",
+                                            "Característica"))) %>% 
+      mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                  estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                  TRUE ~ estrato2)) %>% 
+      mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Unidocente \nMultigrado") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*"),
+                              TRUE ~ puntocoma2(valor,0)))
+    
+    # Etiquetas de texto con los nombres de los niveles de logro #
+    #------------------------------------------------------------#
+    
+    text_sat <- textGrob("Satisfactorio", 
+                         gp = gpar(fontsize = 14, 
+                                   col = color_satisf
+                         ),
+                         just = "left")
+    text_pro <- textGrob("En proceso", 
+                         gp = gpar(fontsize = 14, 
+                                   col = color_proces
+                         ),
+                         just = "left")
+    text_ini <- textGrob("En inicio", 
+                         gp = gpar(fontsize = 14, 
+                                   col = color_inicio
+                         ),
+                         just = "left")
+    text_pin <- textGrob("Previo al inicio", 
+                         gp = gpar(fontsize = 14, 
+                                   col = color_pre_in
+                         ),
+                         just = "left")
+    
+    # Identificadores para filtros #
+    #------------------------------#
+    
+    nom_gradoeval <- unique(temp1$grado_eval) # Identificador de grado evaluado
+    nom_area <- unique(temp1$area_eval) # Identificador de área evaluada
+    
+    if (nom_gradoeval %in% "2.° grado de primaria" & nom_area %in% "Lectura"){
+      
+      limites <- c(400,650)
+      limit_estrato <- "Característica"
+      puntos_corte <- c(458.39, 583.66) # (Menor a 458.39; mayor o igual a 458.39 y menor a 583.66; Mayor o igual a 583.66)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (limites[[2]] - puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (limites[[2]] - puntos_corte[[2]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      annotation_pin <- NULL
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "2.° grado de primaria" & nom_area %in% "Matemática") {
+      
+      limites <- c(400,700)
+      limit_estrato <- "Característica"
+      puntos_corte <- c(512.22, 639.21)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (limites[[2]] - puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (limites[[2]] - puntos_corte[[2]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      annotation_pin <- NULL
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Lectura") {
+      
+      limites <- c(300,600)
+      limit_estrato <- "Característica"
+      puntos_corte <- c(356.92, 444.72, 522.03)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 , ymax = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2
+      )
+      annotation_pin <- annotation_custom(
+        grob = text_pin,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_inicio,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Matemática") {
+      
+      limites <- c(300,600)
+      limit_estrato <- "Característica"
+      puntos_corte <- c(351.90, 422.21, 526.46)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 , ymax = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2
+      )
+      annotation_pin <- annotation_custom(
+        grob = text_pin,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_inicio,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "2.° grado de secundaria" & nom_area %in% "Lectura") {
+      
+      limites <- c(400,700)
+      limit_estrato <- "Área"
+      puntos_corte <- c(505.14, 580.61, 641.25)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 , ymax = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2
+      )
+      annotation_pin <- annotation_custom(
+        grob = text_pin,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_inicio,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "2.° grado de secundaria" & nom_area %in% "Matemática") {
+      
+      limites <- c(400,700)
+      limit_estrato <- "Área"
+      puntos_corte <- c(519.67, 595.96, 649.38)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 , ymax = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2
+      )
+      annotation_pin <- annotation_custom(
+        grob = text_pin,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_inicio,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    }
+    
+    ggplot(temp1, aes(x = estrato2, y = valor, color = estrato2)) + 
+      facet_wrap(vars(estrato1_1),
+                 nrow = 1,
+                 scales = "free_x") + 
+      geom_errorbar(aes(x = estrato2,
+                        ymin = valor - 1.96*error, 
+                        ymax = valor + 1.96*error),
+                    width = 0.13,
+                    linewidth = 0.25) +
+      geom_point(size = 1.5) + 
+      hlines +
+      scale_y_continuous(limits = limites,
+                         breaks = c(redondear(puntos_corte,0))) +
+      scale_color_manual(values = color_puntos) +
+      theme_bw() + 
+      theme(
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        panel.spacing = unit(0, "lines"),
+        legend.position = "none",
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_text(size = 13,
+                                   color = "#252525"),
+        axis.text.y = element_text(size = 13,
+                                   color = "#252525",
+                                   vjust = 0.5),
+        strip.background = element_rect(fill = "transparent",
+                                        color = NA),
+        strip.text = element_text(size = 15, 
+                                  color = "#252525",
+                                  hjust = 0.5),
+        plot.margin = unit(c(0, 1.50, 0, 0.50), 
+                           "inches"),
+        plot.caption = element_text(size = 10,
+                                    color = "#252525",
+                                    hjust = 0,
+                                    margin = margin(t = 18))
+      ) + 
+      geom_text(aes(label = etiq,
+                    vjust = case_when(error >= 2.0 ~ 3.0 ,
+                                      TRUE ~ 2.0)),
+                color = "#252525",
+                size = 4.5) + 
+      geom_vline(data = temp1 %>% filter(!estrato1_1 %in% limit_estrato),
+                 aes(xintercept = c(2.58)), 
+                 linetype = "dashed",
+                 lwd = 0.4,
+                 color = "#252525",
+                 alpha = 0.3,
+                 show.legend = F) +
+      annotation_sat +
+      annotation_pro + 
+      annotation_ini + 
+      annotation_pin +
+      coord_cartesian(clip = "off") +
+      labs(caption = "(*) Diferencia estadísticamente significativa al 0,05 entre categorías del mismo estrato.")
+    
+  } else if (sum(is.na(bd_datos$error)) > 0){
+    
+    temp1 <- bd_datos %>% 
+      filter(tipo %in% "Medida promedio") %>% 
+      filter(!estrato1_1 %in% "nom_dre") %>% 
+      left_join(val_dif_mp, by = "estrato1_1") %>% 
+      mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
+                                    estrato1_1 %in% "gestion2" ~ "Gestión",
+                                    estrato1_1 %in% "area" ~ "Área",
+                                    estrato1_1 %in% "caracteristica2" ~ "Característica",
+                                    TRUE ~ NA_character_)) %>% 
+      mutate(estrato1_1 = factor(estrato1_1,
+                                 levels = c("Sexo",
+                                            "Gestión",
+                                            "Área",
+                                            "Característica"))) %>% 
+      mutate(estrato2 = case_when(estrato2 %in% c("Polidocente completo","Polidocente Completo") ~ "Polidocente \ncompleto",
+                                  estrato2 %in% c("Unidocente/Multigrado","Unidocente / Multigrado") ~ "Unidocente \nMultigrado",
+                                  TRUE ~ estrato2)) %>% 
+      mutate(etiq = puntocoma2(valor,0))
+    
+    # Etiquetas de texto con los nombres de los niveles de logro #
+    #------------------------------------------------------------#
+    
+    text_sat <- textGrob("Satisfactorio", 
+                         gp = gpar(fontsize = 14, 
+                                   col = color_satisf
+                         ),
+                         just = "left")
+    text_pro <- textGrob("En proceso", 
+                         gp = gpar(fontsize = 14, 
+                                   col = color_proces
+                         ),
+                         just = "left")
+    text_ini <- textGrob("En inicio", 
+                         gp = gpar(fontsize = 14, 
+                                   col = color_inicio
+                         ),
+                         just = "left")
+    text_pin <- textGrob("Previo al inicio", 
+                         gp = gpar(fontsize = 14, 
+                                   col = color_pre_in
+                         ),
+                         just = "left")
+    
+    # Identificadores para filtros #
+    #------------------------------#
+    
+    nom_gradoeval <- unique(temp1$grado_eval) # Identificador de grado evaluado
+    nom_area <- unique(temp1$area_eval) # Identificador de área evaluada
+    
+    if (nom_gradoeval %in% "2.° grado de primaria" & nom_area %in% "Lectura"){
+      
+      limites <- c(400,650)
+      limit_estrato <- "Característica"
+      puntos_corte <- c(458.39, 583.66) # (Menor a 458.39; mayor o igual a 458.39 y menor a 583.66; Mayor o igual a 583.66)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (limites[[2]] - puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (limites[[2]] - puntos_corte[[2]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      annotation_pin <- NULL
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "2.° grado de primaria" & nom_area %in% "Matemática") {
+      
+      limites <- c(400,700)
+      limit_estrato <- "Característica"
+      puntos_corte <- c(512.22, 639.21)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (limites[[2]] - puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (limites[[2]] - puntos_corte[[2]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      annotation_pin <- NULL
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Lectura") {
+      
+      limites <- c(300,600)
+      limit_estrato <- "Característica"
+      puntos_corte <- c(356.92, 444.72, 522.03)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 , ymax = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2
+      )
+      annotation_pin <- annotation_custom(
+        grob = text_pin,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_inicio,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Matemática") {
+      
+      limites <- c(300,600)
+      limit_estrato <- "Característica"
+      puntos_corte <- c(351.90, 422.21, 526.46)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 , ymax = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2
+      )
+      annotation_pin <- annotation_custom(
+        grob = text_pin,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_inicio,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "2.° grado de secundaria" & nom_area %in% "Lectura") {
+      
+      limites <- c(400,700)
+      limit_estrato <- "Área"
+      puntos_corte <- c(505.14, 580.61, 641.25)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 , ymax = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2
+      )
+      annotation_pin <- annotation_custom(
+        grob = text_pin,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_inicio,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    } else if (nom_gradoeval %in% "2.° grado de secundaria" & nom_area %in% "Matemática") {
+      
+      limites <- c(400,700)
+      limit_estrato <- "Área"
+      puntos_corte <- c(519.67, 595.96, 649.38)
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      
+      annotation_sat <- annotation_custom(
+        grob = text_sat,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 , ymax = puntos_corte[[3]] + (limites[[2]] - puntos_corte[[3]])/2 
+      ) 
+      annotation_pro <- annotation_custom(
+        grob = text_pro,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 , ymax = puntos_corte[[2]] + (puntos_corte[[3]]- puntos_corte[[2]])/2 
+      ) 
+      annotation_ini <- annotation_custom(
+        grob = text_ini,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2 , ymax = puntos_corte[[1]] + (puntos_corte[[2]]- puntos_corte[[1]])/2
+      )
+      annotation_pin <- annotation_custom(
+        grob = text_pin,
+        xmin = 5.2, xmax = 0, # Ajustar para que esté después del último facet
+        ymin = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2 , ymax = limites[[1]] + (puntos_corte[[1]]- limites[[1]])/2
+      )
+      
+      hlines <- list(
+        geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
+                   color = color_inicio,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
+                   color = color_proces,
+                   alpha = 0.5,
+                   lwd = 0.2),
+        geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
+                   color = color_satisf,
+                   alpha = 0.5,
+                   lwd = 0.2)
+      )
+      
+    }
+    
+    ggplot(temp1, aes(x = estrato2, y = valor, color = estrato2)) + 
+      facet_wrap(vars(estrato1_1),
+                 nrow = 1,
+                 scales = "free_x") +
+      geom_point(size = 1.5) + 
+      hlines +
+      scale_y_continuous(limits = limites,
+                         breaks = c(redondear(puntos_corte,0))) +
+      scale_color_manual(values = color_puntos) +
+      theme_bw() + 
+      theme(
+        panel.border = element_blank(),
+        panel.grid = element_blank(),
+        panel.spacing = unit(0, "lines"),
+        legend.position = "none",
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_text(size = 13,
+                                   color = "#252525"),
+        axis.text.y = element_text(size = 13,
+                                   color = "#252525",
+                                   vjust = 0.5),
+        strip.background = element_rect(fill = "transparent",
+                                        color = NA),
+        strip.text = element_text(size = 15, 
+                                  color = "#252525",
+                                  hjust = 0.5),
+        plot.margin = unit(c(0, 1.50, 0, 0.50), 
+                           "inches")
+      ) + 
+      geom_text(aes(label = etiq,
+                    vjust = 2.0),
+                color = "#252525",
+                size = 4.5) + 
+      geom_vline(data = temp1 %>% filter(!estrato1_1 %in% limit_estrato),
+                 aes(xintercept = c(2.58)), 
+                 linetype = "dashed",
+                 lwd = 0.4,
+                 color = "#252525",
+                 alpha = 0.3,
+                 show.legend = F) +
+      annotation_sat +
+      annotation_pro + 
+      annotation_ini + 
+      annotation_pin +
+      coord_cartesian(clip = "off")
+    
+    
+  }
+}
 
 
 
