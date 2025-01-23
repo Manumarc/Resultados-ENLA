@@ -73,7 +73,7 @@ Se considerar un argumento: graf_estr2(base_de_datos)
 
 A continuación se muestra un ejemplo del gráfico que se genera con la función:
 
-
+![g1_prub2](https://github.com/user-attachments/assets/9e6e2b57-19ad-466a-859a-7af15bdcf52b)
 
 Las características para guardar este tipo de gráficos como ".png" usando la función ggsave son las siguientes: 
 
