@@ -2953,7 +2953,6 @@ graf_estr2 <- function(bd_datos){
     temp1 <- bd_datos %>% 
       filter(tipo %in% "Medida promedio") %>% 
       filter(!estrato1_1 %in% "nom_dre") %>% 
-      left_join(val_dif_mp, by = "estrato1_1") %>% 
       mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
                                     estrato1_1 %in% "gestion2" ~ "Gestión",
                                     estrato1_1 %in% "area" ~ "Área",
