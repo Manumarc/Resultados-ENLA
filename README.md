@@ -25,7 +25,7 @@ Ejemplo:
 
 - tablares(bd2p_2022, "Matemática", "Nacional")  Calcula los resultados nacionales en medida promedio y niveles de logro de 2.° grado de primaria para el área evaluada de Matemática 
 
-- tablares(bd4p_2022, "Matemática", "Estratos")  Calcula los resultados por estratos de sexo, área, gestión, características y DRE en medida promedio y niveles de logro de 4.° grado de primaria para el área evaluada de Matemática 
+- tablares(bd4p_2022, "Matemática", "Estratos")  Calcula los resultados por estratos de sexo, área, gestión, gestión y área, características y DRE en medida promedio y niveles de logro de 4.° grado de primaria para el área evaluada de Matemática 
 
 - tablares(bd2s_2023, "Lectura", "CUALQUIER_OTRO_ESTRATO")  Calcula los resultados por el estrato que se defina en medida promedio y niveles de logro de 2.° grado de secundaria para el área evaluada de Lectura 
 
@@ -47,15 +47,19 @@ ggsave(g1,
          h = 4.5,
          dpi = 600)
 
-### Función "graf_estr1"
+### Función "graf_estrat"
 
-La función graf_estr1( ) genera un gráfico con los resultados de logros de aprendizaje para los resultados de la opción "Estratos" de la función tablares( ).
+La función graf_estrat( ) genera un gráfico con los resultados de logros de aprendizaje para los resultados de la opción "Estratos" comparando con la opción "Nacional" generados por la función tablares( ).
 
-Se considerar un argumento: graf_estr1(base_de_datos)
+Se consideran tres argumentos: graf_estr1(bd_nacional, bd_estratos, nom_tipo), donde:
 
-A continuación se muestra un ejemplo del gráfico que se genera con la función:
+- bd_nacional: es la base de datos de resultados a nivel nacional.
+- bd_estratos: es la base de datos de resultados para los estratos calculados de manera automática.
+- nom_tipo: define el tipo de gráfico que se va a generar. A continuación se muestran los gráficos para cada una de las opciones de nom_tipo.
 
-![g1_prub](https://github.com/user-attachments/assets/25d7d38b-5e53-41aa-a589-f0498cb4bbe5)
+#### nom_tipo = "Tipo 1"
+
+![g1_prub](https://github.com/user-attachments/assets/15058e10-fd1c-4937-9280-850e79bd732c)
 
 Las características para guardar este tipo de gráficos como ".png" usando la función ggsave son las siguientes: 
 
@@ -65,15 +69,9 @@ ggsave(g1,
        h = 6.0,
        dpi = 600)
 
-### Función "graf_estr2"
+#### nom_tipo = "Tipo 2"
 
-La función graf_estr2( ) genera un gráfico con los resultados de medida promedio para los resultados de la opción "Estratos" de la función tablares( ).
-
-Se considerar un argumento: graf_estr2(base_de_datos)
-
-A continuación se muestra un ejemplo del gráfico que se genera con la función:
-
-![g1_prub2](https://github.com/user-attachments/assets/9e6e2b57-19ad-466a-859a-7af15bdcf52b)
+![g1_prub](https://github.com/user-attachments/assets/fe44235c-4922-424b-8c35-eaecb6a8b584)
 
 Las características para guardar este tipo de gráficos como ".png" usando la función ggsave son las siguientes: 
 
