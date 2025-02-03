@@ -2091,6 +2091,10 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
     
   } else if (nom_tipo == "Tipo 2") {
     
+    ##############
+    # MUESTRALES #
+    ##############
+
     if (sum(is.na(bd_estrat$error)) == 0){
       
     val_dif_mp <- bd_estrat %>% 
@@ -2124,6 +2128,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
     temp1 <- bd_estrat %>% 
       filter(tipo %in% "Medida promedio") %>% 
       filter(!estrato1_1 %in% c("nom_dre","caracteristica2")) %>% 
+      filter(!is.na(estrato2)) %>%
       left_join(val_dif_mp, by = "estrato1_1") %>% 
       mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
                                     estrato1_1 %in% "gestion2" ~ "Gestión",
@@ -2470,12 +2475,17 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       annotation_pin +
       coord_cartesian(clip = "off") +
       labs(caption = "(*) Diferencia estadísticamente significativa al 0,05 entre categorías del mismo estrato.")
-    
+
+    ############
+    # CENSALES #
+    ############
+
   } else if (sum(is.na(bd_estrat$error)) > 0){
     
     temp1 <- bd_estrat %>% 
       filter(tipo %in% "Medida promedio") %>% 
       filter(!estrato1_1 %in% c("nom_dre","caracteristica2")) %>% 
+      filter(!is.na(estrato2)) %>%
       mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
                                     estrato1_1 %in% "gestion2" ~ "Gestión",
                                     estrato1_1 %in% "area" ~ "Área",
