@@ -324,7 +324,7 @@ tablares <- function(bd_datos,areacurr,alcance){
                                   TRUE ~ sexo)) %>% 
           mutate(gestion2 = case_when(gestion2 %in% c("Estatal","Público") ~ "Pública",
                                       gestion2 %in% c("No estatal","Privado") ~ "Privada",
-                                      TRUE ~ gestion2))
+                                      TRUE ~ gestion2)) %>%
         mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% "Pública" ~ "Pública urbana",
                                     gestion2 %in% "Privada" ~ "Privada",
                                     TRUE ~ NA_character_))
