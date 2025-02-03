@@ -228,8 +228,8 @@ tablares <- function(bd_datos,areacurr,alcance){
                                       TRUE ~ "Limpiar variable")) %>% 
         select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error)
       
-      a2 <- bd4p_24 %>% 
-        filter(!is.na(grupo_ECE_4P_2024_CT)) %>% 
+      a2 <- bd_datos %>% 
+        filter(!is.na(!!sym(nom2_areaeval))) %>% 
         mutate(nacional = alcance) %>% 
         group_by(nacional) %>% 
         summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval),!!sym(nom_peso),na.rm = TRUE),0)) %>% 
@@ -322,12 +322,12 @@ tablares <- function(bd_datos,areacurr,alcance){
           mutate(sexo = case_when(sexo %in% "1" ~ "Hombre",
                                   sexo %in% "2" ~ "Mujer",
                                   TRUE ~ sexo)) %>% 
-          mutate(gestion2 = case_when(gestion2 %in% c("Estatal") ~ "Pública",
-                                gestion2 %in% c("No estatal") ~ "Privada",
-                                TRUE ~ gestion2)) %>% 
-          mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% "Pública" ~ "Pública urbana",
-                                      gestion2 %in% "Privada" ~ "Privada",
-                                      TRUE ~ NA_character_))
+          mutate(gestion2 = case_when(gestion2 %in% c("Estatal","Público") ~ "Pública",
+                                      gestion2 %in% c("No estatal","Privado") ~ "Privada",
+                                      TRUE ~ gestion2))
+        mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% "Pública" ~ "Pública urbana",
+                                    gestion2 %in% "Privada" ~ "Privada",
+                                    TRUE ~ NA_character_))
         
         a1 <- b1 %>% 
           filter(!is.na(!!sym(nom2_areaeval))) %>% 
@@ -360,10 +360,10 @@ tablares <- function(bd_datos,areacurr,alcance){
           select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error)
         
         a2 <- b1 %>% 
-          filter(!is.na(grupo_ECE_4P_2024_CT)) %>% 
+          filter(!is.na(!!sym(nom2_areaeval))) %>% 
           mutate(nacional = "Nacional") %>% 
           group_by(!!sym(nom_estratos[[i]])) %>% 
-          summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval)),0)) %>% 
+          summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval), !!sym(nom_peso), na.rm = T),0)) %>% 
           setNames(c("estrato2","valor")) %>% 
           mutate(tipo_esp = "Medida promedio",
                  area_eval = nom_area,
@@ -444,7 +444,7 @@ tablares <- function(bd_datos,areacurr,alcance){
       
       for(i in 1:length(nom_estratos)){
         
-        b1 <- bd4p_24 %>% 
+        b1 <- bd_datos %>% 
           filter(!is.na(!!sym(nom_peso))) %>% 
           mutate_at(vars(sexo),
                     funs(as.character)) %>% 
@@ -483,10 +483,10 @@ tablares <- function(bd_datos,areacurr,alcance){
           select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error)
         
         a2 <- b1 %>% 
-          filter(!is.na(grupo_ECE_4P_2024_CT)) %>% 
+          filter(!is.na(!!sym(nom2_areaeval))) %>% 
           mutate(nacional = "Nacional") %>% 
           group_by(!!sym(nom_estratos[[i]])) %>% 
-          summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval)),0)) %>% 
+          summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval),!!sym(nom_peso)),0)) %>% 
           setNames(c("estrato2","valor")) %>% 
           mutate(tipo_esp = "Medida promedio",
                  area_eval = nom_area,
@@ -649,7 +649,6 @@ tablares <- function(bd_datos,areacurr,alcance){
                      error = redondear(error*100, 1))
           }
           
-          
         })
         
       }  
@@ -717,12 +716,12 @@ tablares <- function(bd_datos,areacurr,alcance){
                                 sexo %in% c(" ","N") ~ NA_character_,
                                 TRUE ~ sexo)) %>% 
         filter(!is.na(sexo)) %>% 
-        mutate(gestion2 = case_when(gestion2 %in% c("Estatal") ~ "Pública",
-                                gestion2 %in% c("No estatal") ~ "Privada",
-                                TRUE ~ gestion2)) %>% 
-          mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% "Pública" ~ "Pública urbana",
-                                      gestion2 %in% "Privada" ~ "Privada",
-                                      TRUE ~ NA_character_))
+        mutate(gestion2 = case_when(gestion2 %in% c("Estatal","Público") ~ "Pública",
+                                    gestion2 %in% c("No estatal","Privado") ~ "Privada",
+                                    TRUE ~ gestion2)) %>% 
+        mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% "Pública" ~ "Pública urbana",
+                                    gestion2 %in% "Privada" ~ "Privada",
+                                    TRUE ~ NA_character_))
       
       nom_strata <- bd1 %>% 
         select(starts_with("Estrato")) %>% 
@@ -889,12 +888,12 @@ tablares <- function(bd_datos,areacurr,alcance){
                                 sexo %in% "2" ~ "Mujer",
                                 TRUE ~ sexo)) %>%
         filter(!is.na(nom_estratos)) %>% 
-        mutate(gestion2 = case_when(gestion2 %in% c("Estatal") ~ "Pública",
-                                gestion2 %in% c("No estatal") ~ "Privada",
-                                TRUE ~ gestion2)) %>% 
-          mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% "Pública" ~ "Pública urbana",
-                                      gestion2 %in% "Privada" ~ "Privada",
-                                      TRUE ~ NA_character_))
+        mutate(gestion2 = case_when(gestion2 %in% c("Estatal","Público") ~ "Pública",
+                                    gestion2 %in% c("No estatal","Privado") ~ "Privada",
+                                    TRUE ~ gestion2)) %>% 
+        mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% c("Pública")  ~ "Pública urbana",
+                                    gestion2 %in% c("Privada") ~ "Privada",
+                                    TRUE ~ NA_character_))
       
       nom_strata <- bd1 %>% 
         select(starts_with("Estrato")) %>% 
