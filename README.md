@@ -80,6 +80,18 @@ ggsave(g1,
        w = 12.0,
        h = 6.0,
        dpi = 600)
+       
+#### nom_tipo = "Tipo 3"
+
+![g1_prub](https://github.com/user-attachments/assets/a6ff88ad-44bb-4cb7-b31b-b0bb150133c6)
+
+Las características para guardar este tipo de gráficos como ".png" usando la función ggsave son las siguientes: 
+
+ggsave(g1,
+       filename = "02 Gráficos/g1_prub.png",
+       w = 12.0,
+       h = 6.0,
+       dpi = 600)
 
 ### Función "graf_spcf"
 
