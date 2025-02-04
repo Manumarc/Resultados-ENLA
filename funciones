@@ -2966,7 +2966,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         geom_text(aes(label = etiq,
                       y = posit),
                   size = 3.5,
-                  color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
+                  color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 9 ~ "white",
                                     TRUE ~ "#252525")) + 
         geom_text(data = mp_etiq, 
                   aes(label = valor, 
@@ -3073,7 +3073,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         geom_text(aes(label = etiq,
                       y = posit),
                   size = 3.5,
-                  color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
+                  color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 9 ~ "white",
                                     TRUE ~ "#252525")) + 
         geom_text(data = mp_etiq, 
                   aes(label = valor, 
