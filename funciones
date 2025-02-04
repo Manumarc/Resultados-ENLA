@@ -2874,11 +2874,11 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         pivot_wider(names_from = tipo_esp,
                     values_from = valor) %>% 
         rename(n_pi = `Previo al inicio`, n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
-        mutate(pos_sa = case_when(n_sa >= 12 ~ n_sa/2,
+        mutate(pos_sa = case_when(n_sa >= 9 ~ n_sa/2,
                                   TRUE ~ n_sa + 8),
                pos_pr = n_pr/2,
                pos_in = n_pr + n_in/2,
-               pos_pi = case_when(n_pi >= 12 ~ n_pr + n_in + n_pi/2,
+               pos_pi = case_when(n_pi >= 9 ~ n_pr + n_in + n_pi/2,
                                   TRUE ~ n_pr + n_in + n_pi + 8)) %>%
         mutate(pos_pr = pos_pr*-1,
                pos_in = pos_in*-1,
@@ -2985,10 +2985,10 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         pivot_wider(names_from = tipo_esp,
                     values_from = valor) %>% 
         rename(n_in = `En inicio`,n_pr = `En proceso`, n_sa = `Satisfactorio`) %>% 
-        mutate(pos_sa = case_when(n_sa >= 12 ~ n_sa/2,
+        mutate(pos_sa = case_when(n_sa >= 9 ~ n_sa/2,
                                   TRUE ~ n_sa + 8),
                pos_pr = n_pr/2,
-               pos_in = case_when(n_in >= 12 ~ n_pr + n_in/2,
+               pos_in = case_when(n_in >= 9 ~ n_pr + n_in/2,
                                   TRUE ~ n_pr + n_in/2 + 8)) %>%
         mutate(pos_pr = pos_pr*-1,
                pos_in = pos_in*-1) %>% 
