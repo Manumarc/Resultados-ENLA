@@ -2995,8 +2995,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         pivot_longer(cols = 5:7,
                      names_to = "nivel",
                      values_to = "posit") %>% 
-        mutate(tipo_esp = case_when(nivel %in% "pos_pi" ~ "Previo al inicio",
-                                    nivel %in% "pos_in" ~ "En inicio",
+        mutate(tipo_esp = case_when(nivel %in% "pos_in" ~ "En inicio",
                                     nivel %in% "pos_pr" ~ "En proceso",
                                     TRUE ~ "Satisfactorio")) %>% 
         select(estrato2,tipo_esp,posit)
