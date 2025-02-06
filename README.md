@@ -3,6 +3,7 @@
 - tidyverse
 - survey
 - ggplot2
+- ggh4x
 
 ## CARGAR LAS FUNCIONES
 
