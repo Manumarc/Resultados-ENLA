@@ -1,9 +1,9 @@
 ## LIBRERÍAS REQUERIDAS 
 
 - tidyverse
-- survey
 - ggplot2
-- ggh4x
+- survey          # Paquete para estimar resultados con muestras complejas
+- ggh4x           # Permite crear y editar textos anidados en los ejes
 
 ## CARGAR LAS FUNCIONES
 
