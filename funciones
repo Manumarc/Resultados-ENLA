@@ -1390,7 +1390,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                                 "Gestión y área"))) %>% 
           mutate(estrato2 = case_when(estrato2 %in% c("Pública urbana") ~ "Pública \nurbana",
                                       TRUE ~ estrato2)) %>% 
-          mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Pública \nurbana") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*"),
+          mutate(etiq = case_when(estrato2 %in% c("Mujer","Pública","Urbana","Pública \nurbana") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*"),
                                   TRUE ~ puntocoma2(valor,0)))
         
         # Integración de las bases de logros y posición de etiquetas #
@@ -1423,7 +1423,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
           mutate(estrato2 = case_when(estrato2 %in% c("Pública urbana") ~ "Pública \nurbana",
                                       TRUE ~ estrato2)) %>% 
           mutate(estrato_num = as.numeric(as.factor(estrato1_1))) %>% 
-          mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Pública \nurbana") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,1),"*"),
+          mutate(etiq = case_when(estrato2 %in% c("Mujer","Pública","Urbana","Pública \nurbana") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,1),"*"),
                                   TRUE ~ puntocoma2(valor,1)),
                  valor = case_when(!tipo_esp %in% "Satisfactorio" ~ valor*-1,
                                    TRUE ~ valor)
@@ -1573,7 +1573,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                                 "Gestión y área"))) %>% 
           mutate(estrato2 = case_when(estrato2 %in% c("Pública urbana") ~ "Pública \nurbana",
                                       TRUE ~ estrato2)) %>% 
-          mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Pública \nurbana") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*"),
+          mutate(etiq = case_when(estrato2 %in% c("Mujer","Pública","Urbana","Pública \nurbana") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*"),
                                   TRUE ~ puntocoma2(valor,0)))
         
         # Integración de las bases de logros y posición de etiquetas #
@@ -1604,7 +1604,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
           mutate(estrato2 = case_when(estrato2 %in% c("Pública urbana") ~ "Pública \nurbana",
                                       TRUE ~ estrato2)) %>% 
           mutate(estrato_num = as.numeric(as.factor(estrato1_1))) %>% 
-          mutate(etiq = case_when(estrato2 %in% c("Mujer","Público","Urbana","Pública \nurbana") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,1),"*"),
+          mutate(etiq = case_when(estrato2 %in% c("Mujer","Pública","Urbana","Pública \nurbana") & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,1),"*"),
                                   TRUE ~ puntocoma2(valor,1)),
                  valor = case_when(!tipo_esp %in% "Satisfactorio" ~ valor*-1,
                                    TRUE ~ valor)
