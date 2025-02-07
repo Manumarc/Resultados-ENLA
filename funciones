@@ -2704,13 +2704,14 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       
       nom_gradoeval <- unique(temp1$grado_eval) # Identificador de grado evaluado
       nom_area <- unique(temp1$area_eval) # Identificador de área evaluada
+      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
       
       if (nom_gradoeval %in% "2.° grado de primaria" & nom_area %in% "Lectura"){
         
         limites <- c(400,650)
         limit_estrato <- "Gestión y área"
         puntos_corte <- c(458.39, 583.66) # (Menor a 458.39; mayor o igual a 458.39 y menor a 583.66; Mayor o igual a 583.66)
-        color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+        
         
         annotation_sat <- annotation_custom(
           grob = text_sat,
