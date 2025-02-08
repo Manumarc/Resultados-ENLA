@@ -2,8 +2,9 @@
 
 - tidyverse
 - ggplot2
-- survey          # Paquete para estimar resultados con muestras complejas
-- ggh4x           # Permite crear y editar textos anidados en los ejes
+- survey          # Paquete para estimar resultados con muestras complejas.
+- ggh4x           # Permite crear y editar textos anidados en los ejes.
+- legendry        # Permite perzonalizar textos y etiquetas en leyendas y ejes.
 
 ## CARGAR LAS FUNCIONES
 
