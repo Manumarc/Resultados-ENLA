@@ -3268,10 +3268,13 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       #---------#
       
       reg1 <- niveles %>% 
-        select(estrato2) %>% 
         filter(!estrato2 %in% "Nacional") %>% 
+        select(estrato2,valor) %>%
+        arrange(valor) %>%
+        select(estrato2) %>% 
         unique() %>% 
-        pull()
+        pull() %>%
+        rev()
       
       orden1 <- c("Nacional",reg1)
       
@@ -3374,10 +3377,13 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       #---------#
       
       reg1 <- niveles %>% 
-        select(estrato2) %>% 
         filter(!estrato2 %in% "Nacional") %>% 
+        select(estrato2,valor) %>%
+        arrange(valor) %>%
+        select(estrato2) %>% 
         unique() %>% 
-        pull()
+        pull() %>%
+        rev()
       
       orden1 <- c("Nacional",reg1)
       
