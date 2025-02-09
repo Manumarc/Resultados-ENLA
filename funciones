@@ -3322,7 +3322,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         geom_text(data = mp_etiq, 
                   aes(label = valor, 
                       y = 90, 
-                      x = estrato2), 
+                      x = factor(estrato2, levels = orden1)), 
                   size = 4.0, 
                   inherit.aes = FALSE) 
       
@@ -3432,7 +3432,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         geom_text(data = mp_etiq, 
                   aes(label = valor, 
                       y = 90, 
-                      x = estrato2), 
+                      x = factor(estrato2, levels = orden1)), 
                   size = 4.0, 
                   inherit.aes = FALSE) 
     }
