@@ -3269,6 +3269,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       
       reg1 <- niveles %>% 
         filter(!estrato2 %in% "Nacional") %>% 
+        filter(tipo_esp %in% "Satisfactorio") %>% 
         select(estrato2,valor) %>%
         arrange(valor) %>%
         select(estrato2) %>% 
@@ -3378,6 +3379,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       
       reg1 <- niveles %>% 
         filter(!estrato2 %in% "Nacional") %>% 
+        filter(tipo_esp %in% "Satisfactorio") %>% 
         select(estrato2,valor) %>%
         arrange(valor) %>%
         select(estrato2) %>% 
