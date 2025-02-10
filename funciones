@@ -501,6 +501,7 @@ tablares <- function(bd_datos,areacurr,alcance){
         a2 <- b1 %>% 
           filter(!is.na(!!sym(nom2_areaeval))) %>% 
           mutate(nacional = "Nacional") %>% 
+          filter(!is.na(!!sym(nom_estratos[[i]]))) %>% 
           group_by(!!sym(nom_estratos[[i]])) %>% 
           summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval),!!sym(nom_peso)),0)) %>% 
           setNames(c("estrato2","valor")) %>% 
