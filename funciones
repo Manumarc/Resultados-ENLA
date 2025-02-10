@@ -54,6 +54,20 @@ weighted_mean <- function(x, w, ..., na.rm = FALSE){
   weighted.mean(x, w, ...)
 }
 
+# Desviación estándar pesada #
+#----------------------------#
+
+weighted_sd <- function(x, weights) {
+  # Eliminar valores faltantes en x y en los pesos correspondientes
+  complete_cases <- complete.cases(x, weights)
+  x <- x[complete_cases]
+  weights <- weights[complete_cases]
+  
+  # Calcular la desviación estándar ponderada
+  weighted_var <- sum(weights * (x - weighted.mean(x, w = weights))^2) / sum(weights)
+  sqrt(weighted_var)
+}
+
 # Cálculo de la moda con pesos #
 #------------------------------#
 
