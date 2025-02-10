@@ -133,6 +133,17 @@ color_inicio <- '#A74D4B' # Color "En inicio"
 color_proces <- '#F79646' # Color "En proceso"
 color_satisf <- '#9BBB59' # Color "Satisfactorio"
 
+# Duplicar texto del "eje Y" hacia la derecha del gráfico #
+#---------------------------------------------------------#
+
+guide_axis_label_trans <- function(label_trans = identity, ...) {
+  axis_guide <- guide_axis(...)
+  axis_guide$label_trans <- rlang::as_function(label_trans)
+  class(axis_guide) <- c("guide_axis_trans", class(axis_guide))
+  axis_guide
+}
+
+
 # Función que calcula los resultados de rendimiento junto con sus errores estandar #
 #----------------------------------------------------------------------------------#
 
