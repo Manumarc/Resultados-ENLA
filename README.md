@@ -2,7 +2,7 @@
 
 - tidyverse
 - ggplot2
-- Hmisc
+- Hmisc           # Permite calcular cuantiles ponderados considerando los pesos de muestreo.
 - ggtext          # Extiende las capacidades de personalización de texto en gráficos creados con ggplot2.
 - survey          # Paquete para estimar resultados con muestras complejas.
 - ggh4x           # Permite crear y editar textos anidados en los ejes.
