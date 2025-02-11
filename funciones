@@ -599,12 +599,12 @@ tablares <- function(bd_datos,areacurr,alcance){
       
     }
     
-    
-    # Muestrales
-    
   } else { 
-    
-    
+
+    #============#
+    # Muestrales #
+    #============#
+
     # Filtros por área evaluada #
     #---------------------------#
     
