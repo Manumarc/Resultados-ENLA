@@ -4677,8 +4677,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
-                    size = 4.5,
-                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 12 ~ "white",
+                    size = 4.0,
+                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 7 ~ "white",
                                       TRUE ~ "#252525")) +
           geom_text(data = mp_etiq, 
                     aes(label = etiq, 
@@ -4792,8 +4792,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
-                    size = 4.5,
-                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 12 ~ "white",
+                    size = 4.0,
+                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 7 ~ "white",
                                       TRUE ~ "#252525")) +
           geom_text(data = mp_etiq, 
                     aes(label = etiq, 
@@ -4968,8 +4968,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
-                    size = 4.5,
-                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 12 ~ "white",
+                    size = 4.0,
+                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 7 ~ "white",
                                       TRUE ~ "#252525")) +
           geom_text(data = mp_etiq, 
                     aes(label = etiq, 
@@ -5085,8 +5085,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
-                    size = 4.5,
-                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 12 ~ "white",
+                    size = 4.0,
+                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 7 ~ "white",
                                       TRUE ~ "#252525")) +
           geom_text(data = mp_etiq, 
                     aes(label = etiq, 
@@ -5221,8 +5221,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
-                    size = 4.5,
-                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 12 ~ "white",
+                    size = 4.0,
+                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 7 ~ "white",
                                       TRUE ~ "#252525")) +
           geom_text(data = mp_etiq, 
                     aes(label = etiq, 
@@ -5335,8 +5335,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
-                    size = 4.5,
-                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 12 ~ "white",
+                    size = 4.0,
+                    color = case_when(t1$tipo_esp %in% "En inicio" & abs(t1$valor) >= 7 ~ "white",
                                       TRUE ~ "#252525")) +
           geom_text(data = mp_etiq, 
                     aes(label = etiq, 
