@@ -6055,6 +6055,42 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     
     nom_añop <- unique(bd_año1_estrat$año)
     nom_añoa <- unique(bd_año2_estrat$año)
+
+    text_aum <- textGrob("▲ Aumentó", 
+                         gp = gpar(fontsize = 15, 
+                                   col = "#006d2c"
+                                   ),
+                         just = "center")
+        
+    text_noc <- textGrob("─ Sin cambio", 
+                             gp = gpar(fontsize = 15, 
+                                       col = "#252525"
+                             ),
+                             just = "center")
+        
+    text_dis <- textGrob("▼ Disminuyó", 
+                             gp = gpar(fontsize = 15, 
+                                       col = "#b30000"
+                             ),
+                             just = "center")
+        
+    annotation_aum <- annotation_custom(
+                  grob = text_aum,
+                  xmin = 20.0, xmax = 0, # Ajustar para que esté después del último facet
+                  ymin = 20 , ymax = 20
+                )
+        
+    annotation_noc <- annotation_custom(
+                  grob = text_noc,
+                  xmin = 26.0, xmax = 0, # Ajustar para que esté después del último facet
+                  ymin = 20 , ymax = 20
+                ) 
+
+    annotation_dis <- annotation_custom(
+                  grob = text_dis,
+                  xmin = 35.0, xmax = 0, # Ajustar para que esté después del último facet
+                  ymin = 20 , ymax = 20
+                )
     
     if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Lectura"){
       
@@ -6123,7 +6159,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         pull() %>% 
         unique() %>% 
         rev()
-      
+
       ggplot(bd1, aes(x = factor(estrato2,levels = orden1), y = valor, color = año)) + 
         hlines + 
         geom_point(size = 3.0) + 
@@ -6143,10 +6179,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                          size = 15),
               axis.text.y = element_text(size = 13,
                                          color = "#252525"),
-              axis.ticks = element_blank(),
-              plot.caption = element_text(size = 8.5,
-                                          color = "#252525",
-                                          hjust = 0)
+              axis.ticks = element_blank()
         ) +
         geom_text(aes(label = etiq,
                       vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -0.8,
@@ -6171,7 +6204,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     TRUE ~ "#252525"),
                   size = 5.0,
                   show.legend = F) +
-        labs(caption = "(*) Diferencia estadísticamente significativa entre años dentro de cada región.")
+        annotation_aum +
+        annotation_noc +
+        annotation_dis +
+        coord_cartesian(clip = "off") 
       
     } else if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Matemática") {
       
@@ -6260,10 +6296,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                          size = 15),
               axis.text.y = element_text(size = 13,
                                          color = "#252525"),
-              axis.ticks = element_blank(),
-              plot.caption = element_text(size = 8.5,
-                                          color = "#252525",
-                                          hjust = 0)
+              axis.ticks = element_blank()
         ) +
         geom_text(aes(label = etiq,
                       vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -0.8,
@@ -6288,7 +6321,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     TRUE ~ "#252525"),
                   size = 5.0,
                   show.legend = F) +
-        labs(caption = "(*) Diferencia estadísticamente significativa entre años dentro de cada región.")
+        annotation_aum +
+        annotation_noc +
+        annotation_dis +
+        coord_cartesian(clip = "off") 
       
     }
     
