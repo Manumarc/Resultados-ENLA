@@ -6056,8 +6056,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     nom_añop <- unique(bd_año1_estrat$año)
     nom_añoa <- unique(bd_año2_estrat$año)
 
-    tamleyenda <- 13
-    tamtexto <- 13
+    tamleyenda <- 12
+    tamtexto <- 12
     tamejey <- 11
 
     text_aum <- textGrob("▲ Aumentó", 
@@ -6081,19 +6081,19 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     annotation_aum <- annotation_custom(
                   grob = text_aum,
                   xmin = 20.0, xmax = 0, # Ajustar para que esté después del último facet
-                  ymin = 21 , ymax = 21
+                  ymin = 21.5 , ymax = 21.5
                 )
         
     annotation_noc <- annotation_custom(
                   grob = text_noc,
                   xmin = 26.0, xmax = 0, # Ajustar para que esté después del último facet
-                  ymin = 21 , ymax = 21
+                  ymin = 21.5 , ymax = 21.5
                 ) 
 
     annotation_dis <- annotation_custom(
                   grob = text_dis,
                   xmin = 35.0, xmax = 0, # Ajustar para que esté después del último facet
-                  ymin = 21 , ymax = 21
+                  ymin = 21.5 , ymax = 21.5
                 )
     
     if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Lectura"){
