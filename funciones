@@ -3962,7 +3962,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        color="#252525",
                        lwd = 0.2) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) +
-          scale_x_discrete(expand = expansion(mult = 0, add = c(2,2))) +
+          scale_x_discrete(expand = expansion(mult = 0, add = c(2.5,2))) +
           scale_y_continuous(limits = c(-100,100)) + 
           theme_bw() +
           theme(panel.border = element_blank(),
@@ -4018,7 +4018,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        lwd = 0.2) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) +
           scale_y_continuous(limits = c(-100,100)) + 
-          scale_x_discrete(expand = expansion(mult = 0, add = c(2,2))) +
+          scale_x_discrete(expand = expansion(mult = 0, add = c(2.5,2))) +
           theme_bw() +
           theme(panel.border = element_blank(),
                 panel.grid = element_blank(),
@@ -4192,7 +4192,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        lwd = 0.2) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) +
           scale_y_continuous(limits = c(-100,100)) + 
-          scale_x_discrete(expand = expansion(mult = 0, add = c(2,2))) +
+          scale_x_discrete(expand = expansion(mult = 0, add = c(2.5,2))) +
           theme_bw() +
           theme(panel.border = element_blank(),
                 panel.grid = element_blank(),
@@ -4247,7 +4247,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        lwd = 0.2) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) +
           scale_y_continuous(limits = c(-100,100)) + 
-          scale_x_discrete(expand = expansion(mult = 0, add = c(2,2))) +
+          scale_x_discrete(expand = expansion(mult = 0, add = c(2.5,2))) +
           theme_bw() +
           theme(panel.border = element_blank(),
                 panel.grid = element_blank(),
@@ -4383,7 +4383,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        lwd = 0.2) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) +
           scale_y_continuous(limits = c(-100,100)) + 
-          scale_x_discrete(expand = expansion(mult = 0, add = c(2,2))) +
+          scale_x_discrete(expand = expansion(mult = 0, add = c(2.5,2))) +
           theme_bw() +
           theme(panel.border = element_blank(),
                 panel.grid = element_blank(),
@@ -4438,7 +4438,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        lwd = 0.2) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) +
           scale_y_continuous(limits = c(-100,100)) + 
-          scale_x_discrete(expand = expansion(mult = 0, add = c(2,2))) +
+          scale_x_discrete(expand = expansion(mult = 0, add = c(2.5,2))) +
           theme_bw() +
           theme(panel.border = element_blank(),
                 panel.grid = element_blank(),
