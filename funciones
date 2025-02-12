@@ -6059,7 +6059,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     tamleyenda <- 10
     tamtexto <- 12
     tamejey <- 11
-    limite_y <- 20
+    limite_y <- 22
 
     text_aum <- textGrob("▲ Aumentó", 
                          gp = gpar(fontsize = tamleyenda, 
