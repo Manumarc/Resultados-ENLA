@@ -6081,7 +6081,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     annotation_aum <- annotation_custom(
                   grob = text_aum,
                   xmin = 20.0, xmax = 0,
-                  ymin = 30, ymax = 30
+                  ymin = 50, ymax = 50
                 )
         
     annotation_noc <- annotation_custom(
