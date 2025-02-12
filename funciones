@@ -665,15 +665,15 @@ tablares <- function(bd_datos,areacurr,alcance){
       nom_gradoeval <- str_sub(nom1_areaeval, -10, -9)
       nom_año <- str_sub(nom1_areaeval, -7, -4)
 
+      bd1 <- bd_datos %>% 
+         mutate(cod_mod8 = paste0(cod_mod7,anexo)) %>%
+         filter(!is.na(!!sym(nom_peso)))
+
+      nom_strata <- bd1 %>% 
+         select(starts_with("Estrato")) %>% 
+         names()
+
       if (!nom_año %in% "2022"){
-
-        bd1 <- bd_datos %>% 
-          mutate(cod_mod8 = paste0(cod_mod7,anexo)) %>%
-          filter(!is.na(!!sym(nom_peso)))
-
-        nom_strata <- bd1 %>% 
-          select(starts_with("Estrato")) %>% 
-          names()
 
         # Diseño muestral #
         #-----------------#
@@ -688,19 +688,11 @@ tablares <- function(bd_datos,areacurr,alcance){
 
       } else if (nom_año %in% "2022"){
 
-        bd1 <- bd_datos %>% 
-          mutate(cod_mod8 = paste0(cod_mod7,anexo,ID_SECCION)) %>%
-          filter(!is.na(!!sym(nom_peso)))
-
-        nom_strata <- bd1 %>% 
-          select(starts_with("Estrato")) %>% 
-          names()
-
         # Diseño muestral #
         #-----------------#
         options(survey.lonely.psu = "certainty")
 
-        dmuestral <- svydesign(id=~cod_mod8,
+        dmuestral <- svydesign(id=~cod_mod8+ID_SECCION,
                    strata=as.formula(paste0("~", nom_strata)),
                    nest=TRUE,
                    fpc=as.formula(paste0("~", nom_pikIE,"+",nom_prob_sec)),
@@ -830,9 +822,7 @@ tablares <- function(bd_datos,areacurr,alcance){
       nom_gradoeval <- str_sub(nom1_areaeval, -10, -9)
       nom_año <- str_sub(nom1_areaeval, -7, -4)
 
-      if (!nom_año %in% "2022"){
-
-        bd1 <- bd_datos %>% 
+      bd1 <- bd_datos %>% 
           mutate(cod_mod8 = paste0(cod_mod7,anexo)) %>%
           filter(!is.na(!!sym(nom_peso))) %>% 
           mutate_at(vars(sexo),
@@ -849,27 +839,6 @@ tablares <- function(bd_datos,areacurr,alcance){
                                       gestion2 %in% "Privada" ~ "Privada",
                                       TRUE ~ NA_character_))
 
-      } else if (nom_año %in% "2022"){
-
-        bd1 <- bd_datos %>% 
-          mutate(cod_mod8 = paste0(cod_mod7,anexo, ID_SECCION)) %>%
-          filter(!is.na(!!sym(nom_peso))) %>% 
-          mutate_at(vars(sexo),
-                    funs(as.character)) %>% 
-          mutate(sexo = case_when(sexo %in% "1" ~ "Hombre",
-                                  sexo %in% "2" ~ "Mujer",
-                                  sexo %in% c(" ","N") ~ NA_character_,
-                                  TRUE ~ sexo)) %>% 
-          filter(!is.na(sexo)) %>% 
-          mutate(gestion2 = case_when(gestion2 %in% c("Estatal","Público") ~ "Pública",
-                                      gestion2 %in% c("No estatal","Privado") ~ "Privada",
-                                      TRUE ~ gestion2)) %>% 
-          mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% "Pública" ~ "Pública urbana",
-                                      gestion2 %in% "Privada" ~ "Privada",
-                                      TRUE ~ NA_character_))
-
-      }
-            
       nom_strata <- bd1 %>% 
         select(starts_with("Estrato")) %>% 
         names()
@@ -890,7 +859,7 @@ tablares <- function(bd_datos,areacurr,alcance){
 
       } else if (nom_año %in% "2022") {
 
-        dmuestral <- svydesign(id=~cod_mod8,
+        dmuestral <- svydesign(id=~cod_mod8+ID_SECCION,
                                strata=as.formula(paste0("~", nom_strata)),
                                nest=TRUE,
                                fpc=as.formula(paste0("~", nom_pikIE,"+",nom_prob_sec)),
@@ -1042,9 +1011,7 @@ tablares <- function(bd_datos,areacurr,alcance){
       nom_gradoeval <- str_sub(nom1_areaeval, -10, -9)
       nom_año <- str_sub(nom1_areaeval, -7, -4)
 
-      if (!nom_año %in% "2022") {
-
-        bd1 <- bd_datos %>% 
+      bd1 <- bd_datos %>% 
           mutate(cod_mod8 = paste0(cod_mod7,anexo)) %>%
           filter(!is.na(!!sym(nom_peso))) %>% 
           mutate_at(vars(sexo),
@@ -1060,28 +1027,6 @@ tablares <- function(bd_datos,areacurr,alcance){
                                       gestion2 %in% c("Privada") ~ "Privada",
                                       TRUE ~ NA_character_))
 
-      } else if (nom_año %in% "2022") {
-
-        bd1 <- bd_datos %>% 
-          mutate(cod_mod8 = paste0(cod_mod7,anexo,ID_SECCION)) %>%
-          filter(!is.na(!!sym(nom_peso))) %>% 
-          mutate_at(vars(sexo),
-                    funs(as.character)) %>% 
-          mutate(sexo = case_when(sexo %in% "1" ~ "Hombre",
-                                  sexo %in% "2" ~ "Mujer",
-                                  TRUE ~ sexo)) %>%
-          filter(!is.na(nom_estratos)) %>% 
-          mutate(gestion2 = case_when(gestion2 %in% c("Estatal","Público") ~ "Pública",
-                                      gestion2 %in% c("No estatal","Privado") ~ "Privada",
-                                      TRUE ~ gestion2)) %>% 
-          mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% c("Pública")  ~ "Pública urbana",
-                                      gestion2 %in% c("Privada") ~ "Privada",
-                                      TRUE ~ NA_character_))
-
-      }
-      
-
-      
       nom_strata <- bd1 %>% 
         select(starts_with("Estrato")) %>% 
         names()
@@ -1102,7 +1047,7 @@ tablares <- function(bd_datos,areacurr,alcance){
 
       } else if (nom_año %in% "2022") {
 
-        dmuestral <- svydesign(id=~cod_mod8,
+        dmuestral <- svydesign(id=~cod_mod8+ID_SECCION,
                                strata=as.formula(paste0("~", nom_strata)),
                                nest=TRUE,
                                fpc=as.formula(paste0("~", nom_pikIE,"+",nom_prob_sec)),
