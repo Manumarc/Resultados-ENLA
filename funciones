@@ -224,9 +224,11 @@ tablares <- function(bd_datos,areacurr,alcance){
     as.numeric()
   
   if (conteo > 18) {
-    
-    # Censales
-    
+
+    #==========#
+    # Censales #
+    #==========#
+
     if (alcance == "Nacional") {
       
       if (areacurr == "Lectura") {
@@ -687,7 +689,7 @@ tablares <- function(bd_datos,areacurr,alcance){
 
       } else if (nom_año %in% "2022"){
 
-        dmuestral <- svydesign(id=as.formula(paste0("~", cod_mod8,"+",ID_seccion)),
+        dmuestral <- svydesign(id=~cod_mod8+ID_seccion,
                    strata=as.formula(paste0("~", nom_strata)),
                    nest=TRUE,
                    fpc=as.formula(paste0("~", nom_pikIE,"+",nom_prob_sec)),
@@ -854,7 +856,7 @@ tablares <- function(bd_datos,areacurr,alcance){
 
       } else if (nom_año %in% "2022") {
 
-        dmuestral <- svydesign(id=as.formula(paste0("~", cod_mod8,"+",ID_seccion)),
+        dmuestral <- svydesign(id=~cod_mod8+ID_seccion,
                                strata=as.formula(paste0("~", nom_strata)),
                                nest=TRUE,
                                fpc=as.formula(paste0("~", nom_pikIE,"+",nom_prob_sec)),
@@ -1043,7 +1045,7 @@ tablares <- function(bd_datos,areacurr,alcance){
 
       } else if (nom_año %in% "2022") {
 
-        dmuestral <- svydesign(id=as.formula(paste0("~", cod_mod8,"+",ID_seccion)),
+        dmuestral <- svydesign(id=~cod_mod8+ID_seccion,
                                strata=as.formula(paste0("~", nom_strata)),
                                nest=TRUE,
                                fpc=as.formula(paste0("~", nom_pikIE,"+",nom_prob_sec)),
