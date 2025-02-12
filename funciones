@@ -5998,13 +5998,6 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       facet_wrap(vars(estrato1_1),
                  nrow = 1,
                  scales = "free_x") + 
-      geom_errorbar(data = temp1 %>% filter(año %in% "2023"),
-                    aes(x = estrato2,
-                        ymin = valor - 1.96*error, 
-                        ymax = valor + 1.96*error),
-                    width = 0.13, 
-                    linewidth = 0.25,
-                    position = position_dodge(width = 0.5)) +  
   geom_point(position = position_dodge(width = 0.5), 
              size = 3.0) + 
       hlines +
@@ -6032,8 +6025,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                "inches")
       ) + 
       geom_text(aes(label = etiq),
-                vjust = case_when(temp1$error >= 2.0 ~ -1.8,
-                                        TRUE ~ -0.8),   
+                vjust = -0.8,   
                 hjust = case_when(temp1$año %in% nom_añop ~ -0.1,
                                   TRUE ~ 1.2),
                 size = 4.0,
