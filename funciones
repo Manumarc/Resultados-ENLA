@@ -6023,9 +6023,9 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       geom_vline(data = temp1 %>% filter(!estrato1_1 %in% limit_estrato),
                  aes(xintercept = c(2.58)), 
                  linetype = "dashed",
-                 lwd = 0.7,
+                 lwd = 0.4,
                  color = "#252525",
-                 alpha = 0.8,
+                 alpha = 0.3,
                  show.legend = F) +
       annotation_sat +
       annotation_pro + 
