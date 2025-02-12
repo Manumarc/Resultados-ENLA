@@ -5998,7 +5998,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       facet_wrap(vars(estrato1_1),
                  nrow = 1,
                  scales = "free_x") + 
-      geom_errorbar(data = subset(temp1, año == añoa ),
+      geom_errorbar(data = temp1 %>% filter(año %in% "2023"),
                     aes(x = estrato2,
                         ymin = valor - 1.96*error, 
                         ymax = valor + 1.96*error),
