@@ -6056,20 +6056,24 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     nom_añop <- unique(bd_año1_estrat$año)
     nom_añoa <- unique(bd_año2_estrat$año)
 
+    tamleyenda <- 13
+    tamtexto <- 13
+    tamejey <- 11
+
     text_aum <- textGrob("▲ Aumentó", 
-                         gp = gpar(fontsize = 15, 
+                         gp = gpar(fontsize = tamleyenda, 
                                    col = "#006d2c"
                                    ),
                          just = "center")
         
     text_noc <- textGrob("─ Sin cambio", 
-                             gp = gpar(fontsize = 15, 
+                             gp = gpar(fontsize = tamleyenda, 
                                        col = "#252525"
                              ),
                              just = "center")
         
     text_dis <- textGrob("▼ Disminuyó", 
-                             gp = gpar(fontsize = 15, 
+                             gp = gpar(fontsize = tamleyenda, 
                                        col = "#b30000"
                              ),
                              just = "center")
@@ -6077,19 +6081,19 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     annotation_aum <- annotation_custom(
                   grob = text_aum,
                   xmin = 20.0, xmax = 0, # Ajustar para que esté después del último facet
-                  ymin = 20 , ymax = 20
+                  ymin = 21 , ymax = 21
                 )
         
     annotation_noc <- annotation_custom(
                   grob = text_noc,
                   xmin = 26.0, xmax = 0, # Ajustar para que esté después del último facet
-                  ymin = 20 , ymax = 20
+                  ymin = 21 , ymax = 21
                 ) 
 
     annotation_dis <- annotation_custom(
                   grob = text_dis,
                   xmin = 35.0, xmax = 0, # Ajustar para que esté después del último facet
-                  ymin = 20 , ymax = 20
+                  ymin = 21 , ymax = 21
                 )
     
     if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Lectura"){
@@ -6170,14 +6174,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
               panel.grid = element_blank(),
               legend.position = "bottom",
               legend.title = element_blank(),
-              legend.text = element_text(size = 15,
+              legend.text = element_text(size = tamtexto,
                                          color = "#252525"),
               axis.title = element_blank(),
               axis.text.x = element_text(angle = 90,
                                          hjust = 1.0,
                                          vjust = 0.5,
-                                         size = 15),
-              axis.text.y = element_text(size = 13,
+                                         size = tamtexto),
+              axis.text.y = element_text(size = tamejey,
                                          color = "#252525"),
               axis.ticks = element_blank()
         ) +
@@ -6287,14 +6291,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
               panel.grid = element_blank(),
               legend.position = "bottom",
               legend.title = element_blank(),
-              legend.text = element_text(size = 15,
+              legend.text = element_text(size = tamtexto,
                                          color = "#252525"),
               axis.title = element_blank(),
               axis.text.x = element_text(angle = 90,
                                          hjust = 1.0,
                                          vjust = 0.5,
-                                         size = 15),
-              axis.text.y = element_text(size = 13,
+                                         size = tamtexto),
+              axis.text.y = element_text(size = tamejey,
                                          color = "#252525"),
               axis.ticks = element_blank()
         ) +
