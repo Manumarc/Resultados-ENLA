@@ -6026,7 +6026,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       ) + 
       geom_text(aes(label = etiq),
                 vjust = -0.8,   
-                hjust = case_when(temp1$año %in% nom_añop ~ -0.1,
+                hjust = case_when(temp1$año %in% nom_añoa ~ -0.1,
                                   TRUE ~ 1.2),
                 size = 4.0,
                 color = "#252525",
