@@ -1406,8 +1406,10 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         distinct() %>% 
         mutate(diferencia = valor1 - valor2) %>% 
         mutate(Zm = diferencia/(sqrt(error1^2 + error2^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,dif_est_sig) 
       
       val_dif <- bd_estrat %>% 
@@ -1433,8 +1435,10 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         distinct() %>% 
         mutate(diferencia = valor1 - valor2) %>% 
         mutate(Zm = diferencia/(sqrt(error1^2 + error2^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,tipo_esp,dif_est_sig)
       
       # Datos del grado y el área evaluada #
@@ -2206,8 +2210,10 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         distinct() %>% 
         mutate(diferencia = valor1 - valor2) %>% 
         mutate(Zm = diferencia/(sqrt(error1^2 + error2^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,dif_est_sig)
       
       temp1 <- bd_estrat %>% 
@@ -3852,8 +3858,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,tipo_esp,dif_est_sig) 
       
       val_dif_mp <- rbind(bd_año1,bd_año2) %>% 
@@ -3866,8 +3874,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,tipo_esp,dif_est_sig) 
       
       # Cálculo de las posiciones de las etiquetas #
@@ -4077,8 +4087,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,tipo_esp,dif_est_sig) 
       
       val_dif_mp <- rbind(bd_año1,bd_año2) %>% 
@@ -4093,8 +4105,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,tipo_esp,dif_est_sig) 
       
       # Cálculo de las posiciones de las etiquetas #
@@ -4534,8 +4548,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,estrato2,tipo_esp,dif_est_sig) 
       
       val_dif_mp <- rbind(bd_año1_estrat,bd_año2_estrat) %>% 
@@ -4549,8 +4565,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,estrato2,tipo_esp,dif_est_sig) 
       
       # Cálculo de las medidas promedios #
@@ -4826,8 +4844,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,estrato2,tipo_esp,dif_est_sig) 
       
       val_dif_mp <- rbind(bd_año1_estrat,bd_año2_estrat) %>% 
@@ -4843,8 +4863,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,estrato2,tipo_esp,dif_est_sig) 
       
       # Cálculo de las medidas promedios #
@@ -5425,8 +5447,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[4]] - .[[3]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[6]]^2 + .[[5]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,estrato2,dif_est_sig) 
       
       # Base de datos integrada para graficar #
@@ -5479,8 +5503,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[4]] - .[[3]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[6]]^2 + .[[5]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>% 
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,estrato2,dif_est_sig) 
       
       # Base de datos integrada para graficar #
@@ -6051,8 +6077,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>%
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         mutate(indipos = case_when(.[[5]] - .[[4]] >= 0 ~ 1,
                                    TRUE ~ 0)) %>% 
         mutate(simbolo = case_when(diferencia > 0 & dif_est_sig %in% "Hay diferencia" ~ "▲", 
@@ -6166,8 +6194,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         ) %>% 
         mutate(diferencia = .[[5]] - .[[4]]) %>% 
         mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-        mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>%
+        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
         mutate(indipos = case_when(.[[5]] - .[[4]] >= 0 ~ 1,
                                    TRUE ~ 0)) %>% 
         mutate(simbolo = case_when(diferencia > 0 & dif_est_sig %in% "Hay diferencia" ~ "▲", 
@@ -6272,8 +6302,10 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       ) %>% 
       mutate(diferencia = .[[5]] - .[[4]]) %>% 
       mutate(Zm = diferencia/(sqrt(.[[7]]^2 + .[[6]]^2))) %>% 
-      mutate(pvalor =ifelse(Zm< 0, 2*pnorm(Zm),2*(1 - pnorm(Zm)))) %>% 
-      mutate(dif_est_sig =ifelse(pvalor < 0.05,"Hay diferencia","Sin diferencia")) %>%
+      mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                      TRUE ~ "Sin diferencia")) %>% 
       select(estrato2,tipo_esp,dif_est_sig) 
     
     # Niveles de logro #
