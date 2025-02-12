@@ -1060,7 +1060,7 @@ tablares <- function(bd_datos,areacurr,alcance){
                                       gestion2 %in% c("Privada") ~ "Privada",
                                       TRUE ~ NA_character_))
 
-      } else if (nom_año %in% "2022) {
+      } else if (nom_año %in% "2022") {
 
         bd1 <- bd_datos %>% 
           mutate(cod_mod8 = paste0(cod_mod7,anexo,ID_SECCION)) %>%
