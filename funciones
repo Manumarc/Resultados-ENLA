@@ -5473,7 +5473,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                               "Gestión y área"))) %>% 
         mutate(estrato2 = case_when(estrato2 %in% "Pública urbana" ~ "Pública \nurbana",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq = case_when(año %in% nom_añoa & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*") ,
+        mutate(etiq = case_when(año == nom_añoa & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*") ,
                                 TRUE ~ puntocoma2(valor,0)))
       
     } else if ((subt1 == 0 & subt2 > 0) | (subt1 > 0 & subt2 == 0)){
@@ -5529,7 +5529,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                               "Gestión y área"))) %>% 
         mutate(estrato2 = case_when(estrato2 %in% "Pública urbana" ~ "Pública \nurbana",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq = case_when(año %in% nom_añoa & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*") ,
+        mutate(etiq = case_when(año == nom_añoa & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*") ,
                                 TRUE ~ puntocoma2(valor,0)))
       
     } else if (subt1 > 0 & subt2 > 0) {
