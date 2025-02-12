@@ -5384,7 +5384,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     # Año más actual #
     #----------------#
     
-    nom_año <- unique(bd_año2_estrat$año)
+    nom_añop <- unique(bd_año1_estrat$año)
+    nom_añoa <- unique(bd_año2_estrat$año)
     
     # Datos del grado y el área evaluada #
     #------------------------------------#
@@ -5472,7 +5473,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                               "Gestión y área"))) %>% 
         mutate(estrato2 = case_when(estrato2 %in% "Pública urbana" ~ "Pública \nurbana",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq = case_when(año %in% nom_año & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*") ,
+        mutate(etiq = case_when(año %in% nom_añoa & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*") ,
                                 TRUE ~ puntocoma2(valor,0)))
       
     } else if ((subt1 == 0 & subt2 > 0) | (subt1 > 0 & subt2 == 0)){
@@ -5528,7 +5529,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                               "Gestión y área"))) %>% 
         mutate(estrato2 = case_when(estrato2 %in% "Pública urbana" ~ "Pública \nurbana",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq = case_when(año %in% nom_año & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*") ,
+        mutate(etiq = case_when(año %in% nom_añoa & dif_est_sig %in% "Hay diferencia" ~ paste0(puntocoma2(valor,0),"*") ,
                                 TRUE ~ puntocoma2(valor,0)))
       
     } else if (subt1 > 0 & subt2 > 0) {
@@ -5997,7 +5998,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       facet_wrap(vars(estrato1_1),
                  nrow = 1,
                  scales = "free_x") + 
-      geom_errorbar(data = temp1 %in% año,
+      geom_errorbar(data = temp1 %in% filter(año %in% añop),
                     aes(x = estrato2,
                         ymin = valor - 1.96*error, 
                         ymax = valor + 1.96*error),
