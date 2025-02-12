@@ -5532,11 +5532,22 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                 TRUE ~ puntocoma2(valor,0)))
       
     } else if (subt1 > 0 & subt2 > 0) {
+
+      # Corrección de errores en la base cuando es censal #
+      #---------------------------------------------------#
+      
+      bd_año1_mdf <- bd_año1_estrat %>% 
+        mutate(error = case_when(is.na(error) ~ 0,
+                                 TRUE ~ error))
+      
+      bd_año2_mdf <- bd_año2_estrat %>% 
+        mutate(error = case_when(is.na(error) ~ 0,
+                                 TRUE ~ error))
       
       # Base de datos integrada para graficar #
       #---------------------------------------#
       
-      temp1 <- rbind(bd_año1_estrat,bd_año2_estrat) %>% 
+      temp1 <- rbind(bd_año1_mdf,bd_año2_mdf) %>% 
         filter(!estrato1_1 %in% c("nom_dre","caracteristica2")) %>% 
         filter(tipo %in% "Medida promedio") %>% 
         mutate(estrato1_1 = case_when(estrato1_1 %in% "sexo" ~ "Sexo",
