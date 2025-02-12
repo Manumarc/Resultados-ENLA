@@ -6056,24 +6056,20 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     nom_añop <- unique(bd_año1_estrat$año)
     nom_añoa <- unique(bd_año2_estrat$año)
 
-    tamleyenda <- 10
-    tamtexto <- 12
-    tamejey <- 11
-
-    text_aum <- textGrob("▲ Aumentó", 
-                         gp = gpar(fontsize = tamleyenda, 
+   text_aum <- textGrob("▲ Aumentó", 
+                         gp = gpar(fontsize = 13, 
                                    col = "#006d2c"
                                    ),
                          just = "center")
         
     text_noc <- textGrob("─ Sin cambio", 
-                             gp = gpar(fontsize = tamleyenda, 
+                             gp = gpar(fontsize = 13, 
                                        col = "#252525"
                              ),
                              just = "center")
         
     text_dis <- textGrob("▼ Disminuyó", 
-                             gp = gpar(fontsize = tamleyenda, 
+                             gp = gpar(fontsize = 13, 
                                        col = "#b30000"
                              ),
                              just = "center")
@@ -6081,19 +6077,19 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     annotation_aum <- annotation_custom(
                   grob = text_aum,
                   xmin = 20.0, xmax = 0,
-                  ymin = 50, ymax = 50
+                  ymin = -10, ymax = -10
                 )
         
     annotation_noc <- annotation_custom(
                   grob = text_noc,
-                  xmin = 30.0, xmax = 0, 
-                  ymin = 32, ymax = 32
+                  xmin = 27.5, xmax = 0, 
+                  ymin = -10, ymax = -10
                 ) 
 
     annotation_dis <- annotation_custom(
                   grob = text_dis,
-                  xmin = 35.0, xmax = 0, 
-                  ymin = 35, ymax = 35
+                  xmin = 35.1, xmax = 0, 
+                  ymin = -10, ymax = -10
                 )
     
     if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Lectura"){
@@ -6115,7 +6111,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                    alpha = 0.8,
                    lwd = 0.2)
       )
-      
+
       val_dif_mp <- rbind(bd_año1_estrat,bd_año2_estrat) %>% 
         filter(estrato1_1 %in% c("nom_dre")) %>% 
         filter(tipo %in% "Medida promedio") %>% 
@@ -6174,21 +6170,23 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
               panel.grid = element_blank(),
               legend.position = "bottom",
               legend.title = element_blank(),
-              legend.text = element_text(size = tamtexto,
+              legend.text = element_text(size = 13,
                                          color = "#252525"),
+              legend.margin = margin(t = -5, unit = "pt"),
               axis.title = element_blank(),
               axis.text.x = element_text(angle = 90,
                                          hjust = 1.0,
                                          vjust = 0.5,
-                                         size = tamtexto),
-              axis.text.y = element_text(size = tamejey,
+                                         size = 13),
+              axis.text.y = element_text(size = 12,
                                          color = "#252525"),
-              axis.ticks = element_blank()
+              axis.ticks = element_blank(),
+              plot.margin = unit(c(0, 0, 1.5, 0), "cm")
         ) +
         geom_text(aes(label = etiq,
-                      vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -1.0,
-                                        año %in% nom_añop & indipos == 0 ~ -1.0,
-                                        TRUE ~ 2.0),
+                      vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -1.3,
+                                        año %in% nom_añop & indipos == 0 ~ -1.3,
+                                        TRUE ~ 2.3),
                       hjust = 0.5),
                   color = "#252525",
                   size = 4.0) + 
@@ -6198,7 +6196,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                       color = case_when(bd1$diferencia > 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#006d2c",
                                         bd1$diferencia < 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#b30000",
                                         TRUE ~ "#252525"),
-                      size = 4.0,
+                      size = 3.5,
                       show.legend = F) +
         geom_text(aes(label = simbolo,
                       x = factor(estrato2,levels = orden1),
@@ -6206,7 +6204,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                   color = case_when(bd1$diferencia > 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#006d2c",
                                     bd1$diferencia < 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#b30000",
                                     TRUE ~ "#252525"),
-                  size = 4.0,
+                  size = 4.5,
                   show.legend = F) +
         annotation_aum +
         annotation_noc +
@@ -6291,31 +6289,33 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
               panel.grid = element_blank(),
               legend.position = "bottom",
               legend.title = element_blank(),
-              legend.text = element_text(size = tamtexto,
+              legend.text = element_text(size = 13,
                                          color = "#252525"),
+              legend.margin = margin(t = -5, unit = "pt"),
               axis.title = element_blank(),
               axis.text.x = element_text(angle = 90,
                                          hjust = 1.0,
                                          vjust = 0.5,
-                                         size = tamtexto),
-              axis.text.y = element_text(size = tamejey,
+                                         size = 13),
+              axis.text.y = element_text(size = 12,
                                          color = "#252525"),
-              axis.ticks = element_blank()
+              axis.ticks = element_blank(),
+              plot.margin = unit(c(0, 0, 1.5, 0), "cm")
         ) +
         geom_text(aes(label = etiq,
-                      vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -1.0,
-                                        año %in% nom_añop & indipos == 0 ~ -1.0,
-                                        TRUE ~ 2.0),
+                      vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -1.3,
+                                        año %in% nom_añop & indipos == 0 ~ -1.3,
+                                        TRUE ~ 2.3),
                       hjust = 0.5),
                   color = "#252525",
-                  size = 5.0) + 
+                  size = 4.0) + 
         geom_richtext(aes(label = etiq_dif,
                           x = factor(estrato2,levels = orden1),
                           y = limites[[1]]),
                       color = case_when(bd1$diferencia > 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#006d2c",
                                         bd1$diferencia < 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#b30000",
                                         TRUE ~ "#252525"),
-                      size = 4.5,
+                      size = 3.5,
                       show.legend = F) +
         geom_text(aes(label = simbolo,
                       x = factor(estrato2,levels = orden1),
@@ -6323,7 +6323,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                   color = case_when(bd1$diferencia > 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#006d2c",
                                     bd1$diferencia < 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#b30000",
                                     TRUE ~ "#252525"),
-                  size = 5.0,
+                  size = 4.5,
                   show.legend = F) +
         annotation_aum +
         annotation_noc +
