@@ -6059,7 +6059,6 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     tamleyenda <- 10
     tamtexto <- 12
     tamejey <- 11
-    limite_y <- 30
 
     text_aum <- textGrob("▲ Aumentó", 
                          gp = gpar(fontsize = tamleyenda, 
@@ -6082,19 +6081,19 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     annotation_aum <- annotation_custom(
                   grob = text_aum,
                   xmin = 20.0, xmax = 0,
-                  ymin = limite_y, ymax = limite_y
+                  ymin = 25, ymax = 25
                 )
         
     annotation_noc <- annotation_custom(
                   grob = text_noc,
                   xmin = 26.0, xmax = 0, 
-                  ymin = limite_y, ymax = limite_y
+                  ymin = 25, ymax = 25
                 ) 
 
     annotation_dis <- annotation_custom(
                   grob = text_dis,
                   xmin = 35.0, xmax = 0, 
-                  ymin = limite_y, ymax = limite_y
+                  ymin = 25, ymax = 25
                 )
     
     if (nom_gradoeval %in% "4.° grado de primaria" & nom_area %in% "Lectura"){
@@ -6187,9 +6186,9 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
               axis.ticks = element_blank()
         ) +
         geom_text(aes(label = etiq,
-                      vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -0.8,
-                                        año %in% nom_añop & indipos == 0 ~ -0.8,
-                                        TRUE ~ 1.8),
+                      vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -1.0,
+                                        año %in% nom_añop & indipos == 0 ~ -1.0,
+                                        TRUE ~ 2.0),
                       hjust = 0.5),
                   color = "#252525",
                   size = 4.0) + 
@@ -6304,9 +6303,9 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
               axis.ticks = element_blank()
         ) +
         geom_text(aes(label = etiq,
-                      vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -0.8,
-                                        año %in% nom_añop & indipos == 0 ~ -0.8,
-                                        TRUE ~ 1.8),
+                      vjust = case_when(año %in% nom_añoa & indipos == 1 ~ -1.0,
+                                        año %in% nom_añop & indipos == 0 ~ -1.0,
+                                        TRUE ~ 2.0),
                       hjust = 0.5),
                   color = "#252525",
                   size = 5.0) + 
