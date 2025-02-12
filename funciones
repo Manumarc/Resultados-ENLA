@@ -6153,9 +6153,9 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       
       orden1 <- bd1 %>% 
         filter(año %in% nom_añoa) %>% 
-        select(estrato2,valor) %>%
-        arrange(valor) %>%
-        select(estrato2) %>% 
+        select(estrato2) %>%
+        arrange() %>%
+ #       select(estrato2) %>% 
         pull() %>% 
         unique() %>% 
         rev()
@@ -6272,9 +6272,9 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       
       orden1 <- bd1 %>% 
         filter(año %in% nom_añoa) %>% 
-        select(estrato2,valor) %>%
-        arrange(valor) %>%
-        select(estrato2) %>% 
+        select(estrato2) %>%
+        arrange() %>%
+ #       select(estrato2) %>% 
         pull() %>% 
         unique() %>% 
         rev()
