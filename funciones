@@ -617,7 +617,7 @@ tablares <- function(bd_datos,areacurr,alcance){
         nom_peso <- "peso_CT"
         nom_area <- "Lectura"
         nom_pikIE <- "pikIE_L"
-        nom_prob_sec <- "prob_seccion_L" 
+        nom_prob_sec <- "prob_sec_L" 
         nom1_areaeval <- bd_datos %>% 
           select(matches("^M500_.*_CT$")) %>% 
           names()
@@ -630,7 +630,7 @@ tablares <- function(bd_datos,areacurr,alcance){
         nom_peso <- "peso_MA"
         nom_area <- "Matemática"
         nom_pikIE <- "pikIE_M"
-        nom_prob_sec <- "prob_seccion_M"
+        nom_prob_sec <- "prob_sec_M"
         nom1_areaeval <- bd_datos %>% 
           select(matches("^M500_.*_MA$")) %>% 
           names()
@@ -774,7 +774,7 @@ tablares <- function(bd_datos,areacurr,alcance){
         nom_peso <- "peso_CT"
         nom_area <- "Lectura"
         nom_pikIE <- "pikIE_L"
-        nom_prob_sec <- "prob_seccion_L" 
+        nom_prob_sec <- "prob_sec_L" 
         nom1_areaeval <- bd_datos %>% 
           select(matches("^M500_.*_CT$")) %>% 
           names()
@@ -787,7 +787,7 @@ tablares <- function(bd_datos,areacurr,alcance){
         nom_peso <- "peso_MA"
         nom_area <- "Matemática"
         nom_pikIE <- "pikIE_M"
-        nom_prob_sec <- "prob_seccion_M" 
+        nom_prob_sec <- "prob_sec_M" 
         nom1_areaeval <- bd_datos %>% 
           select(matches("^M500_.*_MA$")) %>% 
           names()
@@ -965,6 +965,8 @@ tablares <- function(bd_datos,areacurr,alcance){
         
         nom_peso <- "peso_CT"
         nom_area <- "Lectura"
+        nom_pikIE <- "pikIE_L"
+        nom_prob_sec <- "prob_sec_L" 
         nom1_areaeval <- bd_datos %>% 
           select(matches("^M500_.*_CT$")) %>% 
           names()
@@ -976,6 +978,8 @@ tablares <- function(bd_datos,areacurr,alcance){
         
         nom_peso <- "peso_MA"
         nom_area <- "Matemática"
+        nom_pikIE <- "pikIE_M"
+        nom_prob_sec <- "prob_sec_M" 
         nom1_areaeval <- bd_datos %>% 
           select(matches("^M500_.*_MA$")) %>% 
           names()
