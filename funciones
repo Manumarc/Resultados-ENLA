@@ -5420,7 +5420,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     # Patrón de colores #
     #-------------------#
     
-    color_puntos <- c("#0077E6","#B2D9FF","#0077E6","#B2D9FF","#0077E6","#B2D9FF","#0077E6","#B2D9FF")
+    color_puntos <- c("#B2D9FF","#0077E6","#B2D9FF","#0077E6","#B2D9FF","#0077E6","#B2D9FF","#0077E6")
     
     # Identificadores de tipo de evaluación (muestral o censal) #
     #-----------------------------------------------------------#
