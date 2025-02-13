@@ -6159,7 +6159,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         geom_point(size = 3.0) + 
         scale_y_continuous(limits = limites,
                            breaks = redondear(puntos_corte,0)) +
-        scale_color_manual(values = c("#d0d1e6","#045a8d")) +
+        scale_color_manual(values = c("#0077E6","#B2D9FF")) +
         theme(panel.background = element_blank(),
               panel.grid = element_blank(),
               legend.position = "bottom",
@@ -6278,7 +6278,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         geom_point(size = 3.0) + 
         scale_y_continuous(limits = limites,
                            breaks = redondear(puntos_corte,0)) +
-        scale_color_manual(values = c("#d0d1e6","#045a8d")) +
+        scale_color_manual(values = c("#0077E6","#B2D9FF")) +
         theme(panel.background = element_blank(),
               panel.grid = element_blank(),
               legend.position = "bottom",
