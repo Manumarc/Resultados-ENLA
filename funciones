@@ -2265,7 +2265,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       
       nom_gradoeval <- unique(temp1$grado_eval) # Identificador de grado evaluado
       nom_area <- unique(temp1$area_eval) # Identificador de área evaluada
-      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      color_puntos <- c("#0077E6","#B2D9FF","#0077E6","#B2D9FF","#0077E6","#B2D9FF","#0077E6","#B2D9FF")
       
       if (nom_gradoeval %in% "2.° grado de primaria" & nom_area %in% "Lectura"){
         
@@ -2786,7 +2786,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       
       nom_gradoeval <- unique(temp1$grado_eval) # Identificador de grado evaluado
       nom_area <- unique(temp1$area_eval) # Identificador de área evaluada
-      color_puntos <- c("#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929","#0570b0","#fe9929")
+      color_puntos <- c("#0077E6","#B2D9FF","#0077E6","#B2D9FF","#0077E6","#B2D9FF","#0077E6","#B2D9FF")
       
       if (nom_gradoeval %in% "2.° grado de primaria" & nom_area %in% "Lectura"){
         
