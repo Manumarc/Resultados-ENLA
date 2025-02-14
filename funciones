@@ -6052,7 +6052,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
 
    text_aum <- textGrob("▲ Aumentó", 
                          gp = gpar(fontsize = 13, 
-                                   col = "#006d2c"
+                                   col = "#74c476"
                                    ),
                          just = "center")
         
@@ -6064,7 +6064,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         
     text_dis <- textGrob("▼ Disminuyó", 
                              gp = gpar(fontsize = 13, 
-                                       col = "#b30000"
+                                       col = "#fb6a4a"
                              ),
                              just = "center")
         
