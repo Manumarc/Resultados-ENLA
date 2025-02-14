@@ -3352,9 +3352,11 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       reg1 <- niveles %>% 
         filter(!estrato2 %in% "Nacional") %>% 
         select(estrato2) %>%
-        arrange(estrato2) %>%
-        unique() %>% 
-        pull() 
+        mutate(orden_aux = stri_trans_general(estrato2, "Latin-ASCII")) %>%  # Crear columna auxiliar sin tildes
+        arrange(orden_aux) %>%  # Ordenar por la versión sin tildes
+        select(estrato2) %>%  # Eliminar la columna auxiliar para mantener los nombres originales
+        pull() %>%
+        unique()
       
       orden1 <- c("Nacional",reg1)
       
@@ -3459,9 +3461,11 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       reg1 <- niveles %>% 
         filter(!estrato2 %in% "Nacional") %>% 
         select(estrato2) %>%
-        arrange(estrato2) %>%
-        unique() %>% 
-        pull() 
+        mutate(orden_aux = stri_trans_general(estrato2, "Latin-ASCII")) %>%  # Crear columna auxiliar sin tildes
+        arrange(orden_aux) %>%  # Ordenar por la versión sin tildes
+        select(estrato2) %>%  # Eliminar la columna auxiliar para mantener los nombres originales
+        pull() %>%
+        unique()
       
       orden1 <- c("Nacional",reg1)
       
