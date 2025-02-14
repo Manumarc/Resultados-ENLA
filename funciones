@@ -6149,7 +6149,6 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         filter(año %in% nom_añoa) %>% 
         select(estrato2) %>%
         arrange() %>%
- #       select(estrato2) %>% 
         pull() %>% 
         unique() %>% 
         rev()
@@ -6159,8 +6158,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         geom_point(size = 3.0) + 
         scale_y_continuous(limits = limites,
                            breaks = redondear(puntos_corte,0)) +
-        scale_color_manual(values = c("#B2D9FF","red"),
-                           breaks = c(nom_añop,nom_añoa)) +
+        scale_color_manual(values = c("green","red"),
+                           breaks = c("2023","2024")) +
         theme(panel.background = element_blank(),
               panel.grid = element_blank(),
               legend.position = "bottom",
@@ -6279,8 +6278,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         geom_point(size = 3.0) + 
         scale_y_continuous(limits = limites,
                            breaks = redondear(puntos_corte,0)) +
-        scale_color_manual(values = c("#B2D9FF","#0077E6"),
-                           breaks = c(nom_añop,nom_añoa)) +
+        scale_color_manual(values = c("green","red"),
+                           breaks = c("2023","2024")) +
         theme(panel.background = element_blank(),
               panel.grid = element_blank(),
               legend.position = "bottom",
@@ -6327,8 +6326,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         coord_cartesian(clip = "off") 
       
     }
-    
-    
+  
   } else if (nom_tipo == "Tipo 5"){
     
     nom_añoa <- unique(bd_año2_estrat$año)
