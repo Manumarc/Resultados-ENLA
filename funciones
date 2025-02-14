@@ -6145,13 +6145,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     TRUE ~ estrato2)) %>% 
         mutate(etiq_dif = abs(diferencia))
       
-      orden1 <- bd1 %>% 
+      orden1_1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
         select(estrato2) %>%
-        arrange() %>%
-        pull() %>% 
-        unique() %>% 
-        rev()
+        mutate(orden_aux = stri_trans_general(estrato2, "Latin-ASCII")) %>%  # Crear columna auxiliar sin tildes
+        arrange(orden_aux) %>%  # Ordenar por la versión sin tildes
+        select(estrato2) %>%  # Eliminar la columna auxiliar para mantener los nombres originales
+        pull() %>%
+        unique()
 
       ggplot(bd1, aes(x = factor(estrato2,levels = orden1), y = valor, color = año)) + 
         hlines + 
@@ -6264,14 +6265,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     TRUE ~ estrato2)) %>% 
         mutate(etiq_dif = abs(diferencia))
       
-      orden1 <- bd1 %>% 
+        orden1_1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
         select(estrato2) %>%
-        arrange() %>%
- #       select(estrato2) %>% 
-        pull() %>% 
-        unique() %>% 
-        rev()
+        mutate(orden_aux = stri_trans_general(estrato2, "Latin-ASCII")) %>%  # Crear columna auxiliar sin tildes
+        arrange(orden_aux) %>%  # Ordenar por la versión sin tildes
+        select(estrato2) %>%  # Eliminar la columna auxiliar para mantener los nombres originales
+        pull() %>%
+        unique()
       
       ggplot(bd1, aes(x = factor(estrato2,levels = orden1), y = valor, color = año)) + 
         hlines + 
