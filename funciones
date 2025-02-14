@@ -6394,7 +6394,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       arrange(orden_aux) %>%  # Ordenar por la versión sin tildes
       select(estrato2) %>%  # Eliminar la columna auxiliar para mantener los nombres originales
       pull() %>%
-      unique()
+      unique() %>%
+      rev()
     
     # Gráfico #
     #---------#
