@@ -3677,7 +3677,7 @@ graf_spcf <- function(bd_datos){
              size=3.0,
              colour = "#636363") +
       annotate(geom="text", 
-             x=0.5, 
+             x=0.48, 
              y=90, 
              label="Medida \npromedio",
              size=3.0,
