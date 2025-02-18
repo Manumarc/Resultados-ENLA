@@ -2713,7 +2713,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
           strip.text = element_text(size = 15, 
                                     color = "#252525",
                                     hjust = 0.5),
-          plot.margin = unit(c(0, 1.50, 0, 0.50), 
+          plot.margin = unit(c(0, 1.55, 0, 0.50), 
                              "inches")
         ) + 
         geom_text(aes(label = etiq,
@@ -3200,6 +3200,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       )
       
     }
+
       # Gráfico #
       #---------#
 
@@ -3230,7 +3231,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
           strip.text = element_text(size = 15, 
                                     color = "#252525",
                                     hjust = 0.5),
-          plot.margin = unit(c(0, 1.50, 0, 0.50), 
+          plot.margin = unit(c(0, 1.55, 0, 0.50), 
                              "inches")
         ) + 
         geom_text(aes(label = etiq,
