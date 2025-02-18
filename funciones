@@ -2240,22 +2240,22 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       #------------------------------------------------------------#
       
       text_sat <- textGrob("Satisfactorio", 
-                           gp = gpar(fontsize = 14, 
+                           gp = gpar(fontsize = 18, 
                                      col = color_satisf
                            ),
                            just = "left")
       text_pro <- textGrob("En proceso", 
-                           gp = gpar(fontsize = 14, 
+                           gp = gpar(fontsize = 18, 
                                      col = color_proces
                            ),
                            just = "left")
       text_ini <- textGrob("En inicio", 
-                           gp = gpar(fontsize = 14, 
+                           gp = gpar(fontsize = 18, 
                                      col = color_inicio
                            ),
                            just = "left")
       text_pin <- textGrob("Previo al inicio", 
-                           gp = gpar(fontsize = 14, 
+                           gp = gpar(fontsize = 18, 
                                      col = color_pre_in
                            ),
                            just = "left")
@@ -2677,6 +2677,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       )
       
     }
+
       # Gráfico #
       #---------#
 
@@ -2689,7 +2690,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                           ymax = valor + 1.96*error),
                       width = 0.13,
                       linewidth = 0.25) +
-        geom_point(size = 3.0) + 
+        geom_point(size = 3.2) + 
         hlines +
         scale_y_continuous(limits = limites,
                            breaks = c(redondear(puntos_corte,0))) +
@@ -2702,9 +2703,9 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
           legend.position = "none",
           axis.title = element_blank(),
           axis.ticks = element_blank(),
-          axis.text.x = element_text(size = 13,
+          axis.text.x = element_text(size = 14,
                                      color = "#252525"),
-          axis.text.y = element_text(size = 13,
+          axis.text.y = element_text(size = 14,
                                      color = "#252525",
                                      vjust = 0.5),
           strip.background = element_rect(fill = "transparent",
@@ -2716,10 +2717,10 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                              "inches")
         ) + 
         geom_text(aes(label = etiq,
-                      vjust = case_when(error >= 2.0 ~ 3.0 ,
-                                        TRUE ~ 2.0)),
+                      vjust = case_when(error >= 2.0 ~ -2.0 ,
+                                        TRUE ~ -1.0)),
                   color = "#252525",
-                  size = 4.5) + 
+                  size = 5.0) + 
         geom_vline(data = temp1 %>% filter(!estrato1_1 %in% limit_estrato),
                    aes(xintercept = c(2.58)), 
                    linetype = "dashed",
@@ -2761,22 +2762,22 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       #------------------------------------------------------------#
       
       text_sat <- textGrob("Satisfactorio", 
-                           gp = gpar(fontsize = 14, 
+                           gp = gpar(fontsize = 18, 
                                      col = color_satisf
                            ),
                            just = "left")
       text_pro <- textGrob("En proceso", 
-                           gp = gpar(fontsize = 14, 
+                           gp = gpar(fontsize = 18, 
                                      col = color_proces
                            ),
                            just = "left")
       text_ini <- textGrob("En inicio", 
-                           gp = gpar(fontsize = 14, 
+                           gp = gpar(fontsize = 18, 
                                      col = color_inicio
                            ),
                            just = "left")
       text_pin <- textGrob("Previo al inicio", 
-                           gp = gpar(fontsize = 14, 
+                           gp = gpar(fontsize = 18, 
                                      col = color_pre_in
                            ),
                            just = "left")
@@ -3206,7 +3207,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         facet_wrap(vars(estrato1_1),
                    nrow = 1,
                    scales = "free_x") +
-        geom_point(size = 3.0) + 
+        geom_point(size = 3.2) + 
         hlines +
         scale_y_continuous(limits = limites,
                            breaks = c(redondear(puntos_corte,0))) +
@@ -3219,9 +3220,9 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
           legend.position = "none",
           axis.title = element_blank(),
           axis.ticks = element_blank(),
-          axis.text.x = element_text(size = 13,
+          axis.text.x = element_text(size = 14,
                                      color = "#252525"),
-          axis.text.y = element_text(size = 13,
+          axis.text.y = element_text(size = 14,
                                      color = "#252525",
                                      vjust = 0.5),
           strip.background = element_rect(fill = "transparent",
@@ -3233,9 +3234,9 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                              "inches")
         ) + 
         geom_text(aes(label = etiq,
-                      vjust = 2.0),
+                      vjust = -1.0),
                   color = "#252525",
-                  size = 4.5) + 
+                  size = 5.0) + 
         geom_vline(data = temp1 %>% filter(!estrato1_1 %in% limit_estrato),
                    aes(xintercept = c(2.58)), 
                    linetype = "dashed",
