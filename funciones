@@ -2240,22 +2240,22 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       #------------------------------------------------------------#
       
       text_sat <- textGrob("Satisfactorio", 
-                           gp = gpar(fontsize = 18, 
+                           gp = gpar(fontsize = 16.5, 
                                      col = color_satisf
                            ),
                            just = "left")
       text_pro <- textGrob("En proceso", 
-                           gp = gpar(fontsize = 18, 
+                           gp = gpar(fontsize = 16.5, 
                                      col = color_proces
                            ),
                            just = "left")
       text_ini <- textGrob("En inicio", 
-                           gp = gpar(fontsize = 18, 
+                           gp = gpar(fontsize = 16.5, 
                                      col = color_inicio
                            ),
                            just = "left")
       text_pin <- textGrob("Previo al inicio", 
-                           gp = gpar(fontsize = 18, 
+                           gp = gpar(fontsize = 16.5, 
                                      col = color_pre_in
                            ),
                            just = "left")
@@ -2762,22 +2762,22 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       #------------------------------------------------------------#
       
       text_sat <- textGrob("Satisfactorio", 
-                           gp = gpar(fontsize = 18, 
+                           gp = gpar(fontsize = 16.5, 
                                      col = color_satisf
                            ),
                            just = "left")
       text_pro <- textGrob("En proceso", 
-                           gp = gpar(fontsize = 18, 
+                           gp = gpar(fontsize = 16.5, 
                                      col = color_proces
                            ),
                            just = "left")
       text_ini <- textGrob("En inicio", 
-                           gp = gpar(fontsize = 18, 
+                           gp = gpar(fontsize = 16.5, 
                                      col = color_inicio
                            ),
                            just = "left")
       text_pin <- textGrob("Previo al inicio", 
-                           gp = gpar(fontsize = 18, 
+                           gp = gpar(fontsize = 16.5, 
                                      col = color_pre_in
                            ),
                            just = "left")
