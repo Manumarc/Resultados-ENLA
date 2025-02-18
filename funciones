@@ -5382,22 +5382,22 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     #------------------------------------------------------------#
     
     text_sat <- textGrob("Satisfactorio", 
-                         gp = gpar(fontsize = 14, 
+                         gp = gpar(fontsize = 18, 
                                    col = color_satisf
                          ),
                          just = "left")
     text_pro <- textGrob("En proceso", 
-                         gp = gpar(fontsize = 14, 
+                         gp = gpar(fontsize = 18, 
                                    col = color_proces
                          ),
                          just = "left")
     text_ini <- textGrob("En inicio", 
-                         gp = gpar(fontsize = 14, 
+                         gp = gpar(fontsize = 18, 
                                    col = color_inicio
                          ),
                          just = "left")
     text_pin <- textGrob("Previo al inicio", 
-                         gp = gpar(fontsize = 14, 
+                         gp = gpar(fontsize = 18, 
                                    col = color_pre_in
                          ),
                          just = "left")
@@ -5984,7 +5984,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                  nrow = 1,
                  scales = "free_x") + 
   geom_point(position = position_dodge(width = 0.5), 
-             size = 3.0) + 
+             size = 3.2) + 
       hlines +
       scale_y_continuous(limits = limites,
                          breaks = c(redondear(puntos_corte,0))) +
@@ -5994,11 +5994,11 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
             panel.grid = element_blank(),
             legend.position = "bottom",
             legend.title = element_blank(),
-            legend.text = element_text(size = 12,
+            legend.text = element_text(size = 14,
                                        color = "#252525"),
             axis.title = element_blank(),
             axis.ticks = element_blank(),
-            axis.text = element_text(size = 12,
+            axis.text = element_text(size = 14,
                                      color = "#252525"),
             panel.spacing = unit(0, "lines"),
             strip.background = element_rect(fill = "transparent",
@@ -6006,14 +6006,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
             strip.text = element_text(size = 15, 
                                       color = "#252525",
                                       hjust = 0.5),
-            plot.margin = unit(c(0, 1.70, 0, 0.50), 
+            plot.margin = unit(c(0, 1.85, 0, 0.50), 
                                "inches")
       ) + 
       geom_text(aes(label = etiq),
-                vjust = -0.8,   
+                vjust = -1.0,   
                 hjust = case_when(temp1$año %in% nom_añoa ~ -0.1,
                                   TRUE ~ 1.2),
-                size = 4.0,
+                size = 4.5,
                 color = "#252525",
                 parse = FALSE
       )  +
