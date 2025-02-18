@@ -5382,22 +5382,22 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
     #------------------------------------------------------------#
     
     text_sat <- textGrob("Satisfactorio", 
-                         gp = gpar(fontsize = 18, 
+                         gp = gpar(fontsize = 16.5, 
                                    col = color_satisf
                          ),
                          just = "left")
     text_pro <- textGrob("En proceso", 
-                         gp = gpar(fontsize = 18, 
+                         gp = gpar(fontsize = 16.5, 
                                    col = color_proces
                          ),
                          just = "left")
     text_ini <- textGrob("En inicio", 
-                         gp = gpar(fontsize = 18, 
+                         gp = gpar(fontsize = 16.5, 
                                    col = color_inicio
                          ),
                          just = "left")
     text_pin <- textGrob("Previo al inicio", 
-                         gp = gpar(fontsize = 18, 
+                         gp = gpar(fontsize = 16.5, 
                                    col = color_pre_in
                          ),
                          just = "left")
