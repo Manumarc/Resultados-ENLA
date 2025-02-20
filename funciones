@@ -1120,6 +1120,237 @@ tablares <- function(bd_datos,areacurr,alcance){
                ))
       
       
+    } else if (alcance == "Regiones"){
+      
+      if (areacurr == "Lectura"){
+        
+        nom_peso <- "peso_CT"
+        nom_area <- "Lectura"
+        nom_pikIE <- "pikIE_L"
+        nom_prob_sec <- "prob_sec_L" 
+        nom1_areaeval <- bd_datos %>% 
+          select(matches("^M500_.*_CT$")) %>% 
+          names()
+        nom2_areaeval <- bd_datos %>% 
+          select(matches("^grupo_.*_CT$")) %>% 
+          names()
+        
+      } else if (areacurr == "Matemática"){
+        
+        nom_peso <- "peso_MA"
+        nom_area <- "Matemática"
+        nom_pikIE <- "pikIE_M"
+        nom_prob_sec <- "prob_sec_L" 
+        nom1_areaeval <- bd_datos %>% 
+          select(matches("^M500_.*_MA$")) %>% 
+          names()
+        nom2_areaeval <- bd_datos %>% 
+          select(matches("^grupo_.*_MA$")) %>% 
+          names()
+        
+      } else if (areacurr == "Ciencias sociales") {
+        
+        nom_peso <- "peso_CS"
+        nom_area <- "Ciencias sociales"
+        nom1_areaeval <- bd_datos %>% 
+          select(matches("^M500_.*_CS$")) %>% 
+          names()
+        nom2_areaeval <- bd_datos %>% 
+          select(matches("^grupo_.*_CS$")) %>% 
+          names()
+        
+      } else if (areacurr == "Ciencia y tecnología") {
+        
+        nom_peso <- "peso_CN"
+        nom_area <- "Ciencia y tecnología"
+        nom1_areaeval <- bd_datos %>% 
+          select(matches("^M500_.*_CN$")) %>% 
+          names()
+        nom2_areaeval <- bd_datos %>% 
+          select(matches("^grupo_.*_CN$")) %>% 
+          names()
+        
+      } 
+      
+      # Variables de identificación #
+      #-----------------------------#
+      
+      nom_gradoeval <- str_sub(nom1_areaeval, -10, -9)
+      
+      nom_año <- str_sub(nom1_areaeval, -7, -4)
+      
+      nom_estratos <- c("sexo","gestion2","gestion3","area", "caracteristica2")
+      
+      # Base con identificador de regiones y ugeles uniformizado #
+      #----------------------------------------------------------#
+      
+      bd1 <- bd_datos %>% 
+        mutate(cod_mod8 = paste0(cod_mod7,anexo)) %>%
+        mutate_at(vars(nom_dre,nom_ugel,area),
+                  ~str_trim(., side = "right")) %>% 
+        mutate_at(vars(sexo),
+                  funs(as.character)) %>% 
+        mutate(sexo = case_when(sexo %in% "1" ~ "Hombre",
+                                sexo %in% "2" ~ "Mujer",
+                                TRUE ~ sexo)) %>% 
+        mutate(gestion2 = case_when(gestion2 %in% c("Estatal","Público") ~ "Pública",
+                                    gestion2 %in% c("No estatal","Privado") ~ "Privada",
+                                    TRUE ~ gestion2)) %>%
+        mutate(gestion3 = case_when(area %in% "Urbana" & gestion2 %in% "Pública" ~ "Pública urbana",
+                                    gestion2 %in% "Privada" ~ "Privada",
+                                    TRUE ~ NA_character_))
+      
+      # Vector con nombre de regiones #
+      #-------------------------------#
+      
+      etiq_reg <- unique(bd1$nom_dre)
+      
+      # Identificador de representatividad de la muestra #
+      #--------------------------------------------------#
+      
+      nom_strata <- bd1 %>% 
+        select(starts_with("Estrato")) %>% 
+        names()
+      
+      # Listas para guardar resultados #
+      #--------------------------------#
+      
+      resul_reg <- list()
+      
+      estratos <- list()
+      
+      # Loop para el cálculo de resultados por estratos para cada región #
+      #------------------------------------------------------------------#
+      
+      for (r in 1:length(etiq_reg)) {  # Iterar sobre cada región
+        
+        for(i in 1:length(nom_estratos)){ # Iterar sobre cada estrato
+          
+          bd_region <- bd1 %>% 
+            filter(nom_dre %in% etiq_reg[[r]]) %>% 
+            filter(!is.na(!!sym(nom_peso)))
+          
+          # Diseño muestral #
+          #-----------------#
+          
+          options(survey.lonely.psu = "certainty")
+          
+          if (!nom_año %in% "2022"){
+            
+            dmuestral <- svydesign(id=~cod_mod8,
+                                   strata=as.formula(paste0("~",nom_strata)),
+                                   nest=TRUE,
+                                   weights=as.formula(paste0("~",nom_peso)),
+                                   data=bd_region,
+                                   pps = "brewer")
+            
+          } else if (nom_año %in% "2022") {
+            
+            dmuestral <- svydesign(id=~cod_mod8+ID_SECCION,
+                                   strata=as.formula(paste0("~", nom_strata)),
+                                   nest=TRUE,
+                                   fpc=as.formula(paste0("~", nom_pikIE,"+",nom_prob_sec)),
+                                   data=bd_region,
+                                   pps='brewer')
+          }
+          
+          # Cálculo medida promedio #
+          #-------------------------#
+          
+          a1 <- svyby(
+            as.formula(paste0("~",nom1_areaeval)),
+            as.formula(paste0("~",nom_estratos[[i]])),
+            design = dmuestral,
+            svymean,
+            na.rm = TRUE
+          ) %>% 
+            setNames(c("estrato2","valor","error")) %>% 
+            mutate(valor = redondear(valor,0),
+                   error = redondear(error,1)) %>% 
+            mutate(estrato1_1 = etiq_reg[[r]],
+                   estrato1_2 = nom_estratos[[i]],
+                   tipo_esp = "Medida promedio",
+                   area_eval = nom_area) %>% 
+            mutate(tipo = case_when(tipo_esp %in% "Medida promedio" ~ "Medida promedio",
+                                    TRUE ~ "Nivel de logro")) %>%
+            mutate(año = str_sub(nom1_areaeval, -7, -4),
+                   grado_eval = case_when(nom_gradoeval %in% "2P" ~ "2.° grado de primaria",
+                                          nom_gradoeval %in% "4P" ~ "4.° grado de primaria",
+                                          nom_gradoeval %in% "6P" ~ "6.° grado de primaria",
+                                          nom_gradoeval %in% "2S" ~ "2.° grado de secundaria",
+                                          TRUE ~ "Limpiar variable")) %>% 
+            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error) 
+          
+          # Cálculo niveles de logro #
+          #--------------------------#
+          
+          a2 <- svyby(
+            as.formula(paste0("~",nom2_areaeval)),
+            as.formula(paste0("~",nom_estratos[[i]])),
+            design = dmuestral,
+            svymean,
+            na.rm = TRUE
+          ) %>% 
+            pivot_longer(
+              cols = -!!sym(nom_estratos[[i]]),                       # Todas las columnas excepto "sexo"
+              names_to = c("categoria", "tipo_esp"),                  # Crear dos columnas: "categoria" y "niveles"
+              names_pattern = "(se)?\\.?(.+)",                        # Captura el prefijo "se" opcionalmente
+              values_drop_na = TRUE                                   # Opcional: elimina valores NA si existen
+            ) %>% 
+            mutate(categoria = case_when(categoria %in% "se" ~ "error",
+                                         TRUE ~ "valor")) %>%        # Asigna "valor" cuando "categoria" no tiene contenido
+            pivot_wider(
+              names_from = categoria,
+              values_from = value
+            ) %>% 
+            mutate_at(vars(valor,error),
+                      ~redondear(.*100,1)) %>% 
+            mutate(tipo_esp = case_when(
+              grepl("^M500_", tipo_esp) ~ "Medida promedio",                    # Usar grepl para verificar si comienza con "M500_"
+              grepl("Previo al inicio$", tipo_esp) ~ "Previo al inicio",        # Usar grepl para verificar si termina con "Previo al inicio"
+              grepl("Previo al Inicio$", tipo_esp) ~ "Previo al inicio",        # Usar grepl para verificar si termina con "Previo al inicio"
+              grepl("En inicio$", tipo_esp) ~ "En inicio",                      # Usar grepl para verificar si termina con "En inicio"
+              grepl("En proceso$", tipo_esp) ~ "En proceso",                    # Usar grepl para verificar si termina con "En proceso"
+              grepl("Satisfactorio$", tipo_esp) ~ "Satisfactorio",              # Usar grepl para verificar si termina con "Satisfactorio"
+              TRUE ~ "Limpiar variable"
+            )) %>% 
+            setNames(c("estrato2","tipo_esp","valor","error")) %>% 
+            mutate(estrato1_1 = etiq_reg[[r]],
+                   estrato1_2 = nom_estratos[[i]],
+                   area_eval = nom_area) %>% 
+            mutate(tipo = case_when(tipo_esp %in% "Medida promedio" ~ "Medida promedio",
+                                    TRUE ~ "Nivel de logro")) %>% 
+            mutate(año = str_sub(nom1_areaeval, -7, -4),
+                   grado_eval = case_when(nom_gradoeval %in% "2P" ~ "2.° grado de primaria",
+                                          nom_gradoeval %in% "4P" ~ "4.° grado de primaria",
+                                          nom_gradoeval %in% "6P" ~ "6.° grado de primaria",
+                                          nom_gradoeval %in% "2S" ~ "2.° grado de secundaria",
+                                          TRUE ~ "Limpiar variable")) %>% 
+            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error)
+    
+          estratos[[i]] <- rbind(a1,a2)
+          
+        }
+        
+        resul_reg[[r]] <- bind_rows(estratos)
+        
+      }
+      
+      return(bind_rows(resul_reg) %>% 
+               filter(
+                 !(estrato1_1 %in% "Lima Metropolitana" & estrato2 %in% "Rural")
+               ) %>% 
+               filter(
+                 !(grado_eval %in% "2.° grado de secundaria" & estrato1_1 %in% "caracteristica2")
+               ) %>% 
+               filter(
+                 !(grado_eval %in% "2.° grado de primaria" & año %in% c("2018","2023"))
+               ) %>% 
+               filter(
+                 !(grado_eval %in% "6.° grado de primaria" & año %in% c("2022"))
+               )
+             )
+      
     } else {
       
       if (areacurr == "Lectura") {
