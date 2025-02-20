@@ -216,8 +216,7 @@ percentil_umc <- function(var, weights, percentil) {
 #----------------------------------------------------------------------------------#
 
 tablares <- function(bd_datos,areacurr,alcance){
-  
-  
+
   conteo <- nchar(bd_datos %>% 
                     select(matches("^M500_.*_CT$")) %>% 
                     names()) %>% 
@@ -598,7 +597,14 @@ tablares <- function(bd_datos,areacurr,alcance){
                                           nom_gradoeval %in% "6P" ~ "6.° grado de primaria",
                                           nom_gradoeval %in% "2S" ~ "2.° grado de secundaria",
                                           TRUE ~ "Limpiar variable")) %>% 
-            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error)
+            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error) %>% 
+            mutate(estrato1_2 = case_when(estrato1_2 %in% "sexo" ~ "Sexo",
+                                          estrato1_2 %in% "gestion2" ~ "Gestión",
+                                          estrato1_2 %in% "gestion3" ~ "Gestión y área",
+                                          estrato1_2 %in% "area" ~ "Área",
+                                          estrato1_2 %in% "caracteristica2" ~ "Característica",
+                                          estrato1_2 %in% "nom_ugel" ~ "UGEL",
+                                          TRUE ~ NA_character_))
           
           a2 <- b1 %>% 
             filter(!is.na(!!sym(nom2_areaeval))) %>% 
@@ -619,7 +625,14 @@ tablares <- function(bd_datos,areacurr,alcance){
                                           nom_gradoeval %in% "6P" ~ "6.° grado de primaria",
                                           nom_gradoeval %in% "2S" ~ "2.° grado de secundaria",
                                           TRUE ~ "Limpiar variable")) %>%
-            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error)
+            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error) %>% 
+            mutate(estrato1_2 = case_when(estrato1_2 %in% "sexo" ~ "Sexo",
+                                          estrato1_2 %in% "gestion2" ~ "Gestión",
+                                          estrato1_2 %in% "gestion3" ~ "Gestión y área",
+                                          estrato1_2 %in% "area" ~ "Área",
+                                          estrato1_2 %in% "caracteristica2" ~ "Característica",
+                                          estrato1_2 %in% "nom_ugel" ~ "UGEL",
+                                          TRUE ~ NA_character_))
           
           estratos[[i]] <- rbind(a1,a2)
           
@@ -1279,7 +1292,13 @@ tablares <- function(bd_datos,areacurr,alcance){
                                           nom_gradoeval %in% "6P" ~ "6.° grado de primaria",
                                           nom_gradoeval %in% "2S" ~ "2.° grado de secundaria",
                                           TRUE ~ "Limpiar variable")) %>% 
-            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error) 
+            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error) %>% 
+            mutate(estrato1_2 = case_when(estrato1_2 %in% "sexo" ~ "Sexo",
+                                          estrato1_2 %in% "gestion2" ~ "Gestión",
+                                          estrato1_2 %in% "gestion3" ~ "Gestión y área",
+                                          estrato1_2 %in% "area" ~ "Área",
+                                          estrato1_2 %in% "caracteristica2" ~ "Característica",
+                                          TRUE ~ NA_character_))
           
           # Cálculo niveles de logro #
           #--------------------------#
@@ -1326,7 +1345,13 @@ tablares <- function(bd_datos,areacurr,alcance){
                                           nom_gradoeval %in% "6P" ~ "6.° grado de primaria",
                                           nom_gradoeval %in% "2S" ~ "2.° grado de secundaria",
                                           TRUE ~ "Limpiar variable")) %>% 
-            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error)
+            select(grado_eval,area_eval,año,estrato1_1,estrato1_2,estrato2,tipo,tipo_esp,valor,error) %>% 
+            mutate(estrato1_2 = case_when(estrato1_2 %in% "sexo" ~ "Sexo",
+                                          estrato1_2 %in% "gestion2" ~ "Gestión",
+                                          estrato1_2 %in% "gestion3" ~ "Gestión y área",
+                                          estrato1_2 %in% "area" ~ "Área",
+                                          estrato1_2 %in% "caracteristica2" ~ "Característica",
+                                          TRUE ~ NA_character_))
     
           estratos[[i]] <- rbind(a1,a2)
           
