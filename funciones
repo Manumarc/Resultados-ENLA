@@ -1830,32 +1830,46 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         select(estrato1_1,dif_est_sig) 
       
       val_dif <- bd_estrat %>% 
-        filter(!estrato1_1 %in% c("nom_dre","caracteristica2")) %>% 
         filter(tipo %in% "Nivel de logro") %>% 
-        select(estrato1_1,estrato2,tipo_esp,valor,error) %>% 
-        pivot_wider(names_from = estrato2,
-                    values_from = c(valor,error)) %>% 
+        filter(!estrato1_1 %in% c("caracteristica2","nom_dre")) %>% 
+        select(estrato1_1, estrato2, tipo_esp, valor, error) %>% 
+        distinct() %>%  # <- Elimina filas duplicadas para evitar problemas en pivot_wider
+        pivot_wider(
+          names_from = estrato2,
+          values_from = c(valor, error),
+          names_glue = "{.value}_{estrato2}"
+        ) %>% 
         pivot_longer(
-          cols = starts_with("valor") | starts_with("error"),
-          names_to = c(".value", "grupo"),
+          cols = -c(estrato1_1, tipo_esp),
+          names_to = c("tipo", "categoria"),
+          names_sep = "_",
+          values_to = "valor",
+          values_drop_na = TRUE
+        ) %>% 
+        pivot_wider(
+          names_from = tipo,
+          values_from = valor
+        ) %>% 
+        group_by(estrato1_1, tipo_esp) %>%
+        mutate(estrato = paste0("estrato", row_number())) %>%
+        pivot_wider(
+          names_from = estrato,
+          values_from = c(valor, error),
           names_sep = "_"
         ) %>% 
-        filter(!is.na(valor)) %>%  # Eliminar filas sin valores
-        group_by(estrato1_1) %>%  # Asegurar estructura
-        mutate(
-          valor1 = valor[1],
-          valor2 = valor[2],
-          error1 = error[1],
-          error2 = error[2]
-        ) %>%
-        select(estrato1_1,tipo_esp, valor1, valor2, error1, error2) %>% 
-        distinct() %>% 
-        mutate(diferencia = valor1 - valor2) %>% 
-        mutate(Zm = diferencia/(sqrt(error1^2 + error2^2))) %>% 
-        mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
-                                  TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
-        mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
-                                      TRUE ~ "Sin diferencia")) %>% 
+         select(estrato1_1, tipo_esp, 
+               valor_estrato1, valor_estrato2, 
+               error_estrato1, error_estrato2) %>% 
+        group_by(estrato1_1, tipo_esp) %>% 
+        summarise_at(vars(valor_estrato1:error_estrato2),
+                     ~sum(., na.rm = T)) %>% 
+        ungroup() %>% 
+        mutate(diferencia = .[[4]] - .[[3]]) %>% 
+              mutate(Zm = diferencia/(sqrt(.[[6]]^2 + .[[5]]^2))) %>% 
+              mutate(pvalor = case_when(Zm < 0 ~  2*pnorm(Zm),
+                                        TRUE ~ 2*(1 - pnorm(Zm)))) %>% 
+              mutate(dif_est_sig =case_when(pvalor < 0.05 ~ "Hay diferencia",
+                                            TRUE ~ "Sin diferencia")) %>% 
         select(estrato1_1,tipo_esp,dif_est_sig)
       
       # Datos del grado y el área evaluada #
