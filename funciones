@@ -4020,7 +4020,8 @@ graf_spcf <- function(bd_datos){
     
     mp_etiq <- bd_datos %>% 
       filter(!tipo %in% "Nivel de logro") %>% 
-      select(estrato1_1,estrato2,valor)
+      select(estrato1_1,estrato2,valor) %>% 
+      mutate(etiq = puntocoma2(valor,0))
     
     # Integración de las bases de logros y posición de etiquetas #
     #------------------------------------------------------------#
@@ -4088,7 +4089,7 @@ graf_spcf <- function(bd_datos){
                 color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
                                   TRUE ~ "#252525")) +
       geom_text(data = mp_etiq, 
-                aes(label = valor, 
+                aes(label = etiq, 
                     y = 90, 
                     x = estrato2), 
                 size = 4.5, 
@@ -4137,7 +4138,8 @@ graf_spcf <- function(bd_datos){
     
     mp_etiq <- bd_datos %>% 
       filter(!tipo %in% "Nivel de logro") %>% 
-      select(estrato1_1,estrato2,valor)
+      select(estrato1_1,estrato2,valor) %>% 
+      mutate(etiq = puntocoma2(valor,0))
     
     # Integración de las bases de logros y posición de etiquetas #
     #------------------------------------------------------------#
@@ -4202,7 +4204,7 @@ graf_spcf <- function(bd_datos){
                 color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
                                   TRUE ~ "#252525")) +
       geom_text(data = mp_etiq, 
-                aes(label = valor, 
+                aes(label = etiq, 
                     y = 90, 
                     x = estrato2), 
                 size = 4.5, 
