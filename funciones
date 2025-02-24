@@ -3125,7 +3125,8 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines +
         scale_y_continuous(limits = limites,
                            breaks = c(redondear(puntos_corte,0))) +
-        scale_color_manual(values = color_puntos) +
+        scale_color_manual(values = color_puntos,
+                         breaks = c("Hombre","Mujer","Privada","Pública","Rural","Urbana","Privada","Pública \nurbana")) +
         theme_bw() + 
         theme(
           panel.border = element_blank(),
@@ -3643,7 +3644,8 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines +
         scale_y_continuous(limits = limites,
                            breaks = c(redondear(puntos_corte,0))) +
-        scale_color_manual(values = color_puntos) +
+        scale_color_manual(values = color_puntos,
+                         breaks = c("Hombre","Mujer","Privada","Pública","Rural","Urbana","Privada","Pública \nurbana")) +
         theme_bw() + 
         theme(
           panel.border = element_blank(),
