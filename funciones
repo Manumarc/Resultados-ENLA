@@ -6557,7 +6557,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         mutate(simbolo = case_when(diferencia > 0 & dif_est_sig %in% "Hay diferencia" ~ "▲", 
                                    diferencia < 0 & dif_est_sig %in% "Hay diferencia" ~ "▼",
                                    TRUE ~ "─" )) %>% 
-        select(estrato1_1,estrato2,tipo_esp,dif_est_sig,diferencia,indipos,simbolo) 
+        mutate(diferencia1 = redondear(.[[5]],0) - redondear(.[[4]],0)) %>% 
+        select(estrato1_1,estrato2,tipo_esp,dif_est_sig,diferencia1,indipos,simbolo) 
       
       bd1 <- rbind(bd_año1_estrat,bd_año2_estrat) %>% 
         filter(estrato1_1 %in% c("nom_dre")) %>% 
@@ -6572,7 +6573,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     estrato2 %in% "MadredeDios" ~ "Madre de Dios",
                                     estrato2 %in% "SanMartín" ~ "San Martín",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq_dif = abs(diferencia))
+        mutate(etiq_dif = abs(diferencia1))
       
       orden1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
@@ -6677,7 +6678,8 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
         mutate(simbolo = case_when(diferencia > 0 & dif_est_sig %in% "Hay diferencia" ~ "▲", 
                                    diferencia < 0 & dif_est_sig %in% "Hay diferencia" ~ "▼",
                                    TRUE ~ "─" )) %>% 
-        select(estrato1_1,estrato2,tipo_esp,dif_est_sig,diferencia,indipos,simbolo) 
+        mutate(diferencia1 = redondear(.[[5]],0) - redondear(.[[4]],0)) %>% 
+        select(estrato1_1,estrato2,tipo_esp,dif_est_sig,diferencia1,indipos,simbolo) 
       
       bd1 <- rbind(bd_año1_estrat,bd_año2_estrat) %>% 
         filter(estrato1_1 %in% c("nom_dre")) %>% 
@@ -6692,7 +6694,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     estrato2 %in% "MadredeDios" ~ "Madre de Dios",
                                     estrato2 %in% "SanMartín" ~ "San Martín",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq_dif = puntocoma2(abs(diferencia),0))
+        mutate(etiq_dif = abs(diferencia1))
       
         orden1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
