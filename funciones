@@ -2038,7 +2038,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
             axis.text.x = element_text(size = 12,
                                        color = "#252525"),
             panel.spacing = unit(0, "lines"),
-            plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
+        #    plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
             strip.background = element_rect(fill = "transparent",
                                             color = NA),
             strip.text = element_text(size = 15, 
@@ -2068,8 +2068,8 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                      y=90, 
                      label="Medida \npromedio",
                      size=3.0,
-                     colour = "#636363") 
-    #      coord_cartesian(clip = "off")
+                     colour = "#636363") +
+           coord_cartesian(clip = "off")
   #        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
    #                 aes(x=0.50,
     #                    y=0.00,
@@ -2222,7 +2222,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
             axis.text.x = element_text(size = 12,
                                        color = "#252525"),
             panel.spacing = unit(0, "lines"),
-            plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
+      #      plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
             strip.background = element_rect(fill = "transparent",
                                             color = NA),
             strip.text = element_text(size = 15, 
@@ -2252,8 +2252,8 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                      y=90, 
                      label="Medida \npromedio",
                      size=3.0,
-                     colour = "#636363") 
-      #    coord_cartesian(clip = "off")
+                     colour = "#636363") +
+          coord_cartesian(clip = "off")
   #        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
    #                 aes(x=0.50,
     #                    y=0.00,
@@ -2439,7 +2439,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
             axis.text.x = element_text(size = 12,
                                        color = "#252525"),
             panel.spacing = unit(0, "lines"),
-            plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
+         #   plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
             strip.background = element_rect(fill = "transparent",
                                             color = NA),
             strip.text = element_text(size = 15, 
@@ -2469,8 +2469,8 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                      y=90, 
                      label="Medida \npromedio",
                      size=3.0,
-                     colour = "#636363") 
-    #      coord_cartesian(clip = "off")
+                     colour = "#636363") +
+          coord_cartesian(clip = "off")
   #        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
    #                 aes(x=0.50,
     #                    y=0.00,
@@ -2620,7 +2620,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
             axis.text.x = element_text(size = 12,
                                        color = "#252525"),
             panel.spacing = unit(0, "lines"),
-            plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
+       #     plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
             strip.background = element_rect(fill = "transparent",
                                             color = NA),
             strip.text = element_text(size = 15, 
@@ -2650,8 +2650,8 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                      y=90, 
                      label="Medida \npromedio",
                      size=3.0,
-                     colour = "#636363") 
-    #      coord_cartesian(clip = "off")
+                     colour = "#636363")  +
+            coord_cartesian(clip = "off")
   #        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
    #                 aes(x=0.50,
     #                    y=0.00,
