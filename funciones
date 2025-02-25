@@ -2416,19 +2416,6 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                         x = estrato2), 
                     size = 4.0, 
                     inherit.aes = FALSE) +
-          annotate(geom="text", 
-                     x=0.3, 
-                     y=0.0, 
-                     label="Niveles de logro (%)",
-                     angle = 90,
-                     size=3.0,
-                     colour = "#636363") +
-          annotate(geom="text", 
-                     x=0.3, 
-                     y=90, 
-                     label="Medida \npromedio",
-                     size=3.0,
-                     colour = "#636363") +
           geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
                    aes(x=0.50,
                        y=0.00,
@@ -2595,19 +2582,6 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                         x = estrato2), 
                     size = 4.0, 
                     inherit.aes = FALSE) +
-          annotate(geom="text", 
-                     x=0.3, 
-                     y=0.0, 
-                     label="Niveles de logro (%)",
-                     angle = 90,
-                     size=3.0,
-                     colour = "#636363") +
-          annotate(geom="text", 
-                     x=0.3, 
-                     y=90, 
-                     label="Medida \npromedio",
-                     size=3.0,
-                     colour = "#636363")  +
           geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
                    aes(x=0.50,
                        y=0.00,
