@@ -6572,7 +6572,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     estrato2 %in% "MadredeDios" ~ "Madre de Dios",
                                     estrato2 %in% "SanMartín" ~ "San Martín",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq_dif = abs(diferencia))
+        mutate(etiq_dif = puntocoma2(abs(diferencia),0))
       
       orden1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
@@ -6692,7 +6692,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     estrato2 %in% "MadredeDios" ~ "Madre de Dios",
                                     estrato2 %in% "SanMartín" ~ "San Martín",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq_dif = abs(diferencia))
+        mutate(etiq_dif = puntocoma2(abs(diferencia),0))
       
         orden1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
