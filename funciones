@@ -6572,7 +6572,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                                     estrato2 %in% "MadredeDios" ~ "Madre de Dios",
                                     estrato2 %in% "SanMartín" ~ "San Martín",
                                     TRUE ~ estrato2)) %>% 
-        mutate(etiq_dif = puntocoma2(abs(diferencia),0))
+        mutate(etiq_dif = abs(diferencia))
       
       orden1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
@@ -6614,7 +6614,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                       hjust = 0.5),
                   color = "#252525",
                   size = 4.0) + 
-        geom_richtext(aes(label = etiq_dif,
+        geom_richtext(aes(label = puntocoma2(etiq_dif,0),
                           x = factor(estrato2,levels = orden1),
                           y = limites[[1]]),
                       color = case_when(bd1$diferencia > 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#74c476",
@@ -6734,7 +6734,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                       hjust = 0.5),
                   color = "#252525",
                   size = 4.0) + 
-        geom_richtext(aes(label = etiq_dif,
+        geom_richtext(aes(label = puntocoma2(etiq_dif,0),
                           x = factor(estrato2,levels = orden1),
                           y = limites[[1]]),
                       color = case_when(bd1$diferencia > 0 & bd1$dif_est_sig %in% "Hay diferencia" ~ "#74c476",
