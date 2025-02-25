@@ -2013,16 +2013,6 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        color = "#252525",
                        lwd = 0.3,
                        alpha = 0.5) +
-          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
-                     aes(xintercept = c(2.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
-          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
-                     aes(xintercept = c(1.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2069,7 +2059,17 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                 label="Medida \npromedio"),
                     size=3.0,
                     alpha=0.2,
-                    color = "#252525") 
+                    color = "#252525") +
+          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
+                     aes(xintercept = c(2.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
+          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
+                     aes(xintercept = c(1.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) 
         
       } else if ( totniv == 3){
         
@@ -2182,16 +2182,6 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        color = "#252525",
                        lwd = 0.3,
                        alpha = 0.5) +
-          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
-                     aes(xintercept = c(2.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
-          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
-                     aes(xintercept = c(1.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2238,7 +2228,17 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                 label="Medida \npromedio"),
                     size=3.0,
                     alpha=0.2,
-                    color = "#252525") 
+                    color = "#252525") +
+          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
+                     aes(xintercept = c(2.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
+          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
+                     aes(xintercept = c(1.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) 
       }
       
       #########################
@@ -2384,16 +2384,6 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        color = "#252525",
                        lwd = 0.3,
                        alpha = 0.5) +
-          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
-                     aes(xintercept = c(2.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
-          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
-                     aes(xintercept = c(1.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2453,7 +2443,17 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                 label="Medida \npromedio"),
                     size=3.0,
                     alpha=0.2,
-                    color = "#252525") 
+                    color = "#252525") +
+          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
+                     aes(xintercept = c(2.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
+          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
+                     aes(xintercept = c(1.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) 
 
         
       } else if ( totniv == 3){
@@ -2563,16 +2563,6 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        color = "#252525",
                        lwd = 0.3,
                        alpha = 0.5) +
-          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
-                     aes(xintercept = c(2.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
-          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
-                     aes(xintercept = c(1.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2632,7 +2622,17 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                 label="Medida \npromedio"),
                     size=3.0,
                     alpha=0.2,
-                    color = "#252525") 
+                    color = "#252525") +
+          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
+                     aes(xintercept = c(2.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
+          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
+                     aes(xintercept = c(1.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) 
 
       }
     }
