@@ -2013,6 +2013,16 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        color = "#252525",
                        lwd = 0.3,
                        alpha = 0.5) +
+          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
+                     aes(xintercept = c(2.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
+          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
+                     aes(xintercept = c(1.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2028,6 +2038,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
             axis.text.x = element_text(size = 12,
                                        color = "#252525"),
             panel.spacing = unit(0, "lines"),
+            plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
             strip.background = element_rect(fill = "transparent",
                                             color = NA),
             strip.text = element_text(size = 15, 
@@ -2045,31 +2056,35 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                         x = estrato2), 
                     size = 4.0, 
                     inherit.aes = FALSE) +
-          geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
-                    aes(x=0.50,
-                        y=0.00,
-                        label="Niveles de logro (%)"),
-                    size=2.8,
-                    alpha=0.2,
-                    angle = 90,
-                    color = "#252525") +
-          geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
-                    mapping=aes(x=0.65,
-                                y=90,
-                                label="Medida \npromedio"),
-                    size=2.8,
-                    alpha=0.2,
-                    color = "#252525") +
-          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
-                     aes(xintercept = c(2.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
-          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
-                     aes(xintercept = c(1.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F)
+          annotate(geom="text", 
+                     x=0.3, 
+                     y=0.0, 
+                     label="Niveles de logro (%)",
+                     angle = 90,
+                     size=3.0,
+                     colour = "#636363") +
+          annotate(geom="text", 
+                     x=0.3, 
+                     y=90, 
+                     label="Medida \npromedio",
+                     size=3.0,
+                     colour = "#636363") +
+          coord_cartesian(clip = "off")
+  #        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
+   #                 aes(x=0.50,
+    #                    y=0.00,
+     #                   label="Niveles de logro (%)"),
+      #              size=2.8,
+       #             alpha=0.2,
+       #             angle = 90,
+       #             color = "#252525") +
+        #  geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
+        #            mapping=aes(x=0.65,
+        #                        y=90,
+        #                        label="Medida \npromedio"),
+        #            size=2.8,
+        #            alpha=0.2,
+        #            color = "#252525") 
         
       } else if ( totniv == 3){
         
@@ -2182,6 +2197,16 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        color = "#252525",
                        lwd = 0.3,
                        alpha = 0.5) +
+          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
+                     aes(xintercept = c(2.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
+          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
+                     aes(xintercept = c(1.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2197,6 +2222,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
             axis.text.x = element_text(size = 12,
                                        color = "#252525"),
             panel.spacing = unit(0, "lines"),
+            plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
             strip.background = element_rect(fill = "transparent",
                                             color = NA),
             strip.text = element_text(size = 15, 
@@ -2214,31 +2240,35 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                         x = estrato2), 
                     size = 4.0, 
                     inherit.aes = FALSE) +
-          geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
-                    aes(x=0.50,
-                        y=0.00,
-                        label="Niveles de logro (%)"),
-                    size=2.8,
-                    alpha=0.2,
-                    angle = 90,
-                    color = "#252525") +
-          geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
-                    mapping=aes(x=0.65,
-                                y=90,
-                                label="Medida \npromedio"),
-                    size=2.8,
-                    alpha=0.2,
-                    color = "#252525") +
-          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
-                     aes(xintercept = c(2.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
-          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
-                     aes(xintercept = c(1.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F)
+          annotate(geom="text", 
+                     x=0.3, 
+                     y=0.0, 
+                     label="Niveles de logro (%)",
+                     angle = 90,
+                     size=3.0,
+                     colour = "#636363") +
+          annotate(geom="text", 
+                     x=0.3, 
+                     y=90, 
+                     label="Medida \npromedio",
+                     size=3.0,
+                     colour = "#636363") +
+          coord_cartesian(clip = "off")
+  #        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
+   #                 aes(x=0.50,
+    #                    y=0.00,
+     #                   label="Niveles de logro (%)"),
+      #              size=2.8,
+       #             alpha=0.2,
+       #             angle = 90,
+       #             color = "#252525") +
+        #  geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
+        #            mapping=aes(x=0.65,
+        #                        y=90,
+        #                        label="Medida \npromedio"),
+        #            size=2.8,
+        #            alpha=0.2,
+        #            color = "#252525") 
       }
       
       #########################
@@ -2384,6 +2414,16 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        color = "#252525",
                        lwd = 0.3,
                        alpha = 0.5) +
+          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
+                     aes(xintercept = c(2.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
+          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
+                     aes(xintercept = c(1.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2399,6 +2439,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
             axis.text.x = element_text(size = 12,
                                        color = "#252525"),
             panel.spacing = unit(0, "lines"),
+            plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
             strip.background = element_rect(fill = "transparent",
                                             color = NA),
             strip.text = element_text(size = 15, 
@@ -2416,31 +2457,36 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                         x = estrato2), 
                     size = 4.0, 
                     inherit.aes = FALSE) +
-          geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
-                    aes(x=0.50,
-                        y=0.00,
-                        label="Niveles de logro (%)"),
-                    size=2.8,
-                    alpha=0.2,
-                    angle = 90,
-                    color = "#252525") +
-          geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
-                    mapping=aes(x=0.65,
-                                y=90,
-                                label="Medida \npromedio"),
-                    size=2.8,
-                    alpha=0.2,
-                    color = "#252525") +
-          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
-                     aes(xintercept = c(2.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
-          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
-                     aes(xintercept = c(1.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F)
+          annotate(geom="text", 
+                     x=0.3, 
+                     y=0.0, 
+                     label="Niveles de logro (%)",
+                     angle = 90,
+                     size=3.0,
+                     colour = "#636363") +
+          annotate(geom="text", 
+                     x=0.3, 
+                     y=90, 
+                     label="Medida \npromedio",
+                     size=3.0,
+                     colour = "#636363") +
+          coord_cartesian(clip = "off")
+  #        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
+   #                 aes(x=0.50,
+    #                    y=0.00,
+     #                   label="Niveles de logro (%)"),
+      #              size=2.8,
+       #             alpha=0.2,
+       #             angle = 90,
+       #             color = "#252525") +
+        #  geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
+        #            mapping=aes(x=0.65,
+        #                        y=90,
+        #                        label="Medida \npromedio"),
+        #            size=2.8,
+        #            alpha=0.2,
+        #            color = "#252525") 
+
         
       } else if ( totniv == 3){
         
@@ -2549,6 +2595,16 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        color = "#252525",
                        lwd = 0.3,
                        alpha = 0.5) +
+          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
+                     aes(xintercept = c(2.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
+          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
+                     aes(xintercept = c(1.6)), 
+                     linetype = "dashed",
+                     color = "#252525",
+                     show.legend = F) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2564,6 +2620,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
             axis.text.x = element_text(size = 12,
                                        color = "#252525"),
             panel.spacing = unit(0, "lines"),
+            plot.margin = unit(c(0, 0.0, 0.0, 0.8), "inches"),
             strip.background = element_rect(fill = "transparent",
                                             color = NA),
             strip.text = element_text(size = 15, 
@@ -2581,31 +2638,36 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                         x = estrato2), 
                     size = 4.0, 
                     inherit.aes = FALSE) +
-          geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
-                    aes(x=0.50,
-                        y=0.00,
-                        label="Niveles de logro (%)"),
-                    size=2.8,
-                    alpha=0.2,
-                    angle = 90,
-                    color = "#252525") +
-          geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
-                    mapping=aes(x=0.65,
-                                y=90,
-                                label="Medida \npromedio"),
-                    size=2.8,
-                    alpha=0.2,
-                    color = "#252525") +
-          geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
-                     aes(xintercept = c(2.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F) +
-          geom_vline(data = niveles %>% filter(estrato1_1 %in% "Nacional"),
-                     aes(xintercept = c(1.6)), 
-                     linetype = "dashed",
-                     color = "#252525",
-                     show.legend = F)
+          annotate(geom="text", 
+                     x=0.3, 
+                     y=0.0, 
+                     label="Niveles de logro (%)",
+                     angle = 90,
+                     size=3.0,
+                     colour = "#636363") +
+          annotate(geom="text", 
+                     x=0.3, 
+                     y=90, 
+                     label="Medida \npromedio",
+                     size=3.0,
+                     colour = "#636363") +
+          coord_cartesian(clip = "off")
+  #        geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), 
+   #                 aes(x=0.50,
+    #                    y=0.00,
+     #                   label="Niveles de logro (%)"),
+      #              size=2.8,
+       #             alpha=0.2,
+       #             angle = 90,
+       #             color = "#252525") +
+        #  geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
+        #            mapping=aes(x=0.65,
+        #                        y=90,
+        #                        label="Medida \npromedio"),
+        #            size=2.8,
+        #            alpha=0.2,
+        #            color = "#252525") 
+
       }
     }
 
