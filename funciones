@@ -282,7 +282,7 @@ tablares <- function(bd_datos,areacurr,alcance){
         filter(!is.na(!!sym(nom2_areaeval))) %>% 
         group_by(!!sym(nom2_areaeval)) %>% 
         summarise(tot = sum(!!sym(nom_peso), na.rm = TRUE)) %>% 
-        mutate(ptot = redondear(tot/sum(tot)*100,4)) %>% 
+        mutate(ptot = redondear(tot/sum(tot)*100,8)) %>% 
         select(-tot) %>% 
         setNames(c("tipo_esp","valor")) %>% 
         mutate(tipo_esp = case_when(
@@ -313,7 +313,7 @@ tablares <- function(bd_datos,areacurr,alcance){
         filter(!is.na(!!sym(nom2_areaeval))) %>% 
         mutate(nacional = alcance) %>% 
         group_by(nacional) %>% 
-        summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval),!!sym(nom_peso),na.rm = TRUE),4)) %>% 
+        summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval),!!sym(nom_peso),na.rm = TRUE),8)) %>% 
         setNames(c("tipo_esp","valor")) %>% 
         mutate(tipo_esp = case_when(
           grepl("^Nacional", tipo_esp) ~ "Medida promedio",                    # Usar grepl para verificar si comienza con "M500_"
@@ -416,7 +416,7 @@ tablares <- function(bd_datos,areacurr,alcance){
           filter(!is.na(!!sym(nom_estratos[[i]]))) %>% 
           group_by(!!sym(nom_estratos[[i]]),!!sym(nom2_areaeval)) %>% 
           summarise(tot = sum(!!sym(nom_peso), na.rm = TRUE)) %>% 
-          mutate(ptot = redondear(tot/sum(tot)*100,4)) %>% 
+          mutate(ptot = redondear(tot/sum(tot)*100,8)) %>% 
           select(-tot) %>% 
           setNames(c("estrato2","tipo_esp","valor")) %>% 
           mutate(tipo_esp = case_when(
@@ -446,7 +446,7 @@ tablares <- function(bd_datos,areacurr,alcance){
           filter(!is.na(!!sym(nom2_areaeval))) %>% 
           filter(!is.na(!!sym(nom_estratos[[i]]))) %>%
           group_by(!!sym(nom_estratos[[i]])) %>% 
-          summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval), !!sym(nom_peso), na.rm = T),4)) %>% 
+          summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval), !!sym(nom_peso), na.rm = T),8)) %>% 
           setNames(c("estrato2","valor")) %>% 
           mutate(tipo_esp = "Medida promedio",
                  area_eval = nom_area,
@@ -573,7 +573,7 @@ tablares <- function(bd_datos,areacurr,alcance){
             filter(!is.na(!!sym(nom_estratos[[i]]))) %>% 
             group_by(!!sym(nom_estratos[[i]]),!!sym(nom2_areaeval)) %>% 
             summarise(tot = sum(!!sym(nom_peso), na.rm = TRUE)) %>% 
-            mutate(ptot = redondear(tot/sum(tot)*100,4)) %>% 
+            mutate(ptot = redondear(tot/sum(tot)*100,8)) %>% 
             select(-tot) %>% 
             setNames(c("estrato2","tipo_esp","valor")) %>% 
             mutate(tipo_esp = case_when(
@@ -610,7 +610,7 @@ tablares <- function(bd_datos,areacurr,alcance){
             filter(!is.na(!!sym(nom2_areaeval))) %>% 
             filter(!is.na(!!sym(nom_estratos[[i]]))) %>%
             group_by(!!sym(nom_estratos[[i]])) %>% 
-            summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval), !!sym(nom_peso), na.rm = T),4)) %>% 
+            summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval), !!sym(nom_peso), na.rm = T),8)) %>% 
             setNames(c("estrato2","valor")) %>% 
             mutate(tipo_esp = "Medida promedio",
                    area_eval = nom_area,
@@ -716,7 +716,7 @@ tablares <- function(bd_datos,areacurr,alcance){
           filter(!is.na(!!sym(nom_estratos[[i]]))) %>% 
           group_by(!!sym(nom_estratos[[i]]),!!sym(nom2_areaeval)) %>% 
           summarise(tot = sum(!!sym(nom_peso), na.rm = TRUE)) %>% 
-          mutate(ptot = redondear(tot/sum(tot)*100,4)) %>% 
+          mutate(ptot = redondear(tot/sum(tot)*100,8)) %>% 
           select(-tot) %>% 
           setNames(c("estrato2","tipo_esp","valor")) %>% 
           mutate(tipo_esp = case_when(
@@ -747,7 +747,7 @@ tablares <- function(bd_datos,areacurr,alcance){
           mutate(nacional = "Nacional") %>% 
           filter(!is.na(!!sym(nom_estratos[[i]]))) %>% 
           group_by(!!sym(nom_estratos[[i]])) %>% 
-          summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval),!!sym(nom_peso)),4)) %>% 
+          summarise(valor = redondear(weighted_mean(!!sym(nom1_areaeval),!!sym(nom_peso)),8)) %>% 
           setNames(c("estrato2","valor")) %>% 
           mutate(tipo_esp = "Medida promedio",
                  area_eval = nom_area,
@@ -922,14 +922,14 @@ tablares <- function(bd_datos,areacurr,alcance){
             # Si es medida promedio, redondeamos "valor" a 0 decimales
             
             resultado <- resultado %>% 
-              mutate(valor = redondear(valor, 4), 
-                     error = redondear(error, 4))
+              mutate(valor = redondear(valor, 8), 
+                     error = redondear(error, 8))
             
           } else if (i == 2) {
             # Si es nivel de logro, redondeamos "valor" multiplicado por 100 a 1 decimal
             resultado <- resultado %>% 
-              mutate(valor = redondear(valor*100, 4), 
-                     error = redondear(error*100, 4))
+              mutate(valor = redondear(valor*100, 8), 
+                     error = redondear(error*100, 8))
           }
           
         })
@@ -1058,8 +1058,8 @@ tablares <- function(bd_datos,areacurr,alcance){
           na.rm = TRUE
         ) %>% 
           setNames(c("estrato2","valor","error")) %>% 
-          mutate(valor = redondear(valor,4),
-                 error = redondear(error,4)) %>% 
+          mutate(valor = redondear(valor,8),
+                 error = redondear(error,8)) %>% 
           mutate(estrato1_1 = nom_estratos[[i]],
                  estrato1_2 = nom_estratos[[i]],
                  tipo_esp = "Medida promedio",
@@ -1096,7 +1096,7 @@ tablares <- function(bd_datos,areacurr,alcance){
             values_from = value
           ) %>% 
           mutate_at(vars(valor,error),
-                    ~redondear(.*100,4)) %>% 
+                    ~redondear(.*100,8)) %>% 
           mutate(tipo_esp = case_when(
             grepl("^M500_", tipo_esp) ~ "Medida promedio",                    # Usar grepl para verificar si comienza con "M500_"
             grepl("Previo al inicio$", tipo_esp) ~ "Previo al inicio",        # Usar grepl para verificar si termina con "Previo al inicio"
@@ -1278,8 +1278,8 @@ tablares <- function(bd_datos,areacurr,alcance){
             na.rm = TRUE
           ) %>% 
             setNames(c("estrato2","valor","error")) %>% 
-            mutate(valor = redondear(valor,4),
-                   error = redondear(error,4)) %>% 
+            mutate(valor = redondear(valor,8),
+                   error = redondear(error,8)) %>% 
             mutate(estrato1_1 = etiq_reg[[r]],
                    estrato1_2 = nom_estratos[[i]],
                    tipo_esp = "Medida promedio",
@@ -1323,7 +1323,7 @@ tablares <- function(bd_datos,areacurr,alcance){
               values_from = value
             ) %>% 
             mutate_at(vars(valor,error),
-                      ~redondear(.*100,4)) %>% 
+                      ~redondear(.*100,8)) %>% 
             mutate(tipo_esp = case_when(
               grepl("^M500_", tipo_esp) ~ "Medida promedio",                    # Usar grepl para verificar si comienza con "M500_"
               grepl("Previo al inicio$", tipo_esp) ~ "Previo al inicio",        # Usar grepl para verificar si termina con "Previo al inicio"
@@ -1491,8 +1491,8 @@ tablares <- function(bd_datos,areacurr,alcance){
           na.rm = TRUE
         ) %>% 
           setNames(c("estrato2","valor","error")) %>% 
-          mutate(valor = redondear(valor,4),
-                 error = redondear(error,4)) %>% 
+          mutate(valor = redondear(valor,8),
+                 error = redondear(error,8)) %>% 
           mutate(estrato1_1 = nom_estratos[[i]],
                  estrato1_2 = nom_estratos[[i]],
                  tipo_esp = "Medida promedio",
@@ -1528,7 +1528,7 @@ tablares <- function(bd_datos,areacurr,alcance){
             values_from = value
           ) %>% 
           mutate_at(vars(valor,error),
-                    ~redondear(.*100,4)) %>% 
+                    ~redondear(.*100,8)) %>% 
           mutate(tipo_esp = case_when(
             grepl("^M500_", tipo_esp) ~ "Medida promedio",                    # Usar grepl para verificar si comienza con "M500_"
             grepl("Previo al inicio$", tipo_esp) ~ "Previo al inicio",        # Usar grepl para verificar si termina con "Previo al inicio"
