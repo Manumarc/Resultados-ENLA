@@ -160,7 +160,7 @@ guide_axis_label_trans <- function(label_trans = identity, ...) {
 # Crear percentiles pesados #
 #---------------------------#
 
-percentil_umc <- function(var, weights, percentil) {
+percentil_umc <- function(var, weights, percentil){
   
   if (percentil == "tercil") {
     
@@ -206,6 +206,14 @@ percentil_umc <- function(var, weights, percentil) {
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.80), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.90), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q9",
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.90), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q10",
       TRUE ~ NA_character_
+    )
+    
+  } else if (percentil == "nse"){
+    
+    case_when({{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.35), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE muy bajo",
+              {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.35), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE bajo",
+              {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.85), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE medio",
+              {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.85), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE alto",
     )
     
   }
