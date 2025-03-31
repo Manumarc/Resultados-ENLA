@@ -1670,7 +1670,7 @@ graf_nac <- function(bd_datos){
                 color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
                                   TRUE ~ "#252525")) +
       geom_text(data = mp_etiq, 
-                aes(label = valor, 
+                aes(label = puntocoma2(valor,0), 
                     y = 90, 
                     x = 1), 
                 size = 4.0, 
@@ -1770,7 +1770,7 @@ graf_nac <- function(bd_datos){
                 color = case_when(niveles$tipo_esp %in% "En inicio" & abs(niveles$valor) >= 12 ~ "white",
                                   TRUE ~ "#252525")) +
       geom_text(data = mp_etiq, 
-                aes(label = valor, 
+                aes(label = puntocoma2(valor,0), 
                     y = 90, 
                     x = 1), 
                 size = 4.0, 
