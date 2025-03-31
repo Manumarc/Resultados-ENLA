@@ -1623,8 +1623,7 @@ graf_nac <- function(bd_datos){
     
     mp_etiq <- bd_datos %>% 
       filter(!tipo %in% "Nivel de logro") %>% 
-      select(estrato2 ,tipo_esp,valor)  %>% 
-      mutate(valor = redondear(valor,0)
+      select(estrato2 ,tipo_esp,valor)
     
     # Integración de las bases de logros y posición de etiquetas #
     #------------------------------------------------------------#
@@ -1722,8 +1721,7 @@ graf_nac <- function(bd_datos){
     
     mp_etiq <- bd_datos %>% 
       filter(!tipo %in% "Nivel de logro") %>% 
-      select(estrato2 ,tipo_esp,valor)  %>% 
-      mutate(valor = redondear(valor,0)
+      select(estrato2 ,tipo_esp,valor)
     
     # Integración de las bases de logros y posición de etiquetas #
     #------------------------------------------------------------#
