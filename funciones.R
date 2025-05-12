@@ -6585,9 +6585,9 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       
       orden1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
-        select(estrato2) %>%
-        mutate(orden_aux = stri_trans_general(estrato2, "Latin-ASCII")) %>%  # Crear columna auxiliar sin tildes
-        arrange(orden_aux) %>%  # Ordenar por la versión sin tildes
+        select(estrato2,valor) %>%
+        # mutate(orden_aux = stri_trans_general(estrato2, "Latin-ASCII")) %>%  # Crear columna auxiliar sin tildes
+        arrange(valor) %>%  # Ordenar por la versión sin tildes
         select(estrato2) %>%  # Eliminar la columna auxiliar para mantener los nombres originales
         pull() %>%
         unique()
@@ -6706,9 +6706,9 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       
         orden1 <- bd1 %>%
         filter(año %in% nom_añoa) %>% 
-        select(estrato2) %>%
-        mutate(orden_aux = stri_trans_general(estrato2, "Latin-ASCII")) %>%  # Crear columna auxiliar sin tildes
-        arrange(orden_aux) %>%  # Ordenar por la versión sin tildes
+        select(estrato2,valor) %>%
+        # mutate(orden_aux = stri_trans_general(estrato2, "Latin-ASCII")) %>%  # Crear columna auxiliar sin tildes
+        arrange(valor) %>%  # Ordenar por la versión sin tildes
         select(estrato2) %>%  # Eliminar la columna auxiliar para mantener los nombres originales
         pull() %>%
         unique()
