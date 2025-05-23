@@ -7,11 +7,13 @@
 - survey          # Paquete para estimar resultados con muestras complejas.
 - ggh4x           # Permite crear y editar textos anidados en los ejes.
 - legendry        # Permite perzonalizar textos y etiquetas en leyendas y ejes.
-- stringi         # Permite manipular caracteres especiales, como son las tildes, en cadenas de texto. 
+- stringi         # Permite manipular caracteres especiales, como son las tildes, en cadenas de texto.
+- psych           # Permite realizar análisis psicométricos como análisis factorial exploratorio, confiabilidad (ej. alfa de Cronbach), y componentes principales.
+- polycor         # Calcula correlaciones policóricas y poliseriales.
 
 ## CARGAR LAS FUNCIONES
 
-devtools::source_url("https://raw.githubusercontent.com/Manumarc/Resultados-ENLA/refs/heads/main/funciones")
+devtools::source_url("https://raw.githubusercontent.com/Manumarc/Resultados-ENLA/refs/heads/main/funciones.R")
 
 ## ADVERTENCIA
 
