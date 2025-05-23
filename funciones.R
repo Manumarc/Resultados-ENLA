@@ -223,7 +223,7 @@ percentil_umc <- function(var, weights, percentil){
 # Función para cálculo de PCA #
 #-----------------------------#
 
-pca_umc_reporte <- function(x, corr = NULL, puntajes = TRUE){
+pca_umc <- function(x, corr = NULL, puntajes = TRUE){
 
   #toma un data.frame y aplica PCA
   #devuelve las varianza explicada, cargas del primer componente y alpha de cronbach
