@@ -269,8 +269,29 @@ pca_umc <- function(x, corr = NULL, puntajes = TRUE){
 
 }
 
+# Espacio decimal en números #
+#----------------------------#
+
+decimal_format <- function(x) {
+  sapply(x, function(n) {
+    if (is.na(n)) return(NA)
+    
+    entero <- floor(abs(n))  # parte entera sin decimales
+    ndig <- nchar(as.character(entero))
+    
+    if (ndig <= 4) {
+      return(as.character(n))  # lo dejamos igual
+    } else {
+      # Agregar espacio como separador de miles a la parte entera
+      entero_txt <- format(entero, big.mark = " ", scientific = FALSE, trim = TRUE)
+      return(entero_txt)
+    }
+  })
+}
+
+#==================================================================================#
 # Función que calcula los resultados de rendimiento junto con sus errores estandar #
-#----------------------------------------------------------------------------------#
+#==================================================================================#
 
 tablares <- function(bd_datos,areacurr,alcance){
 
