@@ -147,6 +147,40 @@ color_inicio <- '#A74D4B' # Color "En inicio"
 color_proces <- '#F79646' # Color "En proceso"
 color_satisf <- '#9BBB59' # Color "Satisfactorio"
 
+# Colores ENLA #
+#--------------#
+
+azules <- c(alpha("#004f9f",0.2),alpha("#004f9f",0.5),alpha("#004f9f",0.8),"#004f9f")
+naranjas <- c(alpha("#f39200",0.2),alpha("#f39200",0.5),alpha("#f39200",0.8),"#f39200")
+fucsias <- c(alpha("#9d2f83",0.2),alpha("#9d2f83",0.5),alpha("#9d2f83",0.8),"#9d2f83")
+rojos <- c(alpha("#e63f67",0.2),alpha("#e63f67",0.5),alpha("#e63f67",0.8),"#e63f67")
+
+#Colores PISA#
+#------------#
+
+cmyk2rgb<- function(c=0, m=0, y=0, k=0){
+  r=255*((1-c)*(1-k))
+  g=255*((1-m)*(1-k))
+  b=255*((1-y)*(1-k))
+  
+  return(round(c(r,g,b),0))
+}
+
+cmyk2hex<-function(c = 0,m = 0,y = 0,k = 0){
+  ve<-cmyk2rgb(c,m,y,k)
+  rgb(ve[1],ve[2],ve[3],maxColorValue = 255)
+}
+
+coloresf <- c(cmyk2hex(c=0.00,m=0.00,y=0.00,k=0.50),
+              cmyk2hex(c=0.00,m=0.00,y=0.00,k=0.35),
+              cmyk2hex(c=0.00,m=0.00,y=0.00,k=0.25),
+              cmyk2hex(c=0.00,m=0.00,y=0.00,k=0.15),
+              cmyk2hex(c=1.00,m=0.48,y=0.00,k=0.10),
+              cmyk2hex(c=0.90,m=0.44,y=0.00,k=0.00),
+              cmyk2hex(c=0.70,m=0.34,y=0.00,k=0.00),
+              cmyk2hex(c=0.50,m=0.24,y=0.00,k=0.00),
+              cmyk2hex(c=0.30,m=0.15,y=0.00,k=0.00))
+
 # Duplicar texto del "eje Y" hacia la derecha del gráfico #
 #---------------------------------------------------------#
 
