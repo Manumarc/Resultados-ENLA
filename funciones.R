@@ -1890,7 +1890,7 @@ graf_nac <- function(bd_datos){
                     y=0.00,
                     label="Niveles de logro (%)"),
                 size=3.0,
-                scales::alpha=0.2,
+                alpha=0.2,
                 angle = 90,
                 color = "#252525") +
       geom_text(mapping=aes(x=0.70,
