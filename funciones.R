@@ -18,7 +18,7 @@ g_patron_missing <- function(data, preg){
     gather(-id, key = "key", value = "val") %>%
     mutate(isna = is.na(val)) %>%
     ggplot(aes(rev(key), id, fill = isna)) +
-    geom_raster(alpha = 0.8) +
+    geom_raster(scales::alpha = 0.8) +
     theme_minimal() +
     theme(panel.grid = element_blank(),
           axis.text.y = element_text(size = 4.2, color = "black", hjust = 0),
@@ -150,10 +150,10 @@ color_satisf <- '#9BBB59' # Color "Satisfactorio"
 # Colores ENLA #
 #--------------#
 
-azules <- c(alpha("#004f9f",0.2),alpha("#004f9f",0.5),alpha("#004f9f",0.8),"#004f9f")
-naranjas <- c(alpha("#f39200",0.2),alpha("#f39200",0.5),alpha("#f39200",0.8),"#f39200")
-fucsias <- c(alpha("#9d2f83",0.2),alpha("#9d2f83",0.5),alpha("#9d2f83",0.8),"#9d2f83")
-rojos <- c(alpha("#e63f67",0.2),alpha("#e63f67",0.5),alpha("#e63f67",0.8),"#e63f67")
+azules <- c(scales::alpha("#004f9f",0.2),scales::alpha("#004f9f",0.5),scales::alpha("#004f9f",0.8),"#004f9f")
+naranjas <- c(scales::alpha("#f39200",0.2),scales::alpha("#f39200",0.5),scales::alpha("#f39200",0.8),"#f39200")
+fucsias <- c(scales::alpha("#9d2f83",0.2),scales::alpha("#9d2f83",0.5),scales::alpha("#9d2f83",0.8),"#9d2f83")
+rojos <- c(scales::alpha("#e63f67",0.2),scales::alpha("#e63f67",0.5),scales::alpha("#e63f67",0.8),"#e63f67")
 
 #Colores PISA#
 #------------#
@@ -1790,14 +1790,14 @@ graf_nac <- function(bd_datos){
                     y=0.00,
                     label="Niveles de logro (%)"),
                 size=3.0,
-                alpha=0.2,
+                scales::alpha=0.2,
                 angle = 90,
                 color = "#252525") +
       geom_text(mapping=aes(x=0.70,
                             y=90,
                             label="Medida \npromedio"),
                 size=3.0,
-                alpha=0.2,
+                scales::alpha=0.2,
                 color = "#252525")
     
   } else if (totniv == 4) {
@@ -1890,14 +1890,14 @@ graf_nac <- function(bd_datos){
                     y=0.00,
                     label="Niveles de logro (%)"),
                 size=3.0,
-                alpha=0.2,
+                scales::alpha=0.2,
                 angle = 90,
                 color = "#252525") +
       geom_text(mapping=aes(x=0.70,
                             y=90,
                             label="Medida \npromedio"),
                 size=3.0,
-                alpha=0.2,
+                scales::alpha=0.2,
                 color = "#252525")
   }
 }
@@ -2122,7 +2122,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) +
+                       scales::alpha = 0.5) +
           geom_segment(data = niveles %>% filter(estrato1_1 %in% levels(estrato1_1)[1]),
                        aes(y = 0,
                            yend = 0,
@@ -2131,7 +2131,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) +
+                       scales::alpha = 0.5) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2169,7 +2169,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
@@ -2177,7 +2177,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525") +
           geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(2.6)), 
@@ -2291,7 +2291,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) +
+                       scales::alpha = 0.5) +
           geom_segment(data = niveles %>% filter(estrato1_1 %in% levels(estrato1_1)[1]),
                        aes(y = 0,
                            yend = 0,
@@ -2300,7 +2300,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) +
+                       scales::alpha = 0.5) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2338,7 +2338,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
@@ -2346,7 +2346,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525") +
           geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(2.6)), 
@@ -2493,7 +2493,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) +
+                       scales::alpha = 0.5) +
           geom_segment(data = niveles %>% filter(estrato1_1 %in% levels(estrato1_1)[1]),
                        aes(y = 0,
                            yend = 0,
@@ -2502,7 +2502,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) +
+                       scales::alpha = 0.5) +
           scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2540,7 +2540,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
@@ -2548,7 +2548,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525") +
           geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(2.6)), 
@@ -2659,7 +2659,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) +
+                       scales::alpha = 0.5) +
           geom_segment(data = niveles %>% filter(estrato1_1 %in% levels(estrato1_1)[1]),
                        aes(y = 0,
                            yend = 0,
@@ -2668,7 +2668,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) +
+                       scales::alpha = 0.5) +
           scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
           theme_bw() +
           theme(
@@ -2706,7 +2706,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                        y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(data = niveles %>% filter(estrato1_1 == levels(estrato1_1)[1]), ,
@@ -2714,7 +2714,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525") +
           geom_vline(data = niveles %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(2.6)), 
@@ -2845,7 +2845,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_satisf,
@@ -2879,11 +2879,11 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -2917,15 +2917,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_inicio,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -2958,15 +2958,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_inicio,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3003,15 +3003,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -3048,15 +3048,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -3090,15 +3090,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_inicio,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3132,15 +3132,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_inicio,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3174,15 +3174,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -3216,15 +3216,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -3279,7 +3279,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                    linetype = "dashed",
                    lwd = 0.4,
                    color = "#252525",
-                   alpha = 0.3,
+                   scales::alpha = 0.3,
                    show.legend = F) +
         annotation_sat +
         annotation_pro + 
@@ -3369,11 +3369,11 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3403,11 +3403,11 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3441,15 +3441,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_inicio,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3482,15 +3482,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_inicio,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3527,15 +3527,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -3572,15 +3572,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -3614,15 +3614,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_inicio,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3656,15 +3656,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
         hlines <- list(
           geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                      color = color_inicio,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                      color = color_proces,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2),
           geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                      color = color_satisf,
-                     alpha = 0.5,
+                     scales::alpha = 0.5,
                      lwd = 0.2)
         )
         
@@ -3698,15 +3698,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -3740,15 +3740,15 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -3797,7 +3797,7 @@ graf_estrat <- function(bd_nac, bd_estrat, nom_tipo){
                    linetype = "dashed",
                    lwd = 0.4,
                    color = "#252525",
-                   alpha = 0.3,
+                   scales::alpha = 0.3,
                    show.legend = F) +
         annotation_sat +
         annotation_pro + 
@@ -4185,7 +4185,7 @@ graf_spcf <- function(bd_datos){
                    linetype = "solid",
                    color = "#252525",
                    lwd = 0.3,
-                   alpha = 0.5) +
+                   scales::alpha = 0.5) +
       scale_fill_manual(values = c(color_pre_in,color_inicio,color_proces,color_satisf)) + 
       theme_bw() +
       theme(
@@ -4301,7 +4301,7 @@ graf_spcf <- function(bd_datos){
                    linetype = "solid",
                    color = "#252525",
                    lwd = 0.3,
-                   alpha = 0.5) +
+                   scales::alpha = 0.5) +
       scale_fill_manual(values = c(color_inicio,color_proces,color_satisf)) + 
       theme_bw() +
       theme(
@@ -4544,14 +4544,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                         y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(mapping=aes(x=0.70,
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525")
         
         
@@ -4599,14 +4599,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                         y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(mapping=aes(x=0.70,
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525")
         
       }
@@ -4777,14 +4777,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                         y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(mapping=aes(x=0.70,
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525")
         
         
@@ -4832,14 +4832,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                         y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(mapping=aes(x=0.70,
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525")
         
       }
@@ -4968,14 +4968,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                         y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(mapping=aes(x=0.70,
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525")
         
         
@@ -5023,14 +5023,14 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                         y=0.00,
                         label="Niveles de logro (%)"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     angle = 90,
                     color = "#252525") +
           geom_text(mapping=aes(x=0.70,
                                 y=90,
                                 label="Medida \npromedio"),
                     size=3.0,
-                    alpha=0.2,
+                    scales::alpha=0.2,
                     color = "#252525")
         
       }
@@ -5229,13 +5229,13 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) + 
+                       scales::alpha = 0.5) + 
           geom_vline(data = t1 %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(4.55)), 
                      linetype = "dashed",
                      lwd = 0.4,
                      color = "#252525",
-                     alpha = 0.3,
+                     scales::alpha = 0.3,
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
@@ -5346,13 +5346,13 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) + 
+                       scales::alpha = 0.5) + 
           geom_vline(data = t1 %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(4.55)), 
                      linetype = "dashed",
                      lwd = 0.4,
                      color = "#252525",
-                     alpha = 0.3,
+                     scales::alpha = 0.3,
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
@@ -5528,13 +5528,13 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) + 
+                       scales::alpha = 0.5) + 
           geom_vline(data = t1 %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(4.55)), 
                      linetype = "dashed",
                      lwd = 0.4,
                      color = "#252525",
-                     alpha = 0.3,
+                     scales::alpha = 0.3,
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
@@ -5647,13 +5647,13 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) + 
+                       scales::alpha = 0.5) + 
           geom_vline(data = t1 %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(4.55)), 
                      linetype = "dashed",
                      lwd = 0.4,
                      color = "#252525",
-                     alpha = 0.3,
+                     scales::alpha = 0.3,
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
@@ -5783,13 +5783,13 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) + 
+                       scales::alpha = 0.5) + 
           geom_vline(data = t1 %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(4.55)), 
                      linetype = "dashed",
                      lwd = 0.4,
                      color = "#252525",
-                     alpha = 0.3,
+                     scales::alpha = 0.3,
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
@@ -5899,13 +5899,13 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                        linetype = "solid",
                        color = "#252525",
                        lwd = 0.3,
-                       alpha = 0.5) + 
+                       scales::alpha = 0.5) + 
           geom_vline(data = t1 %>% filter(!estrato1_1 %in% "Gestión y área"),
                      aes(xintercept = c(4.55)), 
                      linetype = "dashed",
                      lwd = 0.4,
                      color = "#252525",
-                     alpha = 0.3,
+                     scales::alpha = 0.3,
                      show.legend = F) +
           geom_text(aes(label = etiq,
                         y = posit),
@@ -6138,11 +6138,11 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6175,11 +6175,11 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6216,15 +6216,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6261,15 +6261,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6306,15 +6306,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6351,15 +6351,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6393,15 +6393,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6435,15 +6435,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
-                   lwd = 0.2),
+                   scales::alpha = 0.5,
+                   scales::lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6477,15 +6477,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6519,15 +6519,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]], 0),
                    color = color_inicio,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]], 0),
                    color = color_proces,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]], 0),
                    color = color_satisf,
-                   alpha = 0.5,
+                   scales::alpha = 0.5,
                    lwd = 0.2)
       )
       
@@ -6579,7 +6579,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
                  linetype = "dashed",
                  lwd = 0.4,
                  color = "#252525",
-                 alpha = 0.3,
+                 scales::alpha = 0.3,
                  show.legend = F) +
       annotation_sat +
       annotation_pro + 
@@ -6642,15 +6642,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]],0),
                    color = color_inicio,
-                   alpha = 0.8,
+                   scales::alpha = 0.8,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]],0),
                    color = color_proces,
-                   alpha = 0.8,
+                   scales::alpha = 0.8,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]],0),
                    color = color_satisf,
-                   alpha = 0.8,
+                   scales::alpha = 0.8,
                    lwd = 0.2)
       )
 
@@ -6763,15 +6763,15 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       hlines <- list(
         geom_hline(yintercept = redondear(puntos_corte[[1]],0),
                    color = color_inicio,
-                   alpha = 0.8,
+                   scales::alpha = 0.8,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[2]],0),
                    color = color_proces,
-                   alpha = 0.8,
+                   scales::alpha = 0.8,
                    lwd = 0.2),
         geom_hline(yintercept = redondear(puntos_corte[[3]],0),
                    color = color_satisf,
-                   alpha = 0.8,
+                   scales::alpha = 0.8,
                    lwd = 0.2)
       )
       
@@ -6953,7 +6953,7 @@ graf_tiempo <- function(bd_año1,bd_año2,bd_año1_estrat, bd_año2_estrat, nom_
       geom_vline(xintercept = 0,
                  color = "#252525") +
       scale_x_continuous(limits = c(-120,120)) + 
-      scale_fill_manual(values = c(adjustcolor(color_pre_in, alpha.f = 0.4),color_pre_in,
+      scale_fill_manual(values = c(adjustcolor(color_pre_in, scales:: = 0.4),color_pre_in,
                                    adjustcolor(color_inicio, alpha.f = 0.4),color_inicio,
                                    adjustcolor(color_proces, alpha.f = 0.4),color_proces,
                                    adjustcolor(color_satisf, alpha.f = 0.4),color_satisf)) +
