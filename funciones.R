@@ -251,8 +251,8 @@ percentil_umc <- function(var, weights, percentil){
     case_when(
       is.na({{var}}) ~ NA_character_,   # excluye los NA antes de clasificar
       {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.35), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE muy bajo",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.35), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE bajo",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.85), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE medio",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.35), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE bajo",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.85), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE medio",
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.85), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE alto",
       TRUE ~ NA_character_
     )
