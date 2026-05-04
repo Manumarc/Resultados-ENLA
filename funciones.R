@@ -201,7 +201,7 @@ percentil_umc <- function(var, weights, percentil){
     case_when(
       is.na({{var}}) ~ NA_character_,   # excluye los NA antes de clasificar
       {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.33), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q1",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.33), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.67), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.33), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.67), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.67), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
       TRUE ~ NA_character_
     )
@@ -211,8 +211,8 @@ percentil_umc <- function(var, weights, percentil){
     case_when(
       is.na({{var}}) ~ NA_character_,   # excluye los NA antes de clasificar
       {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.25), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q1",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.25), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.75), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.25), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile(var, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile(var, weights = {{weights}}, probs = c(0.75), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.75), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q4",
       TRUE ~ NA_character_
     )
@@ -222,9 +222,9 @@ percentil_umc <- function(var, weights, percentil){
     case_when(
       is.na({{var}}) ~ NA_character_,   # excluye los NA antes de clasificar
       {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.20), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q1",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.20), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.40), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.40), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.80), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q4",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.20), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.40), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.40), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.80), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q4",
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.80), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q5",
       TRUE ~ NA_character_
     )
@@ -234,14 +234,14 @@ percentil_umc <- function(var, weights, percentil){
     case_when(
       is.na({{var}}) ~ NA_character_,   # excluye los NA antes de clasificar
       {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.10), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q1",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.10), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.20), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.20), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.30), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.30), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.40), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q4",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.40), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q5",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q6",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.70), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q7",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.70), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.80), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q8",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.80), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.90), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q9",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.10), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.20), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.20), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.30), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.30), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.40), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q4",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.40), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q5",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q6",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.70), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q7",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.70), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.80), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q8",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.80), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.90), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q9",
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.90), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q10",
       TRUE ~ NA_character_
     )
@@ -251,8 +251,8 @@ percentil_umc <- function(var, weights, percentil){
     case_when(
       is.na({{var}}) ~ NA_character_,   # excluye los NA antes de clasificar
       {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.35), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE muy bajo",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.35), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE bajo",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile(var, weights = {{weights}}, probs = c(0.85), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE medio",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.35), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE bajo",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.60), na.rm = TRUE, type=c('(i-1)/(n-1)')) & var <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.85), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE medio",
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.85), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "NSE alto",
       TRUE ~ NA_character_
     )
