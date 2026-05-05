@@ -211,8 +211,8 @@ percentil_umc <- function(var, weights, percentil){
     case_when(
       is.na({{var}}) ~ NA_character_,   # excluye los NA antes de clasificar
       {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.25), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q1",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.25), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile(var, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
-      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile(var, weights = {{weights}}, probs = c(0.75), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.25), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q2",
+      {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.50), na.rm = TRUE, type=c('(i-1)/(n-1)')) & {{var}} <= wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.75), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q3",
       {{var}} > wtd.quantile({{var}}, weights = {{weights}}, probs = c(0.75), na.rm = TRUE, type=c('(i-1)/(n-1)')) ~ "Grupo Q4",
       TRUE ~ NA_character_
     )
